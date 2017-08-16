@@ -16,7 +16,7 @@ class TestSummarize(TestCase):
                 u'http://www.bbc.co.uk/news/magazine-29631332')
 
         #just make sure it doesn't crash
-        #for url in urls:
+        #for url in urls: #Just to check commit and push
         #summaries = SummarizeUrl(url)
             print(summaries)
                 
