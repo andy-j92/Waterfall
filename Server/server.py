@@ -13,12 +13,6 @@ import json
 import cherrypy
 from cherrypy.process import plugins
 
-sample_nodes = [
-    'node1',
-    'node2',
-]
-
-
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
 
@@ -68,50 +62,6 @@ class APIController(object): \
         # Regular request for '/nodes' URI
         return open('index.html')
 
-#     @cherrypy.tools.json_out()
-#     def get(self, name):
-#         # Handle a GET for a specific node
-# 
-#         if name not in sample_nodes:
-#             raise cherrypy.HTTPError(
-#                 404, 'Node \"{0}\" not found'.format(name))
-# 
-#         return [{'name': name}]
-
-#     @cherrypy.tools.json_in()
-#     @cherrypy.tools.json_out()
-#     def nodes(self, name):
-#         """
-#         /nodes/<name> (POST)
-#         /nodes/<name> (PUT)
-#         /nodes/<name> (DELETE)
-#         """
-# 
-#         if cherrypy.request.method == 'POST':
-#             # Handle a nodes create request. It might be preferred to
-#             # create a separate "action" for this controller as opposed
-#             # to overriding this handler.
-# 
-#             # Successful POST request
-#             return ('You\'re wanting to create a node named'
-#                     ' \"{0}\"?'.format(name))
-# 
-#         elif cherrypy.request.method == 'PUT':
-#             if name not in sample_nodes:
-#                 raise cherrypy.HTTPError(
-#                     404, 'Node \"{0}\" not found'.format(name))
-# 
-#             # Empty response (http status 204) for successful PUT request
-#             cherrypy.response.status = 204
-# 
-#             return ''
-#         elif cherrypy.request.method == 'DELETE':
-#             # Empty response (http status 204) for successful DELETE request
-#             cherrypy.response.status = 204
-# 
-#             return ''
-
-
 def jsonify_error(status, message, traceback, version): \
         # pylint: disable=unused-argument
 
@@ -144,24 +94,6 @@ if __name__ == '__main__':
                        action='upload',
                        controller=APIController(),
                        conditions={'method': ['GET']})
-
-    # /nodes/{name} (GET)
-    #
-    # Request "/nodes/notfound" (GET) to test the 404 (not found) handler
-#     dispatcher.connect(name='nodes',
-#                        route='/nodes/{name}',
-#                        action='get',
-#                        controller=APIController(),
-#                        conditions={'method': ['GET']})
-# 
-#     # /nodes/{name} (POST)
-#     # /nodes/{name} (PUT)
-#     # /nodes/{name} (DELETE)
-#     dispatcher.connect(name='nodes',
-#                        route='/nodes/{name}',
-#                        action='nodes',
-#                        controller=APIController(),
-#                        conditions={'method': ['POST', 'PUT', 'DELETE']})
 
     config = {
         'global': {
