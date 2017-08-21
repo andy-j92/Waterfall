@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     # /nodes (GET)
     dispatcher.connect(name='upload',
-                       route='/upload',
+                       route='/',
                        action='upload',
                        controller=APIController(),
                        conditions={'method': ['GET']})
