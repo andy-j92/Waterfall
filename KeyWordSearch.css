@@ -1,6 +1,6 @@
 #title{
     text-align: center;
-    font-size: 4vw;
+    font-size: 3vw;
 }
 
 #LoggedInAs {
@@ -19,11 +19,26 @@
     position: relative;
     display: block;
     margin: auto;
-    top: 100%;
     background-color: darkred;
     min-width: 200px;
     color: white;
     box-shadow: 0px 4px 5px grey;
+}
+
+#titleText{
+    position: relative;
+    text-align: center;
+    font-size: 2vw;
+}
+
+
+#QuestionText{
+   position: relative;
+   display: block;
+   margin: auto;
+   width: 30%;
+   height:1%;
+   padding: 1%;
 }
 
 #Logo {
