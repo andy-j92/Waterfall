@@ -80,17 +80,23 @@ def SummarizeUrl(url):
     return summaries
 
 
-def Summarize(title, text):
+def Summarize(text, keyword = None):
     summaries = []
+    keywords = {}
     sentences = split_sentences(text)
-    keys = keywords(text)
-    titleWords = split_words(title)
 
-    if len(sentences) <= 5:
+    if(keyword == None):
+        keys = get_keywords(text)
+    else:
+        for k in split_words(keyword):
+            keywords[k] = 99999
+        keys = keywords
+
+    if len(sentences) <= 3:
         return sentences
 
     #score setences, and use the top 5 sentences
-    ranks = score(sentences, titleWords, keys).most_common(5)
+    ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
         summaries.append(rank[0])
 
@@ -109,14 +115,13 @@ def grab_link(inurl):
     return None
 
 
-def score(sentences, titleWords, keywords):
+def score(sentences, keywords):
     #score sentences based on different features
 
     senSize = len(sentences)
     ranks = Counter()
     for i, s in enumerate(sentences):
         sentence = split_words(s)
-        titleFeature = title_score(titleWords, sentence)
         sentenceLength = length_score(sentence)
         sentencePosition = sentence_position(i+1, senSize)
         sbsFeature = sbs(sentence, keywords)
@@ -124,7 +129,7 @@ def score(sentences, titleWords, keywords):
         frequency = (sbsFeature + dbsFeature) / 2.0 * 10.0
 
         #weighted average of scores from four categories
-        totalScore = (titleFeature*1.5 + frequency*2.0 +
+        totalScore = (frequency*2.0 +
                       sentenceLength*1.0 + sentencePosition*1.0) / 4.0
         ranks[s] = totalScore
     return ranks
@@ -174,7 +179,7 @@ def split_words(text):
         return None
 
 
-def keywords(text):
+def get_keywords(text):
     """get the top 10 keywords and their frequency scores
     ignores blacklisted words in stopWords,
     counts the number of occurrences of each word
@@ -203,7 +208,7 @@ def split_sentences(text):
     of the line. Now, the s_iter list is formatted correctly but it is missing the last item of the sentences list. The
     second to last line adds this item to the s_iter list and the last line returns the full list.
     '''
-    
+
     sentences = regex_split(u'(?<![A-ZА-ЯЁ])([.!?]"?)(?=\s+\"?[A-ZА-ЯЁ])', text, flags=REGEX_UNICODE)
     s_iter = zip(*[iter(sentences[:-1])] * 2)
     s_iter = [''.join(map(unicode,y)).lstrip() for y in s_iter]
@@ -222,10 +227,10 @@ def title_score(title, sentence):
     for word in sentence:
         if (word not in stopWords and word in title):
             count += 1.0
-            
+
     if len(title) == 0:
         return 0.0
-        
+
     return count/len(title)
 
 
