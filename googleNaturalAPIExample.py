@@ -101,10 +101,6 @@ def entities_text(text):
         print('=' * 20)
         print(u'{:<16}: {}'.format('name', entity.name))
         print(u'{:<16}: {}'.format('type', entity_type[entity.type]))
-        print(u'{:<16}: {}'.format('metadata', entity.metadata))
-        print(u'{:<16}: {}'.format('salience', entity.salience))
-        print(u'{:<16}: {}'.format('wikipedia_url',
-              entity.metadata.get('wikipedia_url', '-')))
     # [END migration_analyze_entities]
 # [END def_entities_text]
 
