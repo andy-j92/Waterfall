@@ -13,13 +13,20 @@ import json
 import cherrypy
 from cherrypy.process import plugins
 
+# import pyteaser
+import textrazor
+import pyteaser
+
+
+
+
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
 
     TODO: this needs to be fixed/optimized. I don't like creating the thread
     repeatedly.
     """
-
+    
     while True:
         t = threading.Timer(5.0, hello)
         t.start()
@@ -28,9 +35,11 @@ def worker():
 
 def hello():
     """Output 'hello' on the console"""
-
+    
     print ('hello')
-
+    # Summarize("hi my name is nipoon")
+    x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
+    print(x)
 
 class MyBackgroundThread(plugins.SimplePlugin):
     """CherryPy plugin to create a background worker thread"""
