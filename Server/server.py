@@ -66,10 +66,32 @@ class APIController(object): \
 
     """Controller for fictional "nodes" webservice APIs"""
 
-#     @cherrypy.tools.json_out()
+# #     @cherrypy.tools.json_out()
+#     def upload(self):
+#         # Regular request for '/nodes' URI
+#         return open('index.html')
+
+
+    @cherrypy.expose
     def upload(self):
-        # Regular request for '/nodes' URI
-        return open('index.html')
+        return file("select-file.html")
+
+
+    @cherrypy.expose
+    def summary(self, myFile):
+        out = """<html>
+        <body>
+            <h1 style="text-align:center;">Summary</h1>
+            <div style="border:1px solid #8a8a8a;border-radius: 5px;padding: 10px; max-width:600px; margin:0 auto;">%s</div>
+        </body>
+        </html>"""
+
+        data = myFile.file.read(8192)
+
+
+        return out % (data)
+
+
 
 def jsonify_error(status, message, traceback, version): \
         # pylint: disable=unused-argument
@@ -103,6 +125,13 @@ if __name__ == '__main__':
                        action='upload',
                        controller=APIController(),
                        conditions={'method': ['GET']})
+
+    # /nodes (GET)
+    dispatcher.connect(name='summary',
+                       route='/summary',
+                       action='summary',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
 
     config = {
         'global': {
