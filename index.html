@@ -22,77 +22,33 @@
 
 <body> 
   
-<input type="file" id="file" onchange="handleFiles(this.files)"/> 
-<script>
-
- function handleFiles(files) 
- {
-
-    if (files.length) {
-        var file = files[0];
-        var reader = new FileReader();
-        if (/text\/\w+/.test(file.type)) {
-            reader.onload = function() {
-                $('<pre>' + this.result + '</pre>').appendTo('body');
-            }
-            reader.readAsText(file);
-        }
-    }
-}
-
-</script>
-
-<span style="font-family: Arial, Helvetica, sans-serif;"> 
-  
 <div>  
     <!-- Always shows a header, even in smaller screens. -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
           <!-- Title -->
           <br>
-          <p id="title"></p>     
+          <p id="title">Main Menu</p>     
           <!-- Add spacer, to align navigation to the right -->
           <p id="LoggedInAs"> You are logged in as Russle </p>
       </header>
-        
-      <div class="mdl-layout__drawer">
-        <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" href="Login.html">Logout</a>
-        </nav>
-      </div>
     </div>
+
     
-    <br>
-    <br>
-    <br>
-    <br>    
-    <br>
-    
-    <div >
+    <div id="ButtonContainer" >
      
-        <p id="titleText"><b>Select a file to get details and a summary of that </b></p>
-        
-        <div id="NameContainer">
-            <div id="Name">  
-                <p>Employee Name:</p>
-            </div>
+        <a href="KeyWordSearch.html">
+        <button class="btn btn-primary btn-block" type="submit">
+        Keyword Search
+        </button>
+        </a>
+    <br>      
 
-            <div id="EmployeeSelect">
-                    <select id="Typesel" name="type" style="width: 100%; font-size: 40%" onchange="myFunction()">
-                      <option value="Text">Andrew</option>
-                      <option value="MC">Paul</option>
-                      <option value="TF">OG_Mac</option>   
-                    </select>
-            </div>
-        </div>
-        
-        <br>
-        <textarea id="QuestionText" form="form1" name="questionText2" rows="5"></textarea>
-
-        <br><br><br><br>
-        
-        <p id="titleText" Style="color: blue"><b>Summary:</b></p>
-        
+        <a href="NewCV.html">
+        <button class="btn btn-primary btn-block" type="submit">
+        New CV
+        </button>
+        </a>
         
     </div>    
 
