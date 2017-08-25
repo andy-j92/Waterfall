@@ -76,6 +76,13 @@ class APIController(object): \
     def upload(self):
         return file("./Public/html/index.html")
 
+    @cherrypy.expose
+    def newcv(self):
+        return file("./Public/html/NewCV.html")
+
+    @cherrypy.expose
+    def keywordsearch(self):
+        return file("./Public/html/KeyWordSearch.html")
 
     @cherrypy.expose
     def summary(self, myFile):
@@ -132,6 +139,20 @@ if __name__ == '__main__':
                        action='summary',
                        controller=APIController(),
                        conditions={'method': ['POST']})
+
+    # /nodes (GET)
+    dispatcher.connect(name='newcv',
+                       route='/newcv',
+                       action='newcv',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})
+
+    # /nodes (GET)
+    dispatcher.connect(name='keywordsearch',
+                       route='/keywordsearch',
+                       action='keywordsearch',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})    
 
     config = {
         '/': {
