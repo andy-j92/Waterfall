@@ -14,64 +14,15 @@
     box-shadow: 0px 6px 8px grey;  
 }
 
-
-.mdl-button {
-    position: relative;
-    display: block;
-    margin: auto;
-    background-color: darkred;
-    min-width: 200px;
-    color: white;
-    box-shadow: 0px 4px 5px grey;
-}
-
-#file {
-    position: fixed;
-    margin-top: 160px;
-    margin-left: 550px;
-    background-color:  #00BFFF;
-    min-width: 200px;
-    color: white;
-    box-shadow: 0px 4px 5px grey;
-    z-index: 9999;
-}
-
-#titleText{
-    position: relative;
-    text-align: center;
-    font-size: 2vw;
-}
-
-#NameContainer{
-    position: relative;
-    display: block;
-    margin: auto;
-    width: 15%;
-    padding: 0.5%;
-    font-size: 2vw;
-}
-
-#Name{
+#ButtonContainer {
     position: absolute;
-    left: 2%;
-    font-size: 2vw;
-    font-weight: bold;
-    text-align: center;
+    top: 40%;
+    left: 40%;
+    width: 20%;
 }
 
-#EmployeeSelect{
-    position: absolute;
-    top:20%;
-    right: 2%;
-    width: 40%;
-}
-
-#QuestionText{
-   position: relative;
-   display: block;
-   margin: auto;
-   width: 60%; 
-   padding: 1%;
+.btn{
+  font-size: 2vw;  
 }
 
 #Logo {

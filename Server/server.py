@@ -23,8 +23,8 @@ import pyteaser
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
 
-    TODO: this needs to be fixed/optimized. I don't like creating the thread
-    repeatedly.
+    TODO: this needs to be /optimized. I don't like creating the thread
+    repeatedly.fixed
     """
     
     while True:
@@ -74,7 +74,7 @@ class APIController(object): \
 
     @cherrypy.expose
     def upload(self):
-        return file("select-file.html")
+        return file("./Public/html/index.html")
 
 
     @cherrypy.expose
@@ -134,10 +134,6 @@ if __name__ == '__main__':
                        conditions={'method': ['POST']})
 
     config = {
-        'global': {
-            'server.socket_host': '0.0.0.0',
-            # 'server.socket_port': 8080,
-        },
         '/': {
             'request.dispatch': dispatcher,
             'error_page.default': jsonify_error,
@@ -158,6 +154,8 @@ if __name__ == '__main__':
     }
 
     cherrypy.tree.mount(root=None, config=config)
+    cherrypy.server.socket_host = '0.0.0.0'
+    cherrypy.server.socket_port = 80
 
     cherrypy.engine.start()
     cherrypy.engine.block()
