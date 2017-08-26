@@ -3,7 +3,6 @@ import os.path
 
 import cherrypy
 from cherrypy.lib import static
-from pyteaser import Summarize
 
 localDir = os.path.dirname(__file__)
 absDir = os.path.join(os.getcwd(), localDir)
@@ -28,7 +27,7 @@ class FileDemo(object):
         data = myFile.file.read(8192)
 
 
-        return out % (Summarize('Title',data))
+        return out % (data)
 
 
     @cherrypy.expose

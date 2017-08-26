@@ -13,13 +13,20 @@ import json
 import cherrypy
 from cherrypy.process import plugins
 
+# import pyteaser
+import textrazor
+import pyteaser
+
+
+
+
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
 
-    TODO: this needs to be fixed/optimized. I don't like creating the thread
-    repeatedly.
+    TODO: this needs to be /optimized. I don't like creating the thread
+    repeatedly.fixed
     """
-
+    
     while True:
         t = threading.Timer(5.0, hello)
         t.start()
@@ -28,9 +35,11 @@ def worker():
 
 def hello():
     """Output 'hello' on the console"""
-
+    
     print ('hello')
-
+    # Summarize("hi my name is nipoon")
+    x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
+    print(x)
 
 class MyBackgroundThread(plugins.SimplePlugin):
     """CherryPy plugin to create a background worker thread"""
@@ -57,10 +66,39 @@ class APIController(object): \
 
     """Controller for fictional "nodes" webservice APIs"""
 
-#     @cherrypy.tools.json_out()
+# #     @cherrypy.tools.json_out()
+#     def upload(self):
+#         # Regular request for '/nodes' URI
+#         return open('index.html')
+
+
+    @cherrypy.expose
     def upload(self):
-        # Regular request for '/nodes' URI
-        return open('index.html')
+        return file("./Public/html/index.html")
+
+    @cherrypy.expose
+    def newcv(self):
+        return file("./Public/html/NewCV.html")
+
+    @cherrypy.expose
+    def keywordsearch(self):
+        return file("./Public/html/KeyWordSearch.html")
+
+    @cherrypy.expose
+    def summary(self, myFile):
+        out = """<html>
+        <body>
+            <h1 style="text-align:center;">Summary</h1>
+            <div style="border:1px solid #8a8a8a;border-radius: 5px;padding: 10px; max-width:600px; margin:0 auto;">%s</div>
+        </body>
+        </html>"""
+
+        data = myFile.file.read(8192)
+
+
+        return out % (data)
+
+
 
 def jsonify_error(status, message, traceback, version): \
         # pylint: disable=unused-argument
@@ -95,11 +133,28 @@ if __name__ == '__main__':
                        controller=APIController(),
                        conditions={'method': ['GET']})
 
+    # /nodes (GET)
+    dispatcher.connect(name='summary',
+                       route='/summary',
+                       action='summary',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
+
+    # /nodes (GET)
+    dispatcher.connect(name='newcv',
+                       route='/newcv',
+                       action='newcv',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})
+
+    # /nodes (GET)
+    dispatcher.connect(name='keywordsearch',
+                       route='/keywordsearch',
+                       action='keywordsearch',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})    
+
     config = {
-        'global': {
-            'server.socket_host': '0.0.0.0',
-            # 'server.socket_port': 8080,
-        },
         '/': {
             'request.dispatch': dispatcher,
             'error_page.default': jsonify_error,
@@ -120,6 +175,8 @@ if __name__ == '__main__':
     }
 
     cherrypy.tree.mount(root=None, config=config)
+    cherrypy.server.socket_host = '0.0.0.0'
+    cherrypy.server.socket_port = 80
 
     cherrypy.engine.start()
     cherrypy.engine.block()
