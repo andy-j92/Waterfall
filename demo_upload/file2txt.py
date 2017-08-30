@@ -29,8 +29,8 @@ class MSOffice2txt():
 
     def docApplicationOpen(self):
         docCom = win32com.client.Dispatch('Word.Application')
-        docCom.Visible = 1
-        docCom.DisplayAlerts = 0
+        # docCom.Visible = 1
+        # docCom.DisplayAlerts = 0
         # docHwnd = win32gui.FindWindow(None, 'Microsoft Word')
         # win32gui.ShowWindow(docHwnd, win32con.SW_HIDE)
         return docCom
@@ -46,8 +46,8 @@ class MSOffice2txt():
 
     def pptApplicationOpen(self):
         pptCom = win32com.client.Dispatch('PowerPoint.Application')
-        pptCom.Visible = 1
-        pptCom.DisplayAlerts = 0
+        # pptCom.Visible = 1
+        # pptCom.DisplayAlerts = 0
         # pptHwnd = win32gui.FindWindow(None, 'Microsoft PowerPoint')
         # win32gui.ShowWindow(pptHwnd, win32con.SW_HIDE)
         return pptCom
@@ -65,7 +65,7 @@ class MSOffice2txt():
             shape_count = ppt.Slides(i).Shapes.Count
             for j in xrange(1, shape_count + 1):
                 if ppt.Slides(i).Shapes(j).HasTextFrame:
-                    s = ppt.Slides(i).Shapes(j).TextFrame.TextRange.Text
+                    s = ppt.Slides(i).Shapes(j).TextFrame.TextRange.Text+ ' '
                     f.write(s)
         f.close()
         ppt.Close()
