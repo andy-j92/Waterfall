@@ -20,7 +20,8 @@ for entity in response.entities():
                 
         for x in range(len(entity.freebase_types)):
             if str(entity.freebase_types[x]) in typeToEntity:
-                typeToEntity[str(entity.freebase_types[x])] += ":" + entity.id
+                if entity.id not in typeToEntity[str(entity.freebase_types[x])]: 
+                    typeToEntity[str(entity.freebase_types[x])] += ":" + entity.id
             else:
                 typeToEntity[str(entity.freebase_types[x])] = entity.id
                 
