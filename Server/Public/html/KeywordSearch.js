@@ -15,7 +15,7 @@ function sendText(){
 			if (this.readyState == 4 && this.status == 200) {
 				// alert("success");
 				// alert(ourRequest.responseText);
-				document.getElementsById = $('SummaryText').innerHTML = ourRequest.responseText;
+				document.getElementById('Testingtext').innerHTML = ourRequest.responseText;
 	
 				return ourRequest.responseText;
 			}

@@ -13,6 +13,9 @@ import json
 import cherrypy
 from cherrypy.process import plugins
 
+from pptx import Presentation
+import docx
+
 # import pyteaser
 import textrazor
 import pyteaser
@@ -36,7 +39,7 @@ def worker():
     """
     
     while True:
-        t = threading.Timer(5.0, hello)
+        t = threading.Timer(10.0, hello)
         t.start()
         t.join()
 
@@ -44,7 +47,7 @@ def worker():
 def hello():
     """Output 'hello' on the console"""
     
-    print ('hello')
+    print ('running...')
     # Summarize("hi my name is nipoon")
     # x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
     # print(x)
@@ -159,9 +162,9 @@ class APIController(object): \
     """Controller for fictional "nodes" webservice APIs"""
 
 # #     @cherrypy.tools.json_out()
-#     def upload(self):
-#         # Regular request for '/nodes' URI
-#         return open('index.html')
+    def upload(self):
+        # Regular request for '/nodes' URI
+        return open('index.html')
 
 
     @cherrypy.expose
@@ -202,7 +205,7 @@ class APIController(object): \
                     out.write(data)
 
             data = convert_pdf_to_txt(os.getcwd().replace("\\","/")+'/temp_files/' + myFile.filename)
-        else:
+        elif os.path.splitext(myFile.filename)[1] == '.pptx':
             target = os.getcwd().replace("\\", "\\\\") + '\\\\' + 'temp_files' + '\\\\'
             size = 0
             if not os.path.isdir(target):
@@ -216,26 +219,72 @@ class APIController(object): \
                     out.write(data)
 
             data = showTxtView(target + myFile.filename)
+        elif os.path.splitext(myFile.filename)[1] == '.docx':
+            target = os.getcwd().replace("\\", "\\\\") + '\\\\' + 'temp_files' + '\\\\'
+            size = 0
+            if not os.path.isdir(target):
+                os.mkdir(target)
+
+            with open(target + myFile.filename, 'wb') as out:
+                while True:
+                    data = myFile.file.read(8192)
+                    if not data:
+                        break
+                    out.write(data)
+
+            data = showDocx(target + myFile.filename)
+
+        else:
+            data = "Invalid file type!"
         return data
+
+
+def showDocx(path):
+
+	document = docx.Document(path)
+	docText = ''.join([
+	    paragraph.text.encode('utf-8') for paragraph in document.paragraphs
+	])
+
+	return docText
 
 def showTxtView(path):
 
-    splited = os.path.splitext(path)
-    txtpath = splited[0] + '.txt'
-    msoffice = MSOffice2txt()
-    # filename = u'C:\\761\\test\\test111.doc'
-    if msoffice.translate(path, txtpath):
-        print 'Successed!'
-        mystr = ''
-        with open(txtpath, 'r') as f:
-            strList = f.readlines()
-            for each in strList:
-                mystr += each
-        return (mystr)
-    else:
-        print 'Failed!'
-        return 'Failed'
-    msoffice.close()
+	prs = Presentation(path)
+	# text_runs will be populated with a list of strings,
+	# one for each text run in presentation
+	text_runs = []
+	full_string = ""
+
+	for slide in prs.slides:
+	    for shape in slide.shapes:
+	        if not shape.has_text_frame:
+	            continue
+	        for paragraph in shape.text_frame.paragraphs:
+	            for run in paragraph.runs:
+	                text_runs.append(run.text)
+
+
+	full_string = ''.join(text_runs)
+	print(full_string)
+	return full_string
+
+    # splited = os.path.splitext(path)
+    # txtpath = splited[0] + '.txt'
+    # msoffice = MSOffice2txt()
+    # # filename = u'C:\\761\\test\\test111.doc'
+    # if msoffice.translate(path, txtpath):
+    #     print 'Successed!'
+    #     mystr = ''
+    #     with open(txtpath, 'r') as f:
+    #         strList = f.readlines()
+    #         for each in strList:
+    #             mystr += each
+    #     return (mystr)
+    # else:
+    #     print 'Failed!'
+    #     return 'Failed'
+    # msoffice.close()
 
 def convert_pdf_to_txt(path):
     rsrcmgr = PDFResourceManager()
