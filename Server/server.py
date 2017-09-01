@@ -165,6 +165,11 @@ class APIController(object): \
 
 
     @cherrypy.expose
+    def test(self):
+    	print("test was called!")
+        return "test was called!"
+
+    @cherrypy.expose
     def upload(self):
         return file("./Public/html/select-file.html")
 
@@ -308,7 +313,14 @@ if __name__ == '__main__':
                        route='/keywordsearch',
                        action='keywordsearch',
                        controller=APIController(),
-                       conditions={'method': ['GET']})    
+                       conditions={'method': ['GET']})   
+
+    # /nodes (GET)
+    dispatcher.connect(name='test',
+                       route='/test',
+                       action='test',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})   
 
     config = {
         '/': {
