@@ -2,6 +2,7 @@
 from collections import Counter
 from math import fabs
 from re import split as regex_split, sub as regex_sub, UNICODE as REGEX_UNICODE
+import re
 
 stopWords = set([
     "-", " ", ",", ".", "a", "e", "i", "o", "u", "t", "about", "above",
@@ -65,7 +66,7 @@ ideal = 20.0
 
 def test():
     print("hi")
-    
+
 def SummarizeUrl(url):
     summaries = []
     try:
@@ -85,6 +86,7 @@ def SummarizeUrl(url):
 def Summarize(text, keyword = None):
     summaries = []
     keywords = {}
+    text = text.decode("utf-8")
     sentences = split_sentences(text)
 
     if(keyword == None):
@@ -100,8 +102,9 @@ def Summarize(text, keyword = None):
     #score setences, and use the top 5 sentences
     ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
-        summaries.append(rank[0])
-
+        #summaries.append(rank[0])
+        sentence = re.sub(r'[^\x00-\x7f]',r'', rank[0])
+        summaries.append(sentence)
     return summaries
 
 
