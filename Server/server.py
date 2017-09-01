@@ -19,11 +19,7 @@ import docx
 # import pyteaser
 import textrazor
 import pyteaser
-import win32com
-import win32con
-import win32gui
 import codecs
-from win32com.client import Dispatch
 import pythoncom
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
