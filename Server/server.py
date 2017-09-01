@@ -379,7 +379,7 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(root=None, config=config)
     cherrypy.server.socket_host = '0.0.0.0'
-    cherrypy.server.socket_port = 81
+    cherrypy.server.socket_port = 80
 
     cherrypy.engine.start()
     cherrypy.engine.block()
