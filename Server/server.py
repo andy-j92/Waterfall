@@ -20,7 +20,6 @@ import docx
 import textrazor
 import pyteaser
 import codecs
-import pythoncom
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -188,8 +187,11 @@ class APIController(object): \
         </body>
         </html>"""
 
-        upload_path = os.path.dirname(os.getcwd().replace("\\","/")+'/temp_files/')
-        upload_file = os.path.join(upload_path, myFile.filename)
+        upload_file = './temp_files/' + myFile.filename
+
+        print(upload_file)
+        print(upload_file)
+        print(upload_file)
 
         if os.path.splitext(myFile.filename)[1] == '.pdf':
             size = 0
@@ -200,9 +202,14 @@ class APIController(object): \
                         break
                     out.write(data)
 
-            data = convert_pdf_to_txt(os.getcwd().replace("\\","/")+'/temp_files/' + myFile.filename)
+            data = convert_pdf_to_txt('./temp_files/' + myFile.filename)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
-            target = os.getcwd().replace("\\", "\\\\") + '\\\\' + 'temp_files' + '\\\\'
+            target = './temp_files'
+
+            print(target)
+            print(target)
+            print(target)
+
             size = 0
             if not os.path.isdir(target):
                 os.mkdir(target)
@@ -216,7 +223,7 @@ class APIController(object): \
 
             data = showTxtView(target + myFile.filename)
         elif os.path.splitext(myFile.filename)[1] == '.docx':
-            target = os.getcwd().replace("\\", "\\\\") + '\\\\' + 'temp_files' + '\\\\'
+            target = './temp_files'
             size = 0
             if not os.path.isdir(target):
                 os.mkdir(target)
@@ -264,23 +271,6 @@ def showTxtView(path):
 	full_string = ''.join(text_runs)
 	print(full_string)
 	return full_string
-
-    # splited = os.path.splitext(path)
-    # txtpath = splited[0] + '.txt'
-    # msoffice = MSOffice2txt()
-    # # filename = u'C:\\761\\test\\test111.doc'
-    # if msoffice.translate(path, txtpath):
-    #     print 'Successed!'
-    #     mystr = ''
-    #     with open(txtpath, 'r') as f:
-    #         strList = f.readlines()
-    #         for each in strList:
-    #             mystr += each
-    #     return (mystr)
-    # else:
-    #     print 'Failed!'
-    #     return 'Failed'
-    # msoffice.close()
 
 def convert_pdf_to_txt(path):
     rsrcmgr = PDFResourceManager()
@@ -389,7 +379,7 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(root=None, config=config)
     cherrypy.server.socket_host = '0.0.0.0'
-    cherrypy.server.socket_port = 80
+    cherrypy.server.socket_port = 81
 
     cherrypy.engine.start()
     cherrypy.engine.block()
