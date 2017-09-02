@@ -42,7 +42,7 @@ def worker():
 def hello():
     """Output 'hello' on the console"""
     
-    print ('running...')
+    print ('Server running...')
     # Summarize("hi my name is nipoon")
     # x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
     # print(x)
@@ -65,90 +65,6 @@ class MyBackgroundThread(plugins.SimplePlugin):
     # Start at a higher priority that "Daemonize" (which we're not using
     # yet but may in the future)
     start.priority = 85
-
-class MSOffice2txt():
-    def __init__(self, fileType=['doc', 'ppt']):
-        self.docCom = None
-        self.pptCom = None
-        self.pdfCom = None
-        pythoncom.CoInitialize()
-        if type(fileType) is not list:
-            return 'Error, please check the fileType, it must be list[]'
-        for ft in fileType:
-            if ft == 'doc':
-                self.docCom = self.docApplicationOpen()
-            elif ft == 'ppt':
-                self.pptCom = self.pptApplicationOpen()
-
-
-
-    def close(self):
-        self.docApplicationClose(self.docCom)
-        self.pptApplicationClose(self.pptCom)
-
-    def docApplicationOpen(self):
-        docCom = win32com.client.Dispatch('Word.Application')
-        # docCom.Visible = 1
-        # docCom.DisplayAlerts = 0
-        # docHwnd = win32gui.FindWindow(None, 'Microsoft Word')
-        # win32gui.ShowWindow(docHwnd, win32con.SW_HIDE)
-        return docCom
-
-    def docApplicationClose(self, docCom):
-        if docCom is not None:
-            docCom.Quit()
-
-    def doc2Txt(self, docCom, docFile, txtFile):
-        doc = docCom.Documents.Open(FileName=docFile, ReadOnly=1)
-        doc.SaveAs(txtFile, 2)
-        doc.Close()
-
-    def pptApplicationOpen(self):
-        pptCom = win32com.client.Dispatch('PowerPoint.Application')
-        # pptCom.Visible = 1
-        # pptCom.DisplayAlerts = 0
-        # pptHwnd = win32gui.FindWindow(None, 'Microsoft PowerPoint')
-        # win32gui.ShowWindow(pptHwnd, win32con.SW_HIDE)
-        return pptCom
-
-    def pptApplicationClose(self, pptCom):
-        if pptCom is not None:
-            pptCom.Quit()
-
-    def ppt2txt(self, pptCom, pptFile, txtFile):
-        ppt = pptCom.Presentations.Open(pptFile, ReadOnly=1, Untitled=0, WithWindow=0)
-        # f = codecs.open(txtFile, "w")
-        f = codecs.open(txtFile, "w", 'gb18030')
-        slide_count = ppt.Slides.Count
-        for i in xrange(1, slide_count + 1):
-            shape_count = ppt.Slides(i).Shapes.Count
-            for j in xrange(1, shape_count + 1):
-                if ppt.Slides(i).Shapes(j).HasTextFrame:
-                    s = ppt.Slides(i).Shapes(j).TextFrame.TextRange.Text+ ' '
-                    f.write(s)
-        f.close()
-        ppt.Close()
-    def pdfApplicationOpen(self):
-        return self.pdfCom
-    def pdfApplicationClose(self, pdfCom):
-        if pdfCom is not None:
-            pdfCom.Quit()
-
-
-
-    def translate(self, filename, txtFilename):
-        if filename.endswith('doc') or filename.endswith('docx'):
-            if self.docCom is None:
-                self.docCom = self.docApplicationOpen()
-            self.doc2Txt(self.docCom, filename, txtFilename)
-            return True
-        elif filename.endswith('ppt') or filename.endswith('pptx'):
-            if self.pptCom is None:
-                self.pptCom = self.pptApplicationOpen()
-            self.ppt2txt(self.pptCom, filename, txtFilename)
-            return True
-        else:
-            return False
 
 
 class APIController(object): \
@@ -189,10 +105,6 @@ class APIController(object): \
 
         upload_file = './temp_files/' + myFile.filename
 
-        print(upload_file)
-        print(upload_file)
-        print(upload_file)
-
         if os.path.splitext(myFile.filename)[1] == '.pdf':
             size = 0
             with open(upload_file, 'wb') as out:
@@ -202,13 +114,9 @@ class APIController(object): \
                         break
                     out.write(data)
 
-            data = convert_pdf_to_txt('./temp_files/' + myFile.filename)
+            data = convertPdf('./temp_files/' + myFile.filename)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
             target = './temp_files'
-
-            print(target)
-            print(target)
-            print(target)
 
             size = 0
             if not os.path.isdir(target):
@@ -221,7 +129,7 @@ class APIController(object): \
                         break
                     out.write(data)
 
-            data = showTxtView(target + myFile.filename)
+            data = convertPptx(target + myFile.filename)
         elif os.path.splitext(myFile.filename)[1] == '.docx':
             target = './temp_files'
             size = 0
@@ -235,23 +143,24 @@ class APIController(object): \
                         break
                     out.write(data)
 
-            data = showDocx(target + myFile.filename)
+            data = convertDocx(target + myFile.filename)
 
         else:
             data = "Invalid file type!"
-        return data
+
+        return pyteaser.Summarize(data)
 
 
-def showDocx(path):
+def convertDocx(path):
 
 	document = docx.Document(path)
 	docText = ''.join([
 	    paragraph.text.encode('utf-8') for paragraph in document.paragraphs
 	])
-
+	print(docText)
 	return docText
 
-def showTxtView(path):
+def convertPptx(path):
 
 	prs = Presentation(path)
 	# text_runs will be populated with a list of strings,
@@ -272,7 +181,7 @@ def showTxtView(path):
 	print(full_string)
 	return full_string
 
-def convert_pdf_to_txt(path):
+def convertPdf(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
     codec = 'utf-8'
@@ -293,7 +202,7 @@ def convert_pdf_to_txt(path):
     fp.close()
     device.close()
     retstr.close()
-    # print(text)
+    print(text)
     return text
 
 def jsonify_error(status, message, traceback, version): \
