@@ -33,8 +33,64 @@
 					<button type="submit" class="btn btn-primary pointer">Submit</button>
 			
 				</form>
+				<div class="container">
+  <h2 id="filesUploadedStatus">No Files Uploaded</h2>
+   <div class="list-group">
+    <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
+    <a href="#" class="list-group-item" customId="list_2">Second item</a>
+    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+  </div>
+</div>
 			</div>
 			<div class="col-md-4"></div>
-		</div> 
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 	</body>
+	
+	
+	<script type="text/javascript">
+	 /* $(window).on("unload", function(e) {
+		for(i=0;i<localStorage.length;i++){
+			localStorage.localStorage.removeItem(localStorage.key(i))
+		}
+	}); */
+	try{
+		$( "form[action='result']" ).submit(function( event ) {
+			var file=$('input[name="myFile"]').prop('files')[0];
+			var fileName=$('input[name="myFile"]').prop('files')[0].name;
+			var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
+			if('undefined'!=fileExt && ''!=fileExt){
+				if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt){
+					sessionStorage.setItem(fileName,fileName);
+				}
+			}
+			});
+		if(sessionStorage.length){
+			if($('#filesUploadedStatus').text()=='No Files Uploaded'){
+				$('#filesUploadedStatus').text('Files Uploaded');
+			}
+			for(i=0;i<sessionStorage.length;i++){
+				$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.getItem(sessionStorage.key(i)) + '</a>')
+			} 
+			
+			
+		}
+		$('.list-group-item').each(function(e){
+			$(this).on('mouseover',function(){
+				$('.list-group-item').removeClass('active');
+				$('.list-group-item[customId=' + $(this).attr('customId') + ']').addClass('active');
+			});
+			
+			$(this).on('mouseout',function(){
+				$(this).removeClass('active');
+			});
+		});
+		
+	}catch(err){
+		console.log('Error occured ' + err);
+	}
+	
+	</script>
 </html>
