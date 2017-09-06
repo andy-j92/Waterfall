@@ -24,13 +24,14 @@
 			<div class="col-md-4">
 				<h2 class="display-4 text-center">Upload a file</h2>
 				<br>
-				<form action="result" method="post" enctype="multipart/form-data" class="text-center">
+				<form method="post" enctype="multipart/form-data" class="text-center">
 					<div class="form-group">
 						<input type="file" name="myFile" class="form-control-file upload-box rounded" >
 						<small id="fileHelp" class="form-text text-muted">some description here maybe?</small>
+						<span id="errorText"></span>
 					</div>
 					
-					<button type="submit" class="btn btn-primary pointer">Submit</button>
+					<button type="button" id="buttonSubmit" class="btn btn-primary pointer">Submit</button>
 			
 				</form>
 				<div class="container">
@@ -39,6 +40,11 @@
     <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
     <a href="#" class="list-group-item" customId="list_2">Second item</a>
     <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+    <form action="result" method="post" enctype="multipart/form-data" class="text-center">
+        <button class="btn btn-primary pointer" type="button" id="buttonSummarize">
+        Summarize
+        </button>
+        </form>
   </div>
 </div>
 			</div>
@@ -51,45 +57,127 @@
 	
 	
 	<script type="text/javascript">
-	 /* $(window).on("unload", function(e) {
-		for(i=0;i<localStorage.length;i++){
-			localStorage.localStorage.removeItem(localStorage.key(i))
+	for(i=0;i<sessionStorage.noOfSummaries;i++){ //remove all existing summaries from session on page load
+		sessionStorage.removeItem('Summary_' + i);
+	}
+	sessionStorage.removeItem('noOfSummaries');
+	if(sessionStorage.length){
+		if($('#filesUploadedStatus').text()=='No Files Uploaded'){
+			$('#filesUploadedStatus').text('Files Uploaded');
 		}
-	}); */
-	try{
-		$( "form[action='result']" ).submit(function( event ) {
-			var file=$('input[name="myFile"]').prop('files')[0];
-			var fileName=$('input[name="myFile"]').prop('files')[0].name;
-			var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
-			if('undefined'!=fileExt && ''!=fileExt){
-				if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt){
-					sessionStorage.setItem(fileName,fileName);
-				}
-			}
-			});
-		if(sessionStorage.length){
-			if($('#filesUploadedStatus').text()=='No Files Uploaded'){
-				$('#filesUploadedStatus').text('Files Uploaded');
-			}
-			for(i=0;i<sessionStorage.length;i++){
-				$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.getItem(sessionStorage.key(i)) + '</a>')
-			} 
-			
-			
-		}
-		$('.list-group-item').each(function(e){
-			$(this).on('mouseover',function(){
-				$('.list-group-item').removeClass('active');
-				$('.list-group-item[customId=' + $(this).attr('customId') + ']').addClass('active');
-			});
-			
-			$(this).on('mouseout',function(){
-				$(this).removeClass('active');
-			});
-		});
+		for(i=0;i<sessionStorage.length;i++){
+			$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '</a>')
+		} 
 		
-	}catch(err){
-		console.log('Error occured ' + err);
+		
+	}
+	setActiveFile();
+	
+		 $('#buttonSubmit').on('click',function(e){
+			 $('#errorText').text(''); //Initially clear previous errors if present
+			 		var fileString;
+			        var isDuplicateFile=false;
+					var file=$('input[name="myFile"]').prop('files')[0];
+					var fileName=file.name;
+											
+					
+// 					var newFile=dataURLtoFile(a,fileName);
+					var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
+					if('undefined'!=fileExt && ''!=fileExt){
+						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt){
+							getBase64(file,function(e){
+								sessionStorage.setItem(fileName,e.target.result);
+							});
+						}else
+						$('#errorText').text('Invalid File Type!');
+						
+						isDuplicateFile=checkDuplicateFile(isDuplicateFile,fileName); //prevents duplicate filename from being appended, however the duplicate file will replace the old file in the session!!!
+						if(!isDuplicateFile && !$('#errorText').text()){
+							$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '</a>');
+							setActiveFile();
+						    }
+					}
+			
+		});
+		 
+		 function setActiveFile(){
+			 $('.list-group-item').each(function(e){
+					$(this).on('mouseover',function(){
+						$('.list-group-item').removeClass('active');
+						$('.list-group-item[customId=' + $(this).attr('customId') + ']').addClass('active');
+					});
+					
+					$(this).on('mouseout',function(){
+						$(this).removeClass('active');
+					});
+				});
+			 }
+		 
+		 function checkDuplicateFile(param,fileName){
+			 $('.list-group-item').each(function(e){
+				 if($(this).text()==fileName){
+					 param=true;
+					 return false;
+				 }
+				 
+			 });
+			 return param;
+		 }
+	$('#buttonSummarize').on('click',function(e){
+		var arr=[];
+		var iterationLength=sessionStorage.length;
+			for(i=0;i<iterationLength;i++){
+				var obj=sessionStorage.getItem(sessionStorage.key(i));
+				var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
+				var data = new FormData();
+				data.append('myFile', fileToSend);
+
+
+
+				var ourRequest = new XMLHttpRequest();
+				ourRequest.open('POST', "/result", false);
+
+				ourRequest.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						arr.push(ourRequest.responseText);
+						
+					}else{
+						arr.push('The file is empty');
+					}
+
+				};
+				ourRequest.send(data);
+			}
+			for(i=0;i<arr.length;i++){
+				sessionStorage.setItem('Summary_' + i, arr[i]);
+				
+			}
+			sessionStorage.setItem('noOfSummaries', arr.length);
+			
+			window.location.href='/test'
+	});
+	
+	function getBase64(file,callBack) {
+		var stringResult;
+		   var reader = new FileReader();
+		   reader.readAsDataURL(file);
+		   reader.onload=callBack;
+		   reader.onerror = function (error) {
+		     console.log('Error: ', error);
+		   };
+		}
+	
+	function dataURLtoFile(dataurl, filename) {
+		try{
+	    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+	        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+	    while(n--){
+	        u8arr[n] = bstr.charCodeAt(n);
+	    }
+	    return new File([u8arr], filename, {type:mime});
+		}catch(err){
+			console.log(err);
+		}
 	}
 	
 	</script>

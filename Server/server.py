@@ -5,27 +5,27 @@
 """
 CherryPy-based webservice daemon with background threads
 """
+from cStringIO import StringIO
+import codecs
+import json
 import os, os.path
 import random
 import string
 import threading
-import json
+
 import cherrypy
 from cherrypy.process import plugins
-
-from pptx import Presentation
 import docx
-
-# import pyteaser
-import textrazor
-import pyteaser
-import codecs
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
-from cStringIO import StringIO
+from pptx import Presentation
+import pyteaser
+import textrazor
 
+
+# import pyteaser
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
 
@@ -80,8 +80,7 @@ class APIController(object): \
 
     @cherrypy.expose
     def test(self):
-    	print("test was called!")
-        return "test was called!"
+        return file("./Public/html/summaries.html")
 
     @cherrypy.expose
     def upload(self):
