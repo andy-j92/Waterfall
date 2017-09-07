@@ -94,7 +94,7 @@ class APIController(object): \
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
-    def result(self, myFile):
+    def result(self, myFile, keywords):
         out = """<html>
         <body>
             <h1 style="text-align:center;">Summary</h1>
@@ -147,7 +147,7 @@ class APIController(object): \
         else:
             data = "Invalid file type!"
 
-        return pyteaser.Summarize(data)
+        return pyteaser.Summarize(data, keywords)
 
 
 def convertDocx(path):
