@@ -105,7 +105,7 @@ def Summarize(text, keyword = None):
     #score setences, and use the top 5 sentences
     ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
-        for keyword in split_words(keyword):
+        for keyword in keys:
             if keyword in rank[0].lower():
                 summaries.append(rank[0])
     return summaries
