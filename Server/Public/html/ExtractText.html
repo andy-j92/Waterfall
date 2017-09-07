@@ -4,7 +4,7 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <title>Keyword Search</title>
+      <title>Extract Text</title>
 
       <link rel="icon" href="http://sstatic.net/stackoverflow/img/favicon.ico">   
 
@@ -42,7 +42,7 @@
 
             <p id="titleText" style="text-align: center;"><b>Automatically extract the key words form the CV </b></p>
 
-            <button class="btn btn-primary" type="submit">
+            <button class="btn btn-primary" type="button" id="extractText">
             EXTRACT
             </button>
         </div>   
@@ -50,10 +50,18 @@
         <div id="SummaryContainer">
 
             <p id="SummaryText" Style="color: blue; font-size: 3vw;"><b>Key contents:</b></p>
-
+				<div class="container">
+   <div class="list-group">
+      <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
+    <a href="#" class="list-group-item" customId="list_2">Second item</a>
+    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+    <!-- <form action="result" method="post" enctype="multipart/form-data" class="text-center">
+        </form> -->
+  </div>
+</div>
         </div>    
 
-        <img id="Logo" src="/logo.jpg" alt="Logo"/>
+        <img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
     </div>      
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -63,4 +71,36 @@
     <script src="/static/html/KeywordSearch.js"></script>
     
 </body>
+<script type="text/javascript">
+$('#extractText').on('click',function(e){
+	var arr=[];
+	for(i=0;i<sessionStorage.noOfSummaries;i++){
+		
+		var data = new FormData();
+		if(sessionStorage.getItem('Summary_' + i)=='The file is empty')
+		data.append('dataReceived', '');
+		
+		else
+	    data.append('dataReceived', sessionStorage.getItem('Summary_' + i));	
+
+		var ourRequest = new XMLHttpRequest();
+		ourRequest.open('POST', "/extractText", false);
+
+		ourRequest.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+// 				alert(ourRequest.responseText);
+				arr.push(ourRequest.responseText);
+				
+			}
+
+		};
+		ourRequest.send(data);
+	}
+	
+	for(i=0;i<arr.length;i++){
+		$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword" +  i + '>' + arr[i] + '</a>')
+	}
+	
+});
+</script>
 </html>

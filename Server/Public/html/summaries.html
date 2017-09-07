@@ -21,7 +21,7 @@
 <script type="text/javascript">
 
 	for(i=0;i<sessionStorage.noOfSummaries;i++){
-		$('.container').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+		$('#SummaryContainer').find('.container').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
 	}
 
 </script>

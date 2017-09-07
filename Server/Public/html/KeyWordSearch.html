@@ -45,7 +45,7 @@
 
             <textarea id="SearchBox"></textarea>
 
-            <button class="btn btn-primary" type="submit" onclick="sendText()">
+            <button class="btn btn-primary" type="button" id="searchSummaries">
             Search
             </button>
         </div>   
@@ -54,8 +54,15 @@
 
             <p id="SummaryText" Style="color: blue; font-size: 3vw;"><b>Summary:</b></p>
 
-            <div id="Testingtext">
-            </div>
+            <div class="container">
+   <div class="list-group">
+      <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
+    <a href="#" class="list-group-item" customId="list_2">Second item</a>
+    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+    <!-- <form action="result" method="post" enctype="multipart/form-data" class="text-center">
+        </form> -->
+  </div>
+</div>
 
         </div>    
 
@@ -69,4 +76,63 @@
     
     
 </body>
+<script type="text/javascript">
+for(i=0;i<sessionStorage.noOfSummaries;i++){
+	$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+}
+
+
+$('#searchSummaries').click(function(e){
+	if(!$.trim($("#SearchBox").val())){
+		window.location.reload();
+	}
+	else{
+	var arr=[];
+	var iterationLength=sessionStorage.length;
+		for(i=0;i<iterationLength;i++){
+			var obj=sessionStorage.getItem(sessionStorage.key(i));
+			var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
+			var data = new FormData();
+			data.append('myFile', fileToSend);
+			data.append('keywords', $('#SearchBox').val());
+
+
+
+			var ourRequest = new XMLHttpRequest();
+			ourRequest.open('POST', "/result", false);
+
+			ourRequest.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					arr.push(ourRequest.responseText);
+					
+				}else{
+					if(!$('#SearchBox').val())
+					arr.push('The file is empty');
+				}
+
+			};
+			ourRequest.send(data);
+		}
+		$('.list-group').empty();
+		for(i=0;i<arr.length;i++){
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+		}
+		
+	}
+		
+});
+
+function dataURLtoFile(dataurl, filename) {
+	try{
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+	}catch(err){
+		console.log(err);
+	}
+}
+</script>
 </html>

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # pylint: disable=invalid-name
 
 """
@@ -24,11 +23,9 @@ from pptx import Presentation
 import pyteaser
 import textrazor
 
-
 # import pyteaser
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
-
     TODO: this needs to be /optimized. I don't like creating the thread
     repeatedly.fixed
     """
@@ -75,20 +72,20 @@ class APIController(object): \
 # #     @cherrypy.tools.json_out()
     def upload(self):
         # Regular request for '/nodes' URI
-        return open('index.html')
+        return file('./Public/html/index.html')
 
 
     @cherrypy.expose
     def test(self):
         return file("./Public/html/summaries.html")
-
+    
     @cherrypy.expose
-    def upload(self):
-        return file("./Public/html/select-file.html")
+    def extractPage(self):
+        return file("./Public/html/ExtractText.html")
 
     @cherrypy.expose
     def newcv(self):
-        return file("./Public/html/NewCV.html")
+        return file("./Public/html/select-file.html")
 
     @cherrypy.expose
     def keywordsearch(self):
@@ -148,37 +145,41 @@ class APIController(object): \
             data = "Invalid file type!"
 
         return pyteaser.Summarize(data, keywords)
+    
+    def extractText(self,dataReceived):
+        
+        return pyteaser.extract_keywords(dataReceived);
 
 
 def convertDocx(path):
 
-	document = docx.Document(path)
-	docText = ''.join([
-	    paragraph.text.encode('utf-8') for paragraph in document.paragraphs
-	])
-	print(docText)
-	return docText
+    document = docx.Document(path)
+    docText = ''.join([
+        paragraph.text.encode('utf-8') for paragraph in document.paragraphs
+    ])
+    print(docText)
+    return docText
 
 def convertPptx(path):
 
-	prs = Presentation(path)
-	# text_runs will be populated with a list of strings,
-	# one for each text run in presentation
-	text_runs = []
-	full_string = ""
+    prs = Presentation(path)
+    # text_runs will be populated with a list of strings,
+    # one for each text run in presentation
+    text_runs = []
+    full_string = ""
 
-	for slide in prs.slides:
-	    for shape in slide.shapes:
-	        if not shape.has_text_frame:
-	            continue
-	        for paragraph in shape.text_frame.paragraphs:
-	            for run in paragraph.runs:
-	                text_runs.append(run.text)
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if not shape.has_text_frame:
+                continue
+            for paragraph in shape.text_frame.paragraphs:
+                for run in paragraph.runs:
+                    text_runs.append(run.text)
 
 
-	full_string = ''.join(text_runs)
-	print(full_string)
-	return full_string
+    full_string = ''.join(text_runs)
+    print(full_string)
+    return full_string
 
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
@@ -243,6 +244,20 @@ if __name__ == '__main__':
                        action='result',
                        controller=APIController(),
                        conditions={'method': ['POST']})
+    
+    # /nodes (GET)
+    dispatcher.connect(name='extractText',
+                       route='/extractText',
+                       action='extractText',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
+    
+    # /nodes (GET)
+    dispatcher.connect(name='extractPage',
+                       route='/extractPage',
+                       action='extractPage',
+                       controller=APIController(),
+                       conditions={'method': ['GET']})
 
     # /nodes (GET)
     dispatcher.connect(name='newcv',
