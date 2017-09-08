@@ -148,7 +148,11 @@ class APIController(object): \
     
     def extractText(self,dataReceived):
         
-        return pyteaser.extract_keywords(dataReceived);
+        return pyteaser.extract_keywords(dataReceived)
+    
+    def fetchFilteredSummaries(self, data, keywords):
+        
+        return pyteaser.Summarize(data, keywords)
 
 
 def convertDocx(path):
@@ -242,6 +246,13 @@ if __name__ == '__main__':
     dispatcher.connect(name='result',
                        route='/result',
                        action='result',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
+    
+    # /nodes (GET)
+    dispatcher.connect(name='fetchFilteredSummaries',
+                       route='/fetchFilteredSummaries',
+                       action='fetchFilteredSummaries',
                        controller=APIController(),
                        conditions={'method': ['POST']})
     

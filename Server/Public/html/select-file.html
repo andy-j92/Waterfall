@@ -157,7 +157,7 @@
 		var arr=[];
 		var iterationLength=sessionStorage.length;
 			for(i=0;i<iterationLength;i++){
-				if(sessionStorage.key(i).indexOf('_')<0 && sessionStorage.key(i).indexOf('Summaries')<0){
+				if(sessionStorage.key(i).indexOf('Summary_')<0 && sessionStorage.key(i).indexOf('Summaries')<0){
 				var obj=sessionStorage.getItem(sessionStorage.key(i));
 				var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
 				var data = new FormData();

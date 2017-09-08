@@ -90,6 +90,7 @@ $('#searchSummaries').click(function(e){
 	var arr=[];
 	var iterationLength=sessionStorage.length;
 		for(i=0;i<iterationLength;i++){
+			if(sessionStorage.key(i).indexOf('Summary_')<0 && sessionStorage.key(i).indexOf('Summaries')<0 && sessionStorage.getItem(sessionStorage.key(i)).trim()!='data:'){
 			var obj=sessionStorage.getItem(sessionStorage.key(i));
 			var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
 			var data = new FormData();
@@ -106,16 +107,17 @@ $('#searchSummaries').click(function(e){
 					arr.push(ourRequest.responseText);
 					
 				}else{
-					if(!$('#SearchBox').val())
-					arr.push('The file is empty');
+					/* if(!$('#SearchBox').val())
+					arr.push('The file is empty'); */
 				}
 
 			};
 			ourRequest.send(data);
 		}
+		}
 		$('.list-group').empty();
 		for(i=0;i<arr.length;i++){
-			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + arr[i] + '</a>')
 		}
 		
 	}
@@ -131,7 +133,7 @@ function dataURLtoFile(dataurl, filename) {
     }
     return new File([u8arr], filename, {type:mime});
 	}catch(err){
-		console.log(err);
+		console.log('filename ' + filename + ' error  ' + err);
 	}
 }
 </script>
