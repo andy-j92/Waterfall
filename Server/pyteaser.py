@@ -99,9 +99,6 @@ def Summarize(text, keyword = None):
             keywords[k] = 99999
         keys = keywords
 
-    if len(sentences) <= 3:
-        return sentences
-
     #score setences, and use the top 5 sentences
     ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
