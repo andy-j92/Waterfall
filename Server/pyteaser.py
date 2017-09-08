@@ -105,9 +105,13 @@ def Summarize(text, keyword = None):
     #score setences, and use the top 5 sentences
     ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
-        #summaries.append(rank[0])
         sentence = re.sub(r'[^\x00-\x7f]',r'', rank[0])
-        summaries.append(sentence)
+        sentenceAdded = False
+        for keyword in keys:
+            if keyword in sentence.lower():
+                if not sentenceAdded:
+                    summaries.append(sentence)
+                    sentenceAdded = True
     return summaries
 
 
@@ -285,18 +289,18 @@ def extract_keywords(text):
                     typeToCount[str(entity.freebase_types[x])] += 1
                 else:
                     typeToCount[str(entity.freebase_types[x])] = 1
-                    
+
             for x in range(len(entity.freebase_types)):
                 if str(entity.freebase_types[x]) in typeToEntity:
-                    if entity.id not in typeToEntity[str(entity.freebase_types[x])]: 
+                    if entity.id not in typeToEntity[str(entity.freebase_types[x])]:
                         typeToEntity[str(entity.freebase_types[x])] += ":" + entity.id
                 else:
                     typeToEntity[str(entity.freebase_types[x])] = entity.id
-                    
+
     sortedtypesToCount = sorted(typeToCount.items(), key=operator.itemgetter(1),reverse=True)
 
     out =[]
-    for i, j in sortedtypesToCount: 
+    for i, j in sortedtypesToCount:
         out.append(( i,str(j) + "&" + typeToEntity[i] ))
         if(len(out) == 5):
             break
