@@ -29,7 +29,7 @@ def worker():
     TODO: this needs to be /optimized. I don't like creating the thread
     repeatedly.fixed
     """
-    
+
     while True:
         t = threading.Timer(10.0, hello)
         t.start()
@@ -38,7 +38,7 @@ def worker():
 
 def hello():
     """Output 'hello' on the console"""
-    
+
     print ('Server running...')
     # Summarize("hi my name is nipoon")
     # x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
@@ -78,7 +78,7 @@ class APIController(object): \
     @cherrypy.expose
     def test(self):
         return file("./Public/html/summaries.html")
-    
+
     @cherrypy.expose
     def extractPage(self):
         return file("./Public/html/ExtractText.html")
@@ -143,15 +143,15 @@ class APIController(object): \
 
         else:
             data = "Invalid file type!"
-
+        print(data)
         return pyteaser.Summarize(data, keywords)
-    
+
     def extractText(self,dataReceived):
-        
+
         return pyteaser.extract_keywords(dataReceived)
-    
+
     def fetchFilteredSummaries(self, data, keywords):
-        
+
         return pyteaser.Summarize(data, keywords)
 
 
@@ -248,21 +248,21 @@ if __name__ == '__main__':
                        action='result',
                        controller=APIController(),
                        conditions={'method': ['POST']})
-    
+
     # /nodes (GET)
     dispatcher.connect(name='fetchFilteredSummaries',
                        route='/fetchFilteredSummaries',
                        action='fetchFilteredSummaries',
                        controller=APIController(),
                        conditions={'method': ['POST']})
-    
+
     # /nodes (GET)
     dispatcher.connect(name='extractText',
                        route='/extractText',
                        action='extractText',
                        controller=APIController(),
                        conditions={'method': ['POST']})
-    
+
     # /nodes (GET)
     dispatcher.connect(name='extractPage',
                        route='/extractPage',
@@ -282,14 +282,14 @@ if __name__ == '__main__':
                        route='/keywordsearch',
                        action='keywordsearch',
                        controller=APIController(),
-                       conditions={'method': ['GET']})   
+                       conditions={'method': ['GET']})
 
     # /nodes (GET)
     dispatcher.connect(name='test',
                        route='/test',
                        action='test',
                        controller=APIController(),
-                       conditions={'method': ['GET']})   
+                       conditions={'method': ['GET']})
 
     config = {
         '/': {
@@ -298,13 +298,13 @@ if __name__ == '__main__':
             'tools.sessions.on': True,
             'tools.staticdir.root': os.path.abspath(os.getcwd())
         },
-              
+
         '/generator': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')],
         },
-          
+
         '/static': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'Public/'
