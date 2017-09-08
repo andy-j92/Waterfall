@@ -51,13 +51,15 @@
 
             <p id="SummaryText" Style="color: blue; font-size: 3vw;"><b>Key contents:</b></p>
 				<div class="container">
-   <div class="list-group">
-      <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
-    <a href="#" class="list-group-item" customId="list_2">Second item</a>
-    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
-    <!-- <form action="result" method="post" enctype="multipart/form-data" class="text-center">
-        </form> -->
-  </div>
+                <div class="list-group">
+                <p id="meow">
+                </p>   
+          <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
+        <a href="#" class="list-group-item" customId="list_2">Second item</a>
+        <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+        <!-- <form action="result" method="post" enctype="multipart/form-data" class="text-center">
+            </form> -->
+      </div>
 </div>
         </div>    
 
@@ -97,9 +99,41 @@ $('#extractText').on('click',function(e){
 		ourRequest.send(data);
 	}
 	
-	for(i=0;i<arr.length;i++){
-		$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword" +  i + '>' + arr[i] + '</a>')
-	}
+    //converting the whole array to a string.
+    var arrAsString;
+     arrAsString = arr.toString();
+    
+    //splitting the string to a substring at '/'
+    var MainSubstring,listItems,catagory,showCatagory,i;
+    
+    MainSubstring = arrAsString.split(/\/|&/);
+    showCatagory = false;
+    catagory ="";
+    listItems=" = ";
+    
+    for(i=0; i < MainSubstring.length; i++){
+       if (MainSubstring[i].includes(":")){
+           listItems = MainSubstring[i].split(":");
+           showCatagory = true;
+       } else{
+           catagory += MainSubstring[i] + "  ";
+       }
+        
+       if(showCatagory){
+         document.getElementById('meow').innerHTML += catagory;
+         document.getElementById('meow').innerHTML += " = ";  
+         document.getElementById('meow').innerHTML += listItems;
+         document.getElementById('meow').innerHTML += "<br />";
+           
+         catagory ="";  
+         showCatagory = false;   
+       }      
+    }
+    
+    
+	/*for(i=0;i<arr.length;i++){
+		$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword" +  i + '>' + arr[1] + '</a>')
+	}*/
 	
 });
 </script>
