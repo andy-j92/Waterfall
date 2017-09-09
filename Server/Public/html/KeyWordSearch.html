@@ -12,7 +12,6 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
       <link rel="stylesheet" href="/static/css/KeyWordSearch.css"> 
-      <script src="/static/html/KeywordSearch.js"></script>   
     </head>
 
 <body> 
@@ -88,19 +87,16 @@ $('#searchSummaries').click(function(e){
 	}
 	else{
 	var arr=[];
-	var iterationLength=sessionStorage.length;
+	var iterationLength=sessionStorage.noOfSummaries;
 		for(i=0;i<iterationLength;i++){
-			if(sessionStorage.key(i).indexOf('Summary_')<0 && sessionStorage.key(i).indexOf('Summaries')<0 && sessionStorage.getItem(sessionStorage.key(i)).trim()!='data:'){
-			var obj=sessionStorage.getItem(sessionStorage.key(i));
-			var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
 			var data = new FormData();
-			data.append('myFile', fileToSend);
+			data.append('data', sessionStorage.getItem('Summary_' + i));
 			data.append('keywords', $('#SearchBox').val());
 
 
 
 			var ourRequest = new XMLHttpRequest();
-			ourRequest.open('POST', "/result", false);
+			ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
 			ourRequest.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
@@ -113,11 +109,14 @@ $('#searchSummaries').click(function(e){
 
 			};
 			ourRequest.send(data);
-		}
+		
 		}
 		$('.list-group').empty();
 		for(i=0;i<arr.length;i++){
-			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + arr[i] + '</a>')
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + arr[i] + '</a>');
+			
+			if(!$('.list-group-item[customId=' + "summary_" + i + ']').text())
+				$('.list-group-item[customId=' + "summary_" + i + ']').remove();
 		}
 		
 	}

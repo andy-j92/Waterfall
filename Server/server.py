@@ -91,14 +91,14 @@ class APIController(object): \
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
-    def result(self, myFile, keywords):
+    def result(self, myFile, keywords, mode):
         out = """<html>
         <body>
             <h1 style="text-align:center;">Summary</h1>
             <div style="border:1px solid #8a8a8a;border-radius: 5px;padding: 10px; max-width:600px; margin:0 auto;">%s</div>
         </body>
         </html>"""
-
+        print(myFile.filename)
         upload_file = './temp_files/' + myFile.filename
 
         if os.path.splitext(myFile.filename)[1] == '.pdf':
@@ -144,11 +144,11 @@ class APIController(object): \
         else:
             data = "Invalid file type!"
         print(data)
-        return pyteaser.Summarize(data, keywords)
-
-    def extractText(self,dataReceived):
-
-        return pyteaser.extract_keywords(dataReceived)
+        if mode=='summarize':
+            return pyteaser.Summarize(data, keywords)
+        
+        elif mode=='extract':
+            return pyteaser.extract_keywords(data.decode("utf-8")) 
 
     def fetchFilteredSummaries(self, data, keywords):
 
@@ -253,13 +253,6 @@ if __name__ == '__main__':
     dispatcher.connect(name='fetchFilteredSummaries',
                        route='/fetchFilteredSummaries',
                        action='fetchFilteredSummaries',
-                       controller=APIController(),
-                       conditions={'method': ['POST']})
-
-    # /nodes (GET)
-    dispatcher.connect(name='extractText',
-                       route='/extractText',
-                       action='extractText',
                        controller=APIController(),
                        conditions={'method': ['POST']})
 
