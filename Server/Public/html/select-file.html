@@ -114,7 +114,7 @@
 // 					var newFile=dataURLtoFile(a,fileName);
 					var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
 					if('undefined'!=fileExt && ''!=fileExt){
-						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt){
+						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt){
 							getBase64(file,function(e){
 								sessionStorage.setItem(fileName,e.target.result);
 							});
