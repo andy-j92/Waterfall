@@ -89,7 +89,6 @@ def SummarizeUrl(url):
 def Summarize(text, keyword = None):
     summaries = []
     keywords = {}
-    text = text.decode("utf-8")
     sentences = split_sentences(text)
 
     if keyword == None or keyword == "":

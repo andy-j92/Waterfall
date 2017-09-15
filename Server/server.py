@@ -92,7 +92,7 @@ class APIController(object): \
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
-    def result(self, myFile, keywords, mode):
+    def result(self, myFile):
         out = """<html>
         <body>
             <h1 style="text-align:center;">Summary</h1>
@@ -172,15 +172,15 @@ class APIController(object): \
         else:
             data = "Invalid file type!"
         print(data)
-        if mode == 'summarize':
-            return pyteaser.Summarize(data, keywords)
-
-        elif mode == 'extract':
-            return pyteaser.extract_keywords(data.decode("utf-8"))
+        return data.decode("utf-8")
 
     def fetchFilteredSummaries(self, data, keywords):
 
         return pyteaser.Summarize(data, keywords)
+    
+    def extractKeywords(self, data):
+
+        return pyteaser.extract_keywords(data)
 
 
 def convertDocx(path):
@@ -314,6 +314,12 @@ if __name__ == '__main__':
     dispatcher.connect(name='fetchFilteredSummaries',
                        route='/fetchFilteredSummaries',
                        action='fetchFilteredSummaries',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
+    
+    dispatcher.connect(name='extractKeywords',
+                       route='/extractKeywords',
+                       action='extractKeywords',
                        controller=APIController(),
                        conditions={'method': ['POST']})
 
