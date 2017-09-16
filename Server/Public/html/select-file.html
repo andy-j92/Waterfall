@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Upload and Summarize Demo</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<link rel="stylesheet" href="/static/css/Loader.css">
 	<!-- TODO: put this into a css file -->
 	<style>
 		.upload-box
@@ -75,6 +76,9 @@
         </form>
   </div>
 </div>
+
+<div class="loading">Loading&#8230;</div>
+
 			</div>
 			<div class="col-md-4"></div>
 			<img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
@@ -86,13 +90,14 @@
 	
 	
 	<script type="text/javascript">
+	$('.loading').hide();
 	if(sessionStorage.length){
 		if($('#filesUploadedStatus').text()=='No Files Uploaded'){
 			$('#filesUploadedStatus').text('Files Uploaded');
 		}
 		for(i=0;i<sessionStorage.length;i++){
 			if(sessionStorage.key(i).indexOf('_smry')<0){
-			$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 			}
 		} 
 		
@@ -101,7 +106,10 @@
 	setActiveFile();
 	
 		 $('#buttonSubmit').on('click',function(e){
-			 $('#errorText').text(''); //Initially clear previous errors if present
+			 $('.loading').show(); 
+			 setTimeout(function(){
+				
+				 $('#errorText').text(''); //Initially clear previous errors if present
 			        var isDuplicateFile=false;
 					var file=$('input[name="myFile"]').prop('files')[0];
 					var fileName=file.name;
@@ -120,21 +128,29 @@
 							ourRequest.open('POST', "/result", false);
 
 							ourRequest.onreadystatechange = function() {
+								
 								if (this.readyState == 4 && this.status == 200) {
 									sessionStorage.setItem(fileName, ourRequest.responseText);
+									$('.loading').hide();
+								}else{
+									sessionStorage.setItem(fileName, 'Empty File');
+									$('.loading').hide();
 								}
 
 							};
 							ourRequest.send(data);
 						}else
 						$('#errorText').text('Invalid File Type!');
-						
 						isDuplicateFile=checkDuplicateFile(isDuplicateFile,fileName); //prevents duplicate filename from being appended, however the duplicate file will replace the old file in the session!!!
 						if(!isDuplicateFile && !$('#errorText').text()){
-							$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+							$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 							setActiveFile();
 						    }
 					}
+ 					
+			 },10);
+ 			 
+			  
 			
 		});
 		 
@@ -151,13 +167,14 @@
 			 }
 		 
 		 function checkDuplicateFile(param,fileName){
-			 $('.list-group-item').each(function(e){
-				 if($(this).text()==fileName){
+			 $('.list-group').find('.list-group-item').each(function(){
+				 var listItem=$(this).text().substring(0,$(this).text().length-1);
+				 if(listItem==fileName){
 					 param=true;
 					 return false;
 				 }
+				 });
 				 
-			 });
 			 return param;
 		 }
 	$('#buttonSummarize').on('click',function(e){
