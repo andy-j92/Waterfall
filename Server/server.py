@@ -201,7 +201,7 @@ def convertDocxx(path):
             subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
     document = docx.Document(path[:-4] + ".docx")
     docText = ''.join([
-        paragraph.text.encode('utf-8') for paragraph in document.paragraphs
+        paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
     ])
     print(docText)
     return docText
