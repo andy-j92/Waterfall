@@ -22,6 +22,9 @@ from pdfminer.pdfpage import PDFPage
 from pptx import Presentation
 import pyteaser
 import textrazor
+import os
+
+
 
 
 # import pyteaser
@@ -172,7 +175,7 @@ class APIController(object): \
         else:
             data = "Invalid file type!"
         print(data)
-        return data.decode("utf-8")
+        return data.encode('ascii', 'ignore')
 
     def fetchFilteredSummaries(self, data, keywords):
 
@@ -186,7 +189,7 @@ class APIController(object): \
 def convertDocx(path):
     document = docx.Document(path)
     docText = ''.join([
-        paragraph.text.encode('utf-8') for paragraph in document.paragraphs
+        paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
     ])
     print(docText)
     return docText
