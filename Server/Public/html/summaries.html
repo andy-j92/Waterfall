@@ -20,8 +20,10 @@
 </body>
 <script type="text/javascript">
 
-	for(i=0;i<sessionStorage.noOfSummaries;i++){
-		$('#SummaryContainer').find('.container').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+	for(i=0;i<sessionStorage.length;i++){
+		if(sessionStorage.key(i).indexOf('_smry')<0){
+		$('#SummaryContainer').find('.container').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>');
+		}
 	}
 
 </script>

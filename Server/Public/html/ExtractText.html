@@ -11,7 +11,8 @@
       <!-- Latest compiled and minified bootstrap stylesheet -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-      <link rel="stylesheet" href="/static/css/ExtractText.css">    
+      <link rel="stylesheet" href="/static/css/ExtractText.css">
+      <link rel="stylesheet" href="/static/css/Loader.css">    
     </head>
 
 <body> 
@@ -60,7 +61,7 @@
   </div>
 </div>
         </div>    
-
+		<div class="loading">Loading&#8230;</div>
         <img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
     </div>      
     
@@ -68,37 +69,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     
-    <script src="/static/html/KeywordSearch.js"></script>
-    
 </body>
 <script type="text/javascript">
+$('.loading').hide();
 $('#extractText').on('click',function(e){
-	var arr=[];
-	for(i=0;i<sessionStorage.noOfSummaries;i++){
+	try{
+	$('.loading').show();
+	setTimeout(function(){
+		var obj={};
+		for(i=0;i<sessionStorage.length;i++){
+			if(sessionStorage.key(i).indexOf('_smry')<0){
+			var data = new FormData();
+			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
+
+			var ourRequest = new XMLHttpRequest();
+			ourRequest.open('POST', "/extractKeywords", false);
+
+			ourRequest.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					obj[sessionStorage.key(i) + "_kywrd"]=ourRequest.responseText;
+					
+					
+					
+				}
+
+			};
+			ourRequest.send(data);
+		}
+			
+		}
+		$('.loading').hide();
 		
-		var data = new FormData();
-		if(sessionStorage.getItem('Summary_' + i)=='The file is empty')
-		data.append('dataReceived', '');
+		$('.list-group').empty();
+		var i=0;
+		for (var key in obj) {
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</a>')
+		}
 		
-		else
-	    data.append('dataReceived', sessionStorage.getItem('Summary_' + i));	
-
-		var ourRequest = new XMLHttpRequest();
-		ourRequest.open('POST', "/extractText", false);
-
-		ourRequest.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-// 				alert(ourRequest.responseText);
-				arr.push(ourRequest.responseText);
-				
-			}
-
-		};
-		ourRequest.send(data);
-	}
+	},10);
 	
-	for(i=0;i<arr.length;i++){
-		$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword" +  i + '>' + arr[i] + '</a>')
+	
+	}catch(err){
+		console.log('An error occured ' + err);
 	}
 	
 });

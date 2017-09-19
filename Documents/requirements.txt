@@ -1,2 +1,5 @@
 textrazor
 routes
+python-docx
+python-pptx
+pdfminer

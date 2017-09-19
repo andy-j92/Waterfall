@@ -12,7 +12,6 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
       <link rel="stylesheet" href="/static/css/KeyWordSearch.css"> 
-      <script src="/static/html/KeywordSearch.js"></script>   
     </head>
 
 <body> 
@@ -77,8 +76,10 @@
     
 </body>
 <script type="text/javascript">
-for(i=0;i<sessionStorage.noOfSummaries;i++){
-	$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+for(i=0;i<sessionStorage.length;i++){
+	if(sessionStorage.key(i).indexOf('_smry')<0){
+	$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + sessionStorage.getItem(sessionStorage.key(i) + "_smry") + '</a>');
+}
 }
 
 
@@ -87,52 +88,41 @@ $('#searchSummaries').click(function(e){
 		window.location.reload();
 	}
 	else{
-	var arr=[];
-	var iterationLength=sessionStorage.length;
-		for(i=0;i<iterationLength;i++){
-			var obj=sessionStorage.getItem(sessionStorage.key(i));
-			var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
+	var obj={};
+		for(i=0;i<sessionStorage.length;i++){
+			if(sessionStorage.key(i).indexOf('smry')<0){
 			var data = new FormData();
-			data.append('myFile', fileToSend);
+			data.append('data', sessionStorage.getItem(sessionStorage.key(i) + "_smry"));
 			data.append('keywords', $('#SearchBox').val());
 
 
 
 			var ourRequest = new XMLHttpRequest();
-			ourRequest.open('POST', "/result", false);
+			ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
 			ourRequest.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-					arr.push(ourRequest.responseText);
+					obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
 					
 				}else{
-					if(!$('#SearchBox').val())
-					arr.push('The file is empty');
+
 				}
 
 			};
 			ourRequest.send(data);
 		}
+		}
 		$('.list-group').empty();
-		for(i=0;i<arr.length;i++){
-			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '>' + sessionStorage.getItem('Summary_' + i) + '</a>')
+		var i=0;
+		for (var key in obj) {
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + obj[key] + '</a>');
+			if($('.list-group-item[customId=' + "summary_" + i + ']').text()=='Summary of ' + key.substring(0,key.lastIndexOf("_smry")))
+				$('.list-group-item[customId=' + "summary_" + i + ']').remove();
+			i++;
 		}
 		
 	}
 		
 });
-
-function dataURLtoFile(dataurl, filename) {
-	try{
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, {type:mime});
-	}catch(err){
-		console.log(err);
-	}
-}
 </script>
 </html>

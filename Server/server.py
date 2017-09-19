@@ -11,7 +11,7 @@ import os, os.path
 import random
 import string
 import threading
-
+import subprocess
 import cherrypy
 from cherrypy.process import plugins
 import docx
@@ -23,13 +23,14 @@ from pptx import Presentation
 import pyteaser
 import textrazor
 
+
 # import pyteaser
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
     TODO: this needs to be /optimized. I don't like creating the thread
     repeatedly.fixed
     """
-    
+
     while True:
         t = threading.Timer(10.0, hello)
         t.start()
@@ -38,11 +39,12 @@ def worker():
 
 def hello():
     """Output 'hello' on the console"""
-    
+
     print ('Server running...')
     # Summarize("hi my name is nipoon")
     # x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
     # print(x)
+
 
 class MyBackgroundThread(plugins.SimplePlugin):
     """CherryPy plugin to create a background worker thread"""
@@ -69,16 +71,15 @@ class APIController(object): \
 
     """Controller for fictional "nodes" webservice APIs"""
 
-# #     @cherrypy.tools.json_out()
+    # #     @cherrypy.tools.json_out()
     def upload(self):
         # Regular request for '/nodes' URI
         return file('./Public/html/index.html')
 
-
     @cherrypy.expose
     def test(self):
         return file("./Public/html/summaries.html")
-    
+
     @cherrypy.expose
     def extractPage(self):
         return file("./Public/html/ExtractText.html")
@@ -91,14 +92,14 @@ class APIController(object): \
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
-    def result(self, myFile, keywords):
+    def result(self, myFile):
         out = """<html>
         <body>
             <h1 style="text-align:center;">Summary</h1>
             <div style="border:1px solid #8a8a8a;border-radius: 5px;padding: 10px; max-width:600px; margin:0 auto;">%s</div>
         </body>
         </html>"""
-
+        print(myFile.filename)
         upload_file = './temp_files/' + myFile.filename
 
         if os.path.splitext(myFile.filename)[1] == '.pdf':
@@ -140,19 +141,49 @@ class APIController(object): \
                     out.write(data)
 
             data = convertDocx(target + myFile.filename)
+        elif os.path.splitext(myFile.filename)[1] == '.doc':
+            target = './temp_files'
+            size = 0
+            if not os.path.isdir(target):
+                os.mkdir(target)
 
+            with open(myFile.filename, 'wb') as out:
+                while True:
+                    data = myFile.file.read(8192)
+                    if not data:
+                        break
+                    out.write(data)
+
+            data = convertDocxx(myFile.filename)
+        elif os.path.splitext(myFile.filename)[1] == '.ppt':
+            target = './temp_files'
+            size = 0
+            if not os.path.isdir(target):
+                os.mkdir(target)
+
+            with open(myFile.filename, 'wb') as out:
+                while True:
+                    data = myFile.file.read(8192)
+                    if not data:
+                        break
+                    out.write(data)
+
+            data = convertPptxx(myFile.filename)
         else:
             data = "Invalid file type!"
+        print(data)
+        return data.decode("utf-8")
+
+    def fetchFilteredSummaries(self, data, keywords):
 
         return pyteaser.Summarize(data, keywords)
     
-    def extractText(self,dataReceived):
-        
-        return pyteaser.extract_keywords(dataReceived);
+    def extractKeywords(self, data):
+
+        return pyteaser.extract_keywords(data)
 
 
 def convertDocx(path):
-
     document = docx.Document(path)
     docText = ''.join([
         paragraph.text.encode('utf-8') for paragraph in document.paragraphs
@@ -160,8 +191,18 @@ def convertDocx(path):
     print(docText)
     return docText
 
-def convertPptx(path):
+def convertDocxx(path):
 
+    for filename in  os.listdir(os.getcwd()):
+        if filename.endswith('.doc'):
+            subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
+    document = docx.Document(path[:-4] + ".docx")
+    docText = ''.join([
+        paragraph.text.encode('utf-8') for paragraph in document.paragraphs
+    ])
+    print(docText)
+    return docText
+def convertPptx(path):
     prs = Presentation(path)
     # text_runs will be populated with a list of strings,
     # one for each text run in presentation
@@ -174,8 +215,30 @@ def convertPptx(path):
                 continue
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    text_runs.append(run.text)
+                    text_runs.append(run.text+' ')
 
+    full_string = ''.join(text_runs)
+    print(full_string)
+    return full_string
+def convertPptxx(path):
+    for filename in  os.listdir(os.getcwd()):
+        if filename.endswith('.ppt'):
+            subprocess.call(['soffice', '--headless', '--convert-to', 'pptx', filename])
+    prs = Presentation(path[:-4] + ".pptx")
+
+
+    # text_runs will be populated with a list of strings,
+    # one for each text run in presentation
+    text_runs = []
+    full_string = ""
+
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if not shape.has_text_frame:
+                continue
+            for paragraph in shape.text_frame.paragraphs:
+                for run in paragraph.runs:
+                    text_runs.append(run.text+' ')
 
     full_string = ''.join(text_runs)
     print(full_string)
@@ -192,9 +255,10 @@ def convertPdf(path):
     password = ""
     maxpages = 0
     caching = True
-    pagenos=set()
+    pagenos = set()
 
-    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
+    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching,
+                                  check_extractable=True):
         interpreter.process_page(page)
 
     text = retstr.getvalue()
@@ -204,6 +268,7 @@ def convertPdf(path):
     retstr.close()
     print(text)
     return text
+
 
 def jsonify_error(status, message, traceback, version): \
         # pylint: disable=unused-argument
@@ -244,14 +309,20 @@ if __name__ == '__main__':
                        action='result',
                        controller=APIController(),
                        conditions={'method': ['POST']})
-    
+
     # /nodes (GET)
-    dispatcher.connect(name='extractText',
-                       route='/extractText',
-                       action='extractText',
+    dispatcher.connect(name='fetchFilteredSummaries',
+                       route='/fetchFilteredSummaries',
+                       action='fetchFilteredSummaries',
                        controller=APIController(),
                        conditions={'method': ['POST']})
     
+    dispatcher.connect(name='extractKeywords',
+                       route='/extractKeywords',
+                       action='extractKeywords',
+                       controller=APIController(),
+                       conditions={'method': ['POST']})
+
     # /nodes (GET)
     dispatcher.connect(name='extractPage',
                        route='/extractPage',
@@ -271,14 +342,14 @@ if __name__ == '__main__':
                        route='/keywordsearch',
                        action='keywordsearch',
                        controller=APIController(),
-                       conditions={'method': ['GET']})   
+                       conditions={'method': ['GET']})
 
     # /nodes (GET)
     dispatcher.connect(name='test',
                        route='/test',
                        action='test',
                        controller=APIController(),
-                       conditions={'method': ['GET']})   
+                       conditions={'method': ['GET']})
 
     config = {
         '/': {
@@ -287,13 +358,13 @@ if __name__ == '__main__':
             'tools.sessions.on': True,
             'tools.staticdir.root': os.path.abspath(os.getcwd())
         },
-              
+
         '/generator': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')],
         },
-          
+
         '/static': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'Public/'

@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Upload and Summarize Demo</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<link rel="stylesheet" href="/static/css/Loader.css">
 	<!-- TODO: put this into a css file -->
 	<style>
 		.upload-box
@@ -75,6 +76,9 @@
         </form>
   </div>
 </div>
+
+<div class="loading">Loading&#8230;</div>
+
 			</div>
 			<div class="col-md-4"></div>
 			<img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
@@ -86,17 +90,14 @@
 	
 	
 	<script type="text/javascript">
-	/* for(i=0;i<sessionStorage.noOfSummaries;i++){ //remove all existing summaries on page load
-		sessionStorage.removeItem('Summary_' + i);
-	}
-	sessionStorage.removeItem('noOfSummaries'); */
+	$('.loading').hide();
 	if(sessionStorage.length){
 		if($('#filesUploadedStatus').text()=='No Files Uploaded'){
 			$('#filesUploadedStatus').text('Files Uploaded');
 		}
 		for(i=0;i<sessionStorage.length;i++){
-			if(sessionStorage.key(i).indexOf('_')<0 && sessionStorage.key(i).indexOf('Summaries')<0){
-			$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '</a>');
+			if(sessionStorage.key(i).indexOf('_smry')<0){
+			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 			}
 		} 
 		
@@ -105,113 +106,119 @@
 	setActiveFile();
 	
 		 $('#buttonSubmit').on('click',function(e){
-			 $('#errorText').text(''); //Initially clear previous errors if present
+			 $('.loading').show(); 
+			 setTimeout(function(){
+				
+				 $('#errorText').text(''); //Initially clear previous errors if present
 			        var isDuplicateFile=false;
 					var file=$('input[name="myFile"]').prop('files')[0];
 					var fileName=file.name;
 											
 					
-// 					var newFile=dataURLtoFile(a,fileName);
 					var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
 					if('undefined'!=fileExt && ''!=fileExt){
-						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt){
-							getBase64(file,function(e){
-								sessionStorage.setItem(fileName,e.target.result);
-							});
+						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt){
+
+							var data = new FormData();
+							data.append('myFile', file);
+
+
+
+							var ourRequest = new XMLHttpRequest();
+							ourRequest.open('POST', "/result", false);
+
+							ourRequest.onreadystatechange = function() {
+								
+								if (this.readyState == 4 && this.status == 200) {
+									sessionStorage.setItem(fileName, ourRequest.responseText);
+									$('.loading').hide();
+								}else{
+									sessionStorage.setItem(fileName, 'Empty File');
+									$('.loading').hide();
+								}
+
+							};
+							ourRequest.send(data);
 						}else
 						$('#errorText').text('Invalid File Type!');
-						
 						isDuplicateFile=checkDuplicateFile(isDuplicateFile,fileName); //prevents duplicate filename from being appended, however the duplicate file will replace the old file in the session!!!
 						if(!isDuplicateFile && !$('#errorText').text()){
-							$('.container').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '</a>');
+							$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 							setActiveFile();
 						    }
 					}
+ 					
+			 },10);
+ 			 
+			  
 			
 		});
 		 
 		 function setActiveFile(){
-			 $('.list-group-item').each(function(e){
-					$(this).on('mouseover',function(){
+				
+					$('.list-group-item').on('mouseover',function(){
 						$('.list-group-item').removeClass('active');
 						$('.list-group-item[customId=' + $(this).attr('customId') + ']').addClass('active');
 					});
 					
-					$(this).on('mouseout',function(){
+					$('.list-group-item').on('mouseout',function(){
 						$(this).removeClass('active');
 					});
-				});
 			 }
 		 
 		 function checkDuplicateFile(param,fileName){
-			 $('.list-group-item').each(function(e){
-				 if($(this).text()==fileName){
+			 $('.list-group').find('.list-group-item').each(function(){
+				 var listItem=$(this).text().substring(0,$(this).text().length-1);
+				 if(listItem==fileName){
 					 param=true;
 					 return false;
 				 }
+				 });
 				 
-			 });
 			 return param;
 		 }
 	$('#buttonSummarize').on('click',function(e){
 		var arr=[];
+		var obj={};
+		
 		var iterationLength=sessionStorage.length;
 			for(i=0;i<iterationLength;i++){
-				if(sessionStorage.key(i).indexOf('_')<0 && sessionStorage.key(i).indexOf('Summaries')<0){
-				var obj=sessionStorage.getItem(sessionStorage.key(i));
-				var fileToSend=dataURLtoFile(obj,sessionStorage.key(i));
+				if(sessionStorage.key(i).indexOf('_smry')<0){
 				var data = new FormData();
-				data.append('myFile', fileToSend);
+				data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 				data.append('keywords', '');
 
 
 
 				var ourRequest = new XMLHttpRequest();
-				ourRequest.open('POST', "/result", false);
+				ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
 				ourRequest.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						arr.push(ourRequest.responseText);
+						obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
 						
 					}else{
-						arr.push('The file is empty');
+						obj[sessionStorage.key(i) + "_smry"]="The file is empty";
 					}
 
 				};
 				ourRequest.send(data);
 			}
 			}
-			for(i=0;i<arr.length;i++){ //used a separate array to avoid concurrent modification of the existing session storage while it is iterating. This might cause an exception or an infinite loop
-				sessionStorage.setItem('Summary_' + i, arr[i]);
-				
-			}
-			sessionStorage.setItem('noOfSummaries', arr.length);
+			for (var key in obj) {
+				sessionStorage.setItem(key, obj[key]);
+				}
 			
 			window.location.href='/keywordsearch';
 	});
-	
-	function getBase64(file,callBack) {
-		var stringResult;
-		   var reader = new FileReader();
-		   reader.readAsDataURL(file);
-		   reader.onload=callBack;
-		   reader.onerror = function (error) {
-		     console.log('Error: ', error);
-		   };
-		}
-	
-	function dataURLtoFile(dataurl, filename) {
-		try{
-	    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-	        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-	    while(n--){
-	        u8arr[n] = bstr.charCodeAt(n);
-	    }
-	    return new File([u8arr], filename, {type:mime});
-		}catch(err){
-			console.log(err);
-		}
-	}
+
+	$(document).on("click", '.close', function(event) {  //delete file
+		var fileToRemove=$(this).parents('a').text();
+		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
+		sessionStorage.removeItem(fileToRemove);
+		sessionStorage.removeItem(fileToRemove + "_smry");
+		$(this).parents('a').remove();
+	});
 	
 	</script>
 </html>

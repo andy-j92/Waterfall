@@ -89,25 +89,25 @@ def SummarizeUrl(url):
 def Summarize(text, keyword = None):
     summaries = []
     keywords = {}
-    text = text.decode("utf-8")
     sentences = split_sentences(text)
 
-    if(keyword == None):
+    if keyword == None or keyword == "":
         keys = get_keywords(text)
     else:
         for k in split_words(keyword):
             keywords[k] = 99999
         keys = keywords
 
-    if len(sentences) <= 3:
-        return sentences
-
     #score setences, and use the top 5 sentences
     ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
+        sentence = re.sub(r'[^\x00-\x7f]',r'', rank[0])
+        sentenceAdded = False
         for keyword in keys:
-            if keyword in rank[0].lower():
-                summaries.append(rank[0])
+            if keyword in sentence.lower():
+                if not sentenceAdded:
+                    summaries.append(sentence)
+                    sentenceAdded = True
     return summaries
 
 
@@ -285,18 +285,18 @@ def extract_keywords(text):
                     typeToCount[str(entity.freebase_types[x])] += 1
                 else:
                     typeToCount[str(entity.freebase_types[x])] = 1
-                    
+
             for x in range(len(entity.freebase_types)):
                 if str(entity.freebase_types[x]) in typeToEntity:
-                    if entity.id not in typeToEntity[str(entity.freebase_types[x])]: 
+                    if entity.id not in typeToEntity[str(entity.freebase_types[x])]:
                         typeToEntity[str(entity.freebase_types[x])] += ":" + entity.id
                 else:
                     typeToEntity[str(entity.freebase_types[x])] = entity.id
-                    
+
     sortedtypesToCount = sorted(typeToCount.items(), key=operator.itemgetter(1),reverse=True)
 
     out =[]
-    for i, j in sortedtypesToCount: 
+    for i, j in sortedtypesToCount:
         out.append(( i,str(j) + "&" + typeToEntity[i] ))
         if(len(out) == 5):
             break
