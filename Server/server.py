@@ -174,7 +174,7 @@ class APIController(object): \
             data = convertPptxx(myFile.filename)
         else:
             data = "Invalid file type!"
-        print(data)
+        # print(data)
         return data.encode('ascii', 'ignore')
 
     def fetchFilteredSummaries(self, data, keywords):
@@ -191,7 +191,7 @@ def convertDocx(path):
     docText = ''.join([
         paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
     ])
-    print(docText)
+    # print(docText)
     return docText
 
 def convertDocxx(path):
@@ -203,7 +203,7 @@ def convertDocxx(path):
     docText = ''.join([
         paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
     ])
-    print(docText)
+    # print(docText)
     return docText
 def convertPptx(path):
     prs = Presentation(path)
@@ -221,7 +221,7 @@ def convertPptx(path):
                     text_runs.append(run.text+' ')
 
     full_string = ''.join(text_runs)
-    print(full_string)
+    # print(full_string)
     return full_string
 def convertPptxx(path):
     for filename in  os.listdir(os.getcwd()):
@@ -244,13 +244,13 @@ def convertPptxx(path):
                     text_runs.append(run.text+' ')
 
     full_string = ''.join(text_runs)
-    print(full_string)
+    # print(full_string)
     return full_string
 
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
-    codec = 'utf-8'
+    codec = 'ascii'
     laparams = LAParams()
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
     fp = file(path, 'rb')
@@ -269,7 +269,7 @@ def convertPdf(path):
     fp.close()
     device.close()
     retstr.close()
-    print(text)
+    # print(text)
     return text
 
 
