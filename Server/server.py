@@ -156,7 +156,7 @@ class APIController(object): \
                     if not data:
                         break
                     out.write(data)
-
+                    
             data = convertDocxx(myFile.filename)
         elif os.path.splitext(myFile.filename)[1] == '.ppt':
             target = './temp_files'
@@ -195,7 +195,7 @@ def convertDocx(path):
     return docText
 
 def convertDocxx(path):
-
+	
     for filename in  os.listdir(os.getcwd()):
         if filename.endswith('.doc'):
             subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
