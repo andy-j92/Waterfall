@@ -1,4 +1,3 @@
-
 function sendText(){
 	var data = new Object();
 		// window.JSONObj = new Object();
@@ -14,9 +13,8 @@ function sendText(){
 		ourRequest.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				// alert("success");
-				// alert(ourRequest.responseText);
-				document.getElementById('Testingtext').innerHTML = ourRequest.responseText;
-	
+				alert(ourRequest.responseText);
+				document.getElementById ('Testingtext').innerHTML = ourRequest.responseText;
 				return ourRequest.responseText;
 			}
 
