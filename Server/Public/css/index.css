@@ -1,18 +1,23 @@
+body{
+ background-image:url('/static/images/header.jpg');
+ background-repeat:no-repeat;
+ background-size: cover;
+ background-position:center;
+}
+    
 #ButtonContainer {
-    z-index: -1;
-    position: absolute;
-    top: 35%;
-    left: 40%;
-    width: 20%;
+    position: relative;
+    left: 33%;
+    width: 35%;
 }
 
 .btn{
-  font-size: 2vw;  
+  font-size: 1.5vw;  
 }
 
 #Logo {
     position: absolute;
-    bottom: 1%;
+    bottom: 0.3%;
     left: 0.2%; 
     width:10%; 
 }

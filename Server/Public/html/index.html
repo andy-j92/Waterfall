@@ -2,7 +2,8 @@
 
 <html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Quick Search</title>
@@ -12,62 +13,58 @@
   <!-- Latest compiled and minified bootstrap stylesheet -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     
+  <!-- bootstrap template -->
+  <link href="/static/css/creative.min.css" rel="stylesheet"> 
+  <!-- Custom -->    
   <link rel="stylesheet" href="/static/css/index.css">
     
 </head>
 
 <body> 
     
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" style="color:white; text-align: center;">Find Employee App</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto" >
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html" style="color:blue; text-align: center;">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" style="color:blue; text-align: center;">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" style="color:blue; text-align: center;">Contact</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+  <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Smart employee search</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     
-<div class="container-fluid">   
-    <div id="ButtonContainer" >  
-        <a href="/newcv">
-        <button class="btn btn-dark btn-block" type="submit">
-        Upload CV(s)
-        </button>
-        </a>
-
-    <br>      
-       
-        <a href="/keywordsearch">
-        <button class="btn btn-dark btn-block" type="submit">
-        Keyword Search
-        </button>
-        </a>      
-    
-    <br>      
-       
-        <a href="/extractPage">
-        <button class="btn btn-dark btn-block" type="submit">
-        Extract Keywords
-        </button>
-        </a>     
-    </div>    
-  
-
+    <header class="masthead">
+      <div class="header-content">
+        <div class="header-content-inner">
+          <h1 id="homeHeading">Find the best candidates in a click</h1>          
+          <br><br><br>    
+           <div id="ButtonContainer" > 
+                <button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/newcv';">
+                Upload CV(s)
+                </button>
+                <br><br>
+                <button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/keywordsearch';">
+                Keyword Search
+                </button>
+                <br><br>
+                <button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/extractPage';">
+                Extract Keywaords
+                </button>  
+           </div>
+        </div>
+      </div>
+    </header>
         
     <img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
-</div>
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
