@@ -88,22 +88,37 @@ $('#extractText').on('click',function(e){
 			ourRequest.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					obj[sessionStorage.key(i) + "_kywrd"]=ourRequest.responseText;
-					
-					
-					
 				}
-
-			};
+            };
 			ourRequest.send(data);
-		}
+            }
 			
 		}
 		$('.loading').hide();
 		
 		$('.list-group').empty();
-		var i=0;
+
+        var mainString = [];
 		for (var key in obj) {
-			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</a>')
+            mainString = obj[key];
+            var subString = mainString.split(',');
+            for(var line in subString) {
+                var categoryAndKeywords = subString[line].split('&');
+                var cat = categoryAndKeywords[0];
+                var keyWordsList = categoryAndKeywords[1];
+                console.log(subString);
+                var keyWords = keyWordsList.split(':');
+                
+                var clickableKeywords = "";
+                for(var keyword in keyWords) {
+                    var temp = '<a href="#">' + keyWords[keyword] + ' </a>';
+                    clickableKeywords += temp;
+                }
+                $('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p><br><br>')
+
+            }
+            
+			/*$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</p>')*/
 		}
 		
 	},10);
