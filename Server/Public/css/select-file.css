@@ -1,0 +1,58 @@
+.upload-box
+{
+	border: solid 1px #8e8d8d;
+	width:100%;	
+}
+.upload-form button
+{
+	text-align:center;
+	clear: both;
+	float: right;
+	width: 104px;
+}
+.pointer{
+	cursor:pointer;
+}
+.bg-black
+{
+	background-color:#000000;
+}
+.file-upload-container
+{
+	margin-top:30px;
+}
+#Logo {
+	position: absolute;
+	bottom: 1%;
+	left: 0.2%; 
+	width:10%; 
+}
+#buttonSummarize
+{
+	margin-top:10px;
+	clear: both;
+	float: right;
+}
+#filesUploadedStatus
+{
+	top: 65px;
+	position: relative;
+}
+#navbarSupportedContent{width:100%;}
+.collapse {display:block;}
+.navbar-nav{float:right;}
+.navbar-dark .navbar-nav .nav-link{color:#fff; text-align:center;}
+.list-group-item{margin-top:10px;}
+.btn-primary{background-color: #86bc25;border-color: #86bc25; cursor:pointer;}
+.btn-primary:hover{background-color: #528000;border-color: #528000;}
+
+@media (max-width: 991px) 
+{ 
+	#navbarSupportedContent .navbar-nav{float:none;}
+	.collapse {
+	  display: none;
+	  &.show {
+		display: block;
+	}
+}
+}

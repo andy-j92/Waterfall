@@ -3,25 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Quick Search</title>
-
- <link rel="icon" href="http://static.net/stackoverflow/img/favicon.ico">
-
+  
+ <link rel="icon" href="http://sstatic.net/stackoverflow/img/favicon.ico">   
+      
   <!-- Latest compiled and minified bootstrap stylesheet -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-
+    
   <!-- bootstrap template -->
-  <link href="/static/css/creative.min.css" rel="stylesheet">
-  <!-- Custom -->
-  <link rel="stylesheet" href="/static/css/index.css">
-
+  <link href="../css/creative.min.css" rel="stylesheet"> 
+  <!-- Custom -->    
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/hover.css"  media="all">
+    
 </head>
 
-<body>
-
+<body> 
+    
   <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
@@ -41,14 +42,27 @@
         </div>
       </div>
     </nav>
-
+	
+	<video id="my-video" class="video" muted loop>
+	  <source src="../media/background-3.mp4" type="video/mp4">
+	  <source src="../media/background-3.ogv" type="video/ogg">
+	  <source src="../media/background-3.webm" type="video/webm">
+	</video>
+	
+    
     <header class="masthead">
+	
+		
+	
       <div class="header-content">
         <div class="header-content-inner">
-          <h1 id="homeHeading">Find the best candidates in a click</h1>
-          <br><br><br>
-           <div id="ButtonContainer" >
-                <button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/newcv';">
+          <h1 id="homeHeading">Find the best candidates in a click</h1>          
+          <br><br><br>    
+           <div id="ButtonContainer" > 
+				<a href="select-file.html" class="hvr-ripple-out huge-button">Upload CV(s)</a>
+				<a href="KeyWordSearch.html" class="hvr-ripple-out huge-button">Keyword Search</a>
+				<a href="ExtractText.html" class="hvr-ripple-out huge-button">Extract Keywaords</a>
+                <!--<button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/newcv';">
                 Upload CV(s)
                 </button>
                 <br><br>
@@ -57,16 +71,33 @@
                 </button>
                 <br><br>
                 <button class="btn btn-primary btn-xl js-scroll-trigger btn-block" type="submit" onclick="location.href = '/extractPage';">
-                Extract Keywords
-                </button>
+                Extract Keywaords
+                </button>  -->
            </div>
         </div>
       </div>
     </header>
         
-    <img id="Logo" src="/static/images/logo.png" alt="Logo"/>
+    <img id="Logo" src="../images/logo.png" alt="Logo"/>
+    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+	<script>
+		(function() {
+		  /**
+		   * Video element
+		   * @type {HTMLElement}
+		   */
+		  var video = document.getElementById("my-video");
+
+		  /**
+		   * Check if video can play, and play it
+		   */
+		  video.addEventListener( "canplay", function() {
+			video.play();
+		  });
+		})();
+		</script>
 </body>
 </html>
