@@ -29,15 +29,35 @@ input{
     color: aliceblue;
 }
 
+
 .btn{
-  font-size: 1.5vw; 
   width: 20%;
-    color: aliceblue;
+  color: white;
 }
+
 
 #Logo {
     position: absolute;
     bottom: 0.3%;
     left: 0.2%; 
     width:10%; 
+}
+
+@media only screen and (max-width: 450px) {
+    p{
+    font-size: 9vw;
+    }
+    
+    input{
+    position: relative;
+    text-align: center;
+    width: 40%;
+    background-color: transparent;
+    color: white;
+}
+    
+    .btn{
+      width: 40%;
+      color: white;
+    }
 }
