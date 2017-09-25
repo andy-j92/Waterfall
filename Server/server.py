@@ -218,7 +218,7 @@ def convertPptx(path):
                 continue
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    text_runs.append(run.text)
+                    text_runs.append(unidecode(unicode(run.text)))
 
     full_string = ''.join(text_runs)
     print(full_string)
@@ -241,7 +241,7 @@ def convertPptxx(path):
                 continue
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    text_runs.append(run.text)
+                    text_runs.append(unidecode(unicode(run.text)))
 
     full_string = ''.join(text_runs)
     # print(full_string)
@@ -378,7 +378,7 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(root=None, config=config)
     cherrypy.server.socket_host = '0.0.0.0'
-    cherrypy.server.socket_port = 9999
+    cherrypy.server.socket_port = 80
 
     cherrypy.engine.start()
     cherrypy.engine.block()
