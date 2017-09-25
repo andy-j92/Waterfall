@@ -23,6 +23,8 @@ from pptx import Presentation
 import pyteaser
 import textrazor
 import os
+import re
+from unidecode import unidecode
 
 
 
@@ -174,11 +176,9 @@ class APIController(object): \
             data = convertPptxx(myFile.filename)
         else:
             data = "Invalid file type!"
-        # print(data)
-        return data.encode('ascii', 'ignore')
+        return data
 
     def fetchFilteredSummaries(self, data, keywords):
-
         return pyteaser.Summarize(data, keywords)
     
     def extractKeywords(self, data):
@@ -189,9 +189,9 @@ class APIController(object): \
 def convertDocx(path):
     document = docx.Document(path)
     docText = ''.join([
-        paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
+        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
     ])
-    # print(docText)
+    #print(docText)
     return docText
 
 def convertDocxx(path):
@@ -201,7 +201,7 @@ def convertDocxx(path):
             subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
     document = docx.Document(path[:-4] + ".docx")
     docText = ''.join([
-        paragraph.text.encode('ascii', 'ignore') for paragraph in document.paragraphs
+        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
     ])
     # print(docText)
     return docText
@@ -218,10 +218,10 @@ def convertPptx(path):
                 continue
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    text_runs.append(run.text+' ')
+                    text_runs.append(run.text)
 
     full_string = ''.join(text_runs)
-    # print(full_string)
+    print(full_string)
     return full_string
 def convertPptxx(path):
     for filename in  os.listdir(os.getcwd()):
@@ -241,7 +241,7 @@ def convertPptxx(path):
                 continue
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
-                    text_runs.append(run.text+' ')
+                    text_runs.append(run.text)
 
     full_string = ''.join(text_runs)
     # print(full_string)
@@ -250,7 +250,7 @@ def convertPptxx(path):
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
-    codec = 'ascii'
+    codec = 'utf-8'
     laparams = LAParams()
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
     fp = file(path, 'rb')
@@ -265,11 +265,13 @@ def convertPdf(path):
         interpreter.process_page(page)
 
     text = retstr.getvalue()
-
+    
     fp.close()
     device.close()
     retstr.close()
-    # print(text)
+    print(text)
+    #print(unidecode(unicode(text), encoding = "ascii"))
+
     return text
 
 
@@ -376,7 +378,7 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(root=None, config=config)
     cherrypy.server.socket_host = '0.0.0.0'
-    cherrypy.server.socket_port = 80
+    cherrypy.server.socket_port = 9999
 
     cherrypy.engine.start()
     cherrypy.engine.block()
