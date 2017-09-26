@@ -1,18 +1,29 @@
 body{
- background-image:url('/static/images/header.jpg');
+ background-image:url('static/images/header.jpg');
  background-repeat:no-repeat;
  background-size: cover;
  background-position:center;
 }
+
+#mainNav{
+    background: gray;
+    opacity: 0.5;
+}
+
+.navbar-brand{
+    font-size: 2vw;
+}
     
 #ButtonContainer {
     position: relative;
-    left: 33%;
-    width: 35%;
+    width: 100%;
+    text-align: center;    
 }
 
 .btn{
-  font-size: 1.5vw;  
+    text-align: center;        
+    font-size: 1.5vw;
+    width: 30%;
 }
 
 #Logo {
@@ -20,4 +31,15 @@ body{
     bottom: 0.3%;
     left: 0.2%; 
     width:10%; 
+}
+
+@media only screen and (max-width: 450px) {
+    .navbar-brand{
+        font-size: 90%;
+    }
+    
+    .btn{
+      width: 50%;
+      font-size: 80%;
+    }
 }
