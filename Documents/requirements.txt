@@ -3,3 +3,4 @@ routes
 python-docx
 python-pptx
 pdfminer
+unidecode
