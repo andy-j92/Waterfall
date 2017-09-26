@@ -45,7 +45,9 @@
 .list-group-item{margin-top:10px;}
 .btn-primary{background-color: #86bc25;border-color: #86bc25; cursor:pointer;}
 .btn-primary:hover{background-color: #528000;border-color: #528000;}
-
+.result-list{width:100%;}
+a.list-group-item{color:#86bc25;}
+.list-group-item.active{background-color:#86bc25; border-color:#86bc25;}
 @media (max-width: 991px) 
 { 
 	#navbarSupportedContent .navbar-nav{float:none;}
