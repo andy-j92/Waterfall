@@ -15,10 +15,11 @@ import subprocess
 import cherrypy
 from cherrypy.process import plugins
 import docx
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from cStringIO import StringIO
 from pptx import Presentation
 import pyteaser
 import textrazor
@@ -247,31 +248,26 @@ def convertPptxx(path):
     # print(full_string)
     return full_string
 
+
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
     codec = 'utf-8'
     laparams = LAParams()
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    fp = file(path, 'rb')
     interpreter = PDFPageInterpreter(rsrcmgr, device)
-    password = ""
-    maxpages = 0
-    caching = True
-    pagenos = set()
 
-    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching,
-                                  check_extractable=True):
+    fp = file(path, 'rb')
+    for page in PDFPage.get_pages(fp):
         interpreter.process_page(page)
-
+ 
     text = retstr.getvalue()
-    
+    # Cleanup
     fp.close()
     device.close()
     retstr.close()
+    text = unidecode(unicode(text, encoding = "utf-8"))
     print(text)
-    #print(unidecode(unicode(text), encoding = "ascii"))
-
     return text
 
 
