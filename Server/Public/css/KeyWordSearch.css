@@ -3,63 +3,77 @@ body{
  background-repeat:no-repeat;
  background-size: cover;
  background-position:center;
+ background-attachment: fixed;      
+}
+
+#mainNav{
+    background: gray;
+    opacity: 0.9;
+}
+
+.navbar-brand{
+    font-size: 2vw;
 }
 
 #ButtonContainer {
-    z-index: -1;
     position: absolute;
-    top: 15%;
-    left: 25%;
-    width: 50%;
-    height: 13%;
-    background-color: beige;
-    box-shadow: 0px 2px 8px grey;
+    top: 12%;
+    width: 100%;
+    text-align: center;
 }
 
 #titleText{
     position: relative;
-    top: 0%;
-    text-align: center;
-    font-size: 2vw;
+    color: white;
+    font-size: 2.5vw;
+}
+
+#searchboxDiv{
+   position: relative;
+   display: inline-block;
+   margin: auto;
 }
 
 #SearchBox{
-   position: absolute;
-   top: 50%;
-   left: 20%;
-   width: 50%;
-   height: 40%;
+    height: 35px;
+    vertical-align: middle;
 }
 
 .btn{
-  position: absolute;
-  top: 50%;
-  left: 73%;
-  width: 20%;
+  position: relative;
   height: 40%;
-  text-align: center;
+  text-align: center;    
   font-size: 1vw;
+  vertical-align: middle;
 }
 
 #SummaryContainer{
-    z-index: -1;
     position: absolute;
     top: 35%;
-    left: 5%;
-    width: 90%;
-    height: 55%;
+    left: 2%;
+    width: 96%;
 }
 
 #SummaryText{
     position: relative;
     top: 0%;
     text-align: center;
-    font-size: 2vw;
+    color: aliceblue;
+    font-family: Verdana;
+    font-size: 4vw;
 }
 
-#Logo {
-    position: absolute;
-    bottom: 1%;
-    left: 0.2%;
-    width:10%;
+@media only screen and (max-width: 450px) {
+    .navbar-brand{
+      font-size: 90%;
+    }
+    
+    #titleText{
+      font-size: 100%;
+    }
+    
+    .btn{
+      width: 50%;
+      font-size: 80%;
+    }
 }
