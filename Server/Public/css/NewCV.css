@@ -64,6 +64,11 @@ body{
    width:150%;
 }
 
+#FilesUploadedDiv{
+    left: 25%;
+    width: 50%;
+}
+
 #filesUploadedStatus{
     position: relative;
     color: white;
