@@ -20,6 +20,7 @@ body{
     top: 12%;
     width: 100%;
     text-align: center;
+    
 }
 
 #titleText{
@@ -32,11 +33,14 @@ body{
    position: relative;
    display: inline-block;
    margin: auto;
+   width: 100%;
 }
 
 #SearchBox{
     height: 35px;
+    width: 40%;
     vertical-align: middle;
+    text-align: center;
 }
 
 .btn{
@@ -72,8 +76,18 @@ body{
       font-size: 100%;
     }
     
-    .btn{
+    #SearchBox{
       width: 50%;
-      font-size: 80%;
+          
+    }
+    
+    .btn{
+      width: 30%;
+      height: 35px;
+      font-size: 50%;
+    }
+    
+    #SummaryText{
+      font-size: 120%;    
     }
 }
