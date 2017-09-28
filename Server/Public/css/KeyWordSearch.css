@@ -67,6 +67,11 @@ body{
     font-size: 4vw;
 }
 
+.list-group{
+    background:rgba(69,48,48,0.3);
+    color: white;
+}
+
 @media only screen and (max-width: 450px) {
     .navbar-brand{
       font-size: 90%;
