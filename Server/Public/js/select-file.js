@@ -36,9 +36,14 @@ function snackbar(text) {
 	console.log("function called");
 }
 
+/**
+ * Sends request to the server side to get the text of the file(s)
+ */
 $('#buttonSubmit').on('click', function(e) {
-
+	
+	//Get the selected files
 	var input = document.getElementById('UploadCV');
+	
 	//Check if the user has actually selected file(s)
 	if (input.files.length == 0) {
 		snackbar("No files uploaded...");
@@ -61,15 +66,14 @@ $('#buttonSubmit').on('click', function(e) {
 			return;
 		}
 	}
+	
 	// Initially clear previous errors if present
 	$('#errorText').text('');
-	//Start loading
-	
-	
+	$('.loading').show();
+	setTimeout(function(){
 	var count = 0;
-	
 	for (var x = 0; x < input.files.length; x++) {
-		$('.loading').show();
+		var isDuplicateFile = false;
 		var fileName = input.files[x].name;
 		var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
 		var data = new FormData();
@@ -79,43 +83,50 @@ $('#buttonSubmit').on('click', function(e) {
 		
 		//Listener for request
 		ourRequest.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+			if (this.readyState == 4 && this.status == 200) { //Successful response
 				sessionStorage.setItem(fileName,ourRequest.responseText);
 				count++;
-				console.log("RESPONSE");
-				console.log(count + " " + ourRequest.responseText);
-			} else {
+				if (count == input.files.length) {
+					$('.loading').hide();
+				}
+				checkDuplicateAndAddFile(fileName);
+			} else { //Unsuccessful response
 				sessionStorage.setItem(fileName, 'Empty File');
 				count++;
-				console.log("RESPONSE FAILED");
-				console.log(count);
+				if (count == input.files.length) {
+					$('.loading').hide();
+				}
+				checkDuplicateAndAddFile(fileName);
+			
 			}
 		};
+		//Send the file
 		ourRequest.send(data);
 	}
-	if (count == input.files.length) {
-		$('.loading').hide();
-	}
-	for (var x = 0; x < input.files.length; x++) {
-		var isDuplicateFile = false;
-		var fileName = input.files[x].name;
-		/* prevents duplicate filename from being appended, however the
-		 duplicate file will replace the old file in the session!!!*/
-		isDuplicateFile = checkDuplicateFile(isDuplicateFile,fileName); 
-		if (!isDuplicateFile && !$('#errorText').text()) {
-			if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
-				$('#filesUploadedStatus').text('Files Uploaded');
-			}
-			$('.list-group').append('<a href="#" class="list-group-item" customId='
-									+ "list_" + fileName + '>'
-									+ fileName
-									+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
-			setActiveFile();
-		}
-	}
+	},15);
+	
 					
 });
 
+/**
+ * Checks duplication and adds the given file to the list group
+ * @param fileName
+ * @returns
+ */
+function checkDuplicateAndAddFile(fileName){
+	var isDuplicateFile = false;
+	isDuplicateFile = checkDuplicateFile(isDuplicateFile,fileName); 
+	if (!isDuplicateFile && !$('#errorText').text()) {
+		if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
+			$('#filesUploadedStatus').text('Files Uploaded');
+		}
+		$('.list-group').append('<a href="#" class="list-group-item" customId='
+							+ "list_" +  (sessionStorage.length) + '>'
+							+ fileName
+							+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+	}
+	setActiveFile();
+}
 function setActiveFile() {
 
 	$('.list-group-item').on('mouseover',function() {
