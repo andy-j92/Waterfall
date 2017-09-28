@@ -50,66 +50,63 @@ function snackbar(text) {
  * Sends request to the server side to get the text of the file(s)
  */
 $('#buttonSubmit').on('click', function(e) {
-	
+
 	//Get the selected files
 	var input = document.getElementById('UploadCV');
-	
+
 	//Check if the user has actually selected file(s)
 	if (input.files.length == 0) {
 		snackbar("No files uploaded...");
 		return;
 	}
-	
+
 	//Check if the file type is correct.
 	for (var x = 0; x < input.files.length; x++) {
 		var fileName = input.files[x].name;
 		var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
 		if('undefined'!=fileExt && ''!=fileExt && isCorrectType(fileExt)) {
+			// Initially clear previous errors if present
+			$('#errorText').text('');
+			$('.loading').show();
+			setTimeout(function(){
+			var count = 0;
+			for (var x = 0; x < input.files.length; x++) {
+				var isDuplicateFile = false;
+				var fileName = input.files[x].name;
+				var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
+				var data = new FormData();
+				data.append('myFile', input.files[x]);
+				var ourRequest = new XMLHttpRequest();
+				ourRequest.open('POST', "/result", false);
+
+				//Listener for request
+				ourRequest.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) { //Successful response
+						sessionStorage.setItem(fileName,ourRequest.responseText);
+						count++;
+						if (count == input.files.length) {
+							$('.loading').hide();
+						}
+						checkDuplicateAndAddFile(fileName);
+					} else { //Unsuccessful response
+						sessionStorage.setItem(fileName, 'Empty File');
+						count++;
+						if (count == input.files.length) {
+							$('.loading').hide();
+						}
+						checkDuplicateAndAddFile(fileName);
+
+					}
+				};
+				//Send the file
+				ourRequest.send(data);
+			}
+			},15);
 		} else {
 			snackbar("Invalid file type...")
 			return;
 		}
 	}
-	
-	// Initially clear previous errors if present
-	$('#errorText').text('');
-	$('.loading').show();
-	setTimeout(function(){
-	var count = 0;
-	for (var x = 0; x < input.files.length; x++) {
-		var isDuplicateFile = false;
-		var fileName = input.files[x].name;
-		var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
-		var data = new FormData();
-		data.append('myFile', input.files[x]);
-		var ourRequest = new XMLHttpRequest();
-		ourRequest.open('POST', "/result", false);
-		
-		//Listener for request
-		ourRequest.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) { //Successful response
-				sessionStorage.setItem(fileName,ourRequest.responseText);
-				count++;
-				if (count == input.files.length) {
-					$('.loading').hide();
-				}
-				checkDuplicateAndAddFile(fileName);
-			} else { //Unsuccessful response
-				sessionStorage.setItem(fileName, 'Empty File');
-				count++;
-				if (count == input.files.length) {
-					$('.loading').hide();
-				}
-				checkDuplicateAndAddFile(fileName);
-			
-			}
-		};
-		//Send the file
-		ourRequest.send(data);
-	}
-	},15);
-	
-					
 });
 
 /**
@@ -119,7 +116,7 @@ $('#buttonSubmit').on('click', function(e) {
  */
 function checkDuplicateAndAddFile(fileName){
 	var isDuplicateFile = false;
-	isDuplicateFile = checkDuplicateFile(isDuplicateFile,fileName); 
+	isDuplicateFile = checkDuplicateFile(isDuplicateFile,fileName);
 	if (!isDuplicateFile && !$('#errorText').text()) {
 		if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
 			$('#filesUploadedStatus').text('Files Uploaded');

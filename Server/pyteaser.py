@@ -297,7 +297,7 @@ def extract_keywords(text):
 
     out =[]
     for i, j in sortedtypesToCount:
-        entity=typeToEntity[i] + ","
+        entity=typeToEntity[i] + "@#$%^&"
         out.append(( i, "&" + entity ))
         if(len(out) == 5):
             break

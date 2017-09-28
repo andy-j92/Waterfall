@@ -29,7 +29,7 @@ $('#extractText').on('click',function(e){
 			for (var key in obj) {
 				mainString = obj[key];
 				console.log(mainString);
-				var subString = mainString.split(',');
+				var subString = mainString.split('@#$%^&');
 				for(var line in subString) {
 					var keyWords;
 					if(subString[line]!=''){
