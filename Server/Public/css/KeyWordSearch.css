@@ -67,7 +67,7 @@ body{
     font-size: 4vw;
 }
 
-.list-group{
+.list-group a{
     background:rgba(69,48,48,0.3);
     color: white;
 }
