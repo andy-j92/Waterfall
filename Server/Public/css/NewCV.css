@@ -59,7 +59,12 @@ body{
   font-size: 1.5vw;
 }
 
-
+#FilesUploadedDiv{
+    position: relative;
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}
 
 #filesUploadedStatus{
     position: relative;
