@@ -30,7 +30,7 @@ $('#searchSummaries').click(function(e){
 	$('.list-group').empty();
 	var i=0;
 	for (var key in obj) {
-		$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + obj[key] + '</a>');
+		$('.list-group').append('<a class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + obj[key] + '</a>');
 		if($('.list-group-item[customId=' + "summary_" + i + ']').text()=='Summary of ' + key.substring(0,key.lastIndexOf("_smry")))
 			$('.list-group-item[customId=' + "summary_" + i + ']').remove();
 		i++;

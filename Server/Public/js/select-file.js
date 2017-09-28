@@ -7,7 +7,7 @@ sessionStorage.removeItem('extractVarObj');
 		}
 		for(i=0;i<sessionStorage.length;i++){
 			if(sessionStorage.key(i).indexOf('_smry')<0){
-			$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+			$('.list-group').append('<a class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 			}
 		} 
 		
