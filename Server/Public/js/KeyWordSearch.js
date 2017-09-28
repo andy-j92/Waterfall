@@ -24,7 +24,7 @@ $('#searchSummaries').click(function(e){
 	}
 	else{
 	var obj=searchWithKeywords($("#SearchBox").val());
-		
+
 		$('.list-group').empty();
 		var i=0;
 		for (var key in obj) {
@@ -36,4 +36,10 @@ $('#searchSummaries').click(function(e){
 
 	}
 
+});
+
+$('#SearchBox').keyup(function(event){
+    if(event.keyCode == 13){
+        $("#SearchBox").click();
+    }
 });
