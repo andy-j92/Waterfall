@@ -1,20 +1,36 @@
-#ButtonContainer {
-    z-index: -1;
-    position: absolute;
-    top: 35%;
-    left: 25%;
-    width: 50%;
-    height: 20%;
-    background-color: beige;
-    box-shadow: 0px 2px 8px grey;  
+body{
+ background-image:url('/static/images/header.jpg');
+ background-repeat:no-repeat;
+ background-size: cover;
+ background-position:center;
+ background-attachment: fixed;       
 }
 
+#mainNav{
+    background: gray;
+    opacity: 0.9;
+}
+
+.navbar-brand{
+    font-size: 1.5vw;
+}
+
+#selectFileContainer {
+    position: absolute;
+    top: 12%;
+    width: 100%;
+    text-align: center;
+}
 
 #titleText{
     position: relative;
-    top: 0%;
-    text-align: center;
-    font-size: 2vw;
+    color: white;
+    font-size: 2.5vw;
+}
+
+#selectFileDiv{
+   position: relative;
+   margin: auto;
 }
 
 #UploadCV{
@@ -22,37 +38,49 @@
     width: 0;
 }
 
-#UploadCVLabel {
-  z-index: -1;    
-  position: absolute;
-  top: 40%;    
-  left: 41%; 
-  width: 20%;
-  height: 30%;
-  border: 1px solid #cccccc;
+#UploadCVLabel {  
+  position: relative;
+  width:10%;
+  height: 32px;    
+  text-align: center;    
   font-family:arial;
-  background-color: darkslategrey;
+  background-color: orangered;
 }
 
 #UploadCVLabel p{
     position: relative;
-    top: 20%;
+    vertical-align: middle;
+    line-height: 32px; 
     color: white;
-    font-size: 1vw;
+    font-size: 1.5vw;
     text-align: center;
 }
 
+#ButtonsContianer{
+   position: relative;
+   display:inline-block;
+   vertical-align: middle;
+   margin: auto;
+  text-align: center;
+    margin-left: -5%;
+}
 
 .btn{
-  z-index: -1;    
-  position: absolute;
-  top: 60%;    
-  left: 43%;
-  width: 15%;
-  height: 10%;
-  font-size: 2vw;
-  text-align: center;
-  box-shadow: 0px 4px 8px grey;    
+  position: relative;
+  vertical-align: middle;
+  width:100%;
+  text-align: center;  
+  font-size: 1.5vw;
+}
+
+#buttonSummarize{
+   width:150%;
+}
+
+#filesUploadedStatus{
+    position: relative;
+    color: white;
+    font-size: 2.5vw;    
 }
 
 #Logo {
@@ -60,4 +88,34 @@
     bottom: 1%;
     left: 0.2%; 
     width:10%; 
+}
+
+@media only screen and (max-width: 450px) {
+    .navbar-brand{
+      font-size: 90%;
+    }
+    
+    #titleText{
+      font-size: 100%;
+    }
+    
+    #UploadCVLabel {  
+     width:30%;   
+    }
+    
+    #UploadCVLabel p{
+     font-size: 70%;    
+    }
+    
+    #ButtonsContianer{
+     margin-left: -8%;   
+    }
+
+    .btn{
+      font-size: 60%;
+    }
+    
+    #filesUploadedStatus{
+        font-size: 100%;
+    }
 }
