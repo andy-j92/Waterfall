@@ -72,7 +72,7 @@ sessionStorage.removeItem('extractVarObj');
 							};
 							ourRequest.send(data);
 						}else
-						$('#errorText').text('Invalid File Type!');
+						// $('#errorText').text('Invalid File Type!');
 						isDuplicateFile=checkDuplicateFile(isDuplicateFile,fileName); //prevents duplicate filename from being appended, however the duplicate file will replace the old file in the session!!!
 						if(!isDuplicateFile && !$('#errorText').text()){
 							if($('#filesUploadedStatus').text()=='No Files Uploaded'){

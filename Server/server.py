@@ -106,10 +106,9 @@ class APIController(object): \
         </body>
         </html>"""
         print(myFile.filename)
-        upload_file = './temp_files/' + myFile.filename
+        upload_file = myFile.filename
 
-        if not os.path.isdir('./temp_files'):
-            os.mkdir('./temp_files')
+
 
         with open(upload_file, 'wb') as out:
             while True:
@@ -119,6 +118,7 @@ class APIController(object): \
                 out.write(data)
 
 
+        print("HERE IT IS = " + upload_file)
         if os.path.splitext(myFile.filename)[1] == '.pdf':
             data = convertPdf(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
@@ -127,13 +127,15 @@ class APIController(object): \
             data = convertDocx(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.doc':
             data = convertDocxx(upload_file)
+            os.remove(os.path.splitext(myFile.filename)[0] + '.docx')
         elif os.path.splitext(myFile.filename)[1] == '.ppt':
             data = convertPptxx(upload_file)
+            os.remove(os.path.splitext(myFile.filename)[0] + '.pptx')
         else:
             data = "Invalid file type!"
 
         # Remove this line if you do not want to remove files from temp_files
-        os.remove('./temp_files/' + myFile.filename)
+        os.remove(myFile.filename)
 
         return data
 
