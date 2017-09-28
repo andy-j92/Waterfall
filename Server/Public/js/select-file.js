@@ -9,48 +9,43 @@ sessionStorage.removeItem('extractVarObj');
 			if(sessionStorage.key(i).indexOf('_smry')<0){
 			$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 			}
-		} 
-		
-		
+		}
+
+
 	}
 	setActiveFile();
 
 		 function snackbar(text) {
-    
+
 			var snackbar = document.getElementById("snackbar")
 
 			// Add the "show" class to DIV
-			snackbar.innerHTML = text;	
+			snackbar.innerHTML = text;
 			snackbar.className = "show";
-			
+
 
 			// After 3 seconds, remove the show class from DIV
 			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 			console.log("function called");
 		 }
-	
-		 $('#buttonSubmit').on('click',function(e){
 
+		 $('#buttonSubmit').on('click',function(e){
 			var file=$('input[name="myFile"]').prop('files')[0];
 			if(file == undefined){
 				snackbar("No files uploaded...");
 				return;
 			}
-			
-
-			 $('.loading').show(); 
 			 setTimeout(function(){
-				
+
 				 $('#errorText').text(''); //Initially clear previous errors if present
 			        var isDuplicateFile=false;
-
+							var file=$('input[name="myFile"]').prop('files')[0];
 					var fileName=file.name;
-											
-					
-					var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
-					if('undefined'!=fileExt && ''!=fileExt){
-						if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt){
 
+
+					var fileExt=fileName.substring(fileName.lastIndexOf('.')+1,fileName.length);
+					if('undefined'!=fileExt && ''!=fileExt && isCorrectType(fileExt)) {
+						$('.loading').show();
 							var data = new FormData();
 							data.append('myFile', file);
 
@@ -60,7 +55,7 @@ sessionStorage.removeItem('extractVarObj');
 							ourRequest.open('POST', "/result", false);
 
 							ourRequest.onreadystatechange = function() {
-								
+
 								if (this.readyState == 4 && this.status == 200) {
 									sessionStorage.setItem(fileName, ourRequest.responseText);
 									$('.loading').hide();
@@ -71,36 +66,43 @@ sessionStorage.removeItem('extractVarObj');
 
 							};
 							ourRequest.send(data);
-						}else
-						$('#errorText').text('Invalid File Type!');
+						}else {
+							snackbar("Invalid file type...")
+							return;
+						}
+						// $('#errorText').text('Invalid File Type!');
 						isDuplicateFile=checkDuplicateFile(isDuplicateFile,fileName); //prevents duplicate filename from being appended, however the duplicate file will replace the old file in the session!!!
-						if(!isDuplicateFile && !$('#errorText').text()){
-							if($('#filesUploadedStatus').text()=='No Files Uploaded'){
+						if(!isDuplicateFile && !$('#errorText').text()) {
+							if($('#filesUploadedStatus').text()=='No Files Uploaded') {
 								$('#filesUploadedStatus').text('Files Uploaded');
 							}
 							$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 							setActiveFile();
-						    }
-					}
- 					
-			 },15);
- 			 
-			  
-			
-		});
-		 
+
+			 			}},15);
+					});
+
+		function isCorrectType(fileExt) {
+			if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
 		 function setActiveFile(){
-				
+
 					$('.list-group-item').on('mouseover',function(){
 						$('.list-group-item').removeClass('active');
 						$('.list-group-item[customId=' + $(this).attr('customId') + ']').addClass('active');
 					});
-					
+
 					$('.list-group-item').on('mouseout',function(){
 						$(this).removeClass('active');
 					});
 			 }
-		 
+
 		 function checkDuplicateFile(param,fileName){
 			 $('.list-group').find('.list-group-item').each(function(){
 				 var listItem=$(this).text().substring(0,$(this).text().length-1);
@@ -109,15 +111,15 @@ sessionStorage.removeItem('extractVarObj');
 					 return false;
 				 }
 				 });
-				 
+
 			 return param;
 		 }
 
 
-	
+
 	$('#buttonSummarize').on('click',function(e){
 		var obj={};
-		
+
 		var iterationLength=sessionStorage.length;
 
 			if(iterationLength == 0){
@@ -139,7 +141,7 @@ sessionStorage.removeItem('extractVarObj');
 				ourRequest.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 						obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
-						
+
 					}else{
 						obj[sessionStorage.key(i) + "_smry"]="The file is empty";
 					}
@@ -151,7 +153,7 @@ sessionStorage.removeItem('extractVarObj');
 			for (var key in obj) {
 				sessionStorage.setItem(key, obj[key]);
 				}
-			
+
 			window.location.href='/keywordsearch';
 	});
 
@@ -163,5 +165,5 @@ sessionStorage.removeItem('extractVarObj');
 		$(this).parents('p').remove();
 		if(!$('.list-group-item').length)
 			$('#filesUploadedStatus').text('No Files Uploaded');
-			
+
 	});
