@@ -49,7 +49,6 @@ body{
    vertical-align: middle;
    margin: auto;
   text-align: center;
-    margin-left: -5%;
 }
 
 .btn{
@@ -60,22 +59,12 @@ body{
   font-size: 1.5vw;
 }
 
-#buttonSummarize{
-   width:150%;
-}
 
-#FilesUploadedDiv{
-    position: relative;
-    width: 50%;
-    text-align: center;
-    margin: auto;
-}
 
 #filesUploadedStatus{
     position: relative;
     color: white;
-    font-size: 2.5vw; 
-    margin: auto;
+    font-size: 2.5vw;    
 }
 
 
@@ -92,10 +81,6 @@ body{
       width:85%;
     }
     
-    #ButtonsContianer{
-     margin-left: -12%;   
-    }
-
     .btn{
       font-size: 60%;
     }
