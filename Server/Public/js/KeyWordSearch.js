@@ -20,11 +20,11 @@ for(i=0;i<sessionStorage.length;i++){
 
 $('#searchSummaries').click(function(e){
 	if(!$.trim($("#SearchBox").val())){
-//		do nothing
+		
 	}
 	else{
 	var obj=searchWithKeywords($("#SearchBox").val());
-		
+
 		$('.list-group').empty();
 		var i=0;
 		for (var key in obj) {
@@ -36,4 +36,12 @@ $('#searchSummaries').click(function(e){
 
 	}
 
+});
+
+document.getElementById("SearchBox")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("searchSummaries").click();
+    }
 });
