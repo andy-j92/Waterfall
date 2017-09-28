@@ -5,29 +5,12 @@ if (sessionStorage.length) {
 	if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
 		$('#filesUploadedStatus').text('Files Uploaded');
 	}
-	for (i = 0; i < sessionStorage.length; i++) {
-		if (sessionStorage.key(i).indexOf('_smry') < 0) {
-			$('.list-group')
-					.append(
-							'<a class="list-group-item" customId='
-									+ "list_"
-									+ i
-									+ '>'
-									+ sessionStorage.key(i)
-									+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+
+	for(i=0;i<sessionStorage.length;i++){
+		if(sessionStorage.key(i).indexOf('_smry')<0){
+		$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 		}
-
-		for(i=0;i<sessionStorage.length;i++){
-			if(sessionStorage.key(i).indexOf('_smry')<0){
-			$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
-			}
-		}
-
-
-
 	}
-
-
 }
 setActiveFile();
 
@@ -94,8 +77,6 @@ $('#buttonSubmit').on('click', function(e) {
 						if (count == input.files.length) {
 							$('.loading').hide();
 						}
-						checkDuplicateAndAddFile(fileName);
-
 					}
 				};
 				//Send the file
