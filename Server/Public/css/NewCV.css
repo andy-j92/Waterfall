@@ -30,31 +30,18 @@ body{
 
 #selectFileDiv{
    position: relative;
-   margin: auto;
+   text-align: center;    
 }
 
 #UploadCV{
-    height: 0;
-    width: 0;
-}
-
-#UploadCVLabel {  
-  position: relative;
-  width:10%;
-  height: 32px;    
-  text-align: center;    
+  margin:auto;
+  width:20%;
   font-family:arial;
-  background-color: orangered;
+  color: white;
+  text-align: center;
+  border: 1px solid orangered;
 }
 
-#UploadCVLabel p{
-    position: relative;
-    vertical-align: middle;
-    line-height: 32px; 
-    color: white;
-    font-size: 1.5vw;
-    text-align: center;
-}
 
 #ButtonsContianer{
    position: relative;
@@ -83,12 +70,6 @@ body{
     font-size: 2.5vw;    
 }
 
-#Logo {
-    position: absolute;
-    bottom: 1%;
-    left: 0.2%; 
-    width:10%; 
-}
 
 @media only screen and (max-width: 450px) {
     .navbar-brand{
@@ -99,16 +80,12 @@ body{
       font-size: 100%;
     }
     
-    #UploadCVLabel {  
-     width:30%;   
-    }
-    
-    #UploadCVLabel p{
-     font-size: 70%;    
+    #UploadCV{
+      width:85%;
     }
     
     #ButtonsContianer{
-     margin-left: -8%;   
+     margin-left: -12%;   
     }
 
     .btn{
