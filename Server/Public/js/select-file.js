@@ -14,14 +14,36 @@ sessionStorage.removeItem('extractVarObj');
 		
 	}
 	setActiveFile();
+
+		 function snackbar(text) {
+    
+			var snackbar = document.getElementById("snackbar")
+
+			// Add the "show" class to DIV
+			snackbar.innerHTML = text;	
+			snackbar.className = "show";
+			
+
+			// After 3 seconds, remove the show class from DIV
+			setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
+			console.log("function called");
+		 }
 	
 		 $('#buttonSubmit').on('click',function(e){
+
+			var file=$('input[name="myFile"]').prop('files')[0];
+			if(file == undefined){
+				snackbar("No files uploaded...");
+				return;
+			}
+			
+
 			 $('.loading').show(); 
 			 setTimeout(function(){
 				
 				 $('#errorText').text(''); //Initially clear previous errors if present
 			        var isDuplicateFile=false;
-					var file=$('input[name="myFile"]').prop('files')[0];
+
 					var fileName=file.name;
 											
 					
@@ -90,10 +112,19 @@ sessionStorage.removeItem('extractVarObj');
 				 
 			 return param;
 		 }
+
+
+	
 	$('#buttonSummarize').on('click',function(e){
 		var obj={};
 		
 		var iterationLength=sessionStorage.length;
+
+			if(iterationLength == 0){
+				snackbar("No files uploaded...");
+				return;
+			}
+
 			for(i=0;i<iterationLength;i++){
 				if(sessionStorage.key(i).indexOf('_smry')<0){
 				var data = new FormData();

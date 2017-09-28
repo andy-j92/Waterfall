@@ -40,3 +40,5 @@ server.py is located in Server directory
 # How to use the service:
 Type ip_address in the address bar in your favourite web browser.
 For example, type "localhost" in the address bar in Chrome
+
+You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on the cloud.
