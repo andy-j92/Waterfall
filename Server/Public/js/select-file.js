@@ -16,7 +16,17 @@ if (sessionStorage.length) {
 									+ sessionStorage.key(i)
 									+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
 		}
+
+		for(i=0;i<sessionStorage.length;i++){
+			if(sessionStorage.key(i).indexOf('_smry')<0){
+			$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
+			}
+		}
+
+
+
 	}
+
 
 }
 setActiveFile();
@@ -54,13 +64,7 @@ $('#buttonSubmit').on('click', function(e) {
 	for (var x = 0; x < input.files.length; x++) {
 		var fileName = input.files[x].name;
 		var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
-		if ('undefined' != fileExt && '' != fileExt) {
-			if ('pdf' != fileExt && 'pptx' != fileExt
-					&& 'docx' != fileExt && 'ppt' != fileExt
-					&& 'doc' != fileExt && 'txt' != fileExt) {
-				snackbar("Invalid file type...")
-				return;
-			}
+		if('undefined'!=fileExt && ''!=fileExt && isCorrectType(fileExt)) {
 		} else {
 			snackbar("Invalid file type...")
 			return;
@@ -127,6 +131,14 @@ function checkDuplicateAndAddFile(fileName){
 	}
 	setActiveFile();
 }
+
+function isCorrectType(fileExt) {
+  if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt) {
+    return true;
+  } else {
+    return false;
+	}
+}
 function setActiveFile() {
 
 	$('.list-group-item').on('mouseover',function() {
@@ -150,61 +162,46 @@ function checkDuplicateFile(param, fileName) {
 
 	return param;
 }
+$('#buttonSummarize').on('click',function(e){
+	var obj={};
+	var iterationLength=sessionStorage.length;
+		if(iterationLength == 0){
+			snackbar("No files uploaded...");
+			return;
+		}
 
-$('#buttonSummarize')
-		.on(
-				'click',
-				function(e) {
-					var obj = {};
+	for(i=0;i<iterationLength;i++){
+			if(sessionStorage.key(i).indexOf('_smry')<0){
+			var data = new FormData();
+			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
+			data.append('keywords', '');
 
-					var iterationLength = sessionStorage.length;
+      var ourRequest = new XMLHttpRequest();
+			ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
-					if (iterationLength == 0) {
-						snackbar("No files uploaded...");
-						return;
-					}
-
-					for (i = 0; i < iterationLength; i++) {
-						if (sessionStorage.key(i).indexOf('_smry') < 0) {
-							var data = new FormData();
-							data.append('data', sessionStorage
-									.getItem(sessionStorage.key(i)));
-							data.append('keywords', '');
-
-							var ourRequest = new XMLHttpRequest();
-							ourRequest.open('POST', "/fetchFilteredSummaries",
-									false);
-
-							ourRequest.onreadystatechange = function() {
-								if (this.readyState == 4 && this.status == 200) {
-									obj[sessionStorage.key(i) + "_smry"] = ourRequest.responseText;
-
-								} else {
-									obj[sessionStorage.key(i) + "_smry"] = "The file is empty";
-								}
-
-							};
-							ourRequest.send(data);
-						}
-					}
-					for ( var key in obj) {
-						sessionStorage.setItem(key, obj[key]);
-					}
-
-					window.location.href = '/keywordsearch';
-				});
-
-$(document).on("click", '.close', function(event) { // delete file
-	var fileToRemove = $(this).parents('a').text();
-	fileToRemove = fileToRemove.substring(0, fileToRemove.length - 1); // x
-																		// button
-																		// text
-																		// also
-																		// appears
-	sessionStorage.removeItem(fileToRemove);
-	sessionStorage.removeItem(fileToRemove + "_smry");
-	$(this).parents('a').remove();
-	if (!$('.list-group-item').length)
-		$('#filesUploadedStatus').text('No Files Uploaded');
-
+      ourRequest.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
+				}else{
+					obj[sessionStorage.key(i) + "_smry"]="The file is empty";
+				}
+			};
+			ourRequest.send(data);
+			}
+		}
+		for (var key in obj) {
+			sessionStorage.setItem(key, obj[key]);
+			}
+		window.location.href='/keywordsearch';
 });
+
+$(document).on("click", '.close', function(event) {  //delete file
+		var fileToRemove=$(this).parents('p').text();
+		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
+		sessionStorage.removeItem(fileToRemove);
+		sessionStorage.removeItem(fileToRemove + "_smry");
+		$(this).parents('p').remove();
+		if(!$('.list-group-item').length)
+			$('#filesUploadedStatus').text('No Files Uploaded');
+
+	});
