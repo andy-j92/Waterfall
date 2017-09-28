@@ -65,14 +65,17 @@ body{
 }
 
 #FilesUploadedDiv{
-    left: 25%;
+    position: relative;
     width: 50%;
+    text-align: center;
+    margin: auto;
 }
 
 #filesUploadedStatus{
     position: relative;
     color: white;
-    font-size: 2.5vw;    
+    font-size: 2.5vw; 
+    margin: auto;
 }
 
 
