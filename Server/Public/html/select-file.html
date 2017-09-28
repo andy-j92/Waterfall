@@ -1,88 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        
 	<title>Upload and Summarize Demo</title>
+        
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+     
+        <!-- Custom styles for this template -->
+    <link href="/static/css/creative.min.css" rel="stylesheet">    
 	<link rel="stylesheet" href="/static/css/Loader.css">
-	<!-- TODO: put this into a css file -->
-	<style>
-		.upload-box
-		{
-			border: solid 1px #8e8d8d;
-			width:100%;	
-		}
-		.pointer{
-			cursor:pointer;
-		}
-		#Logo {
-    position: absolute;
-    bottom: 1%;
-    left: 0.2%; 
-    width:10%; 
-}
-	</style>
+	<link rel="stylesheet" href="/static/css/NewCV.css">
+
 	</head>
 	<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" style="color:white; text-align: center;">Find Employee App</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" >
-          <li class="nav-item active">
-            <a class="nav-link" href="/static/html/index.html" style="color:blue; text-align: center;">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" style="color:blue; text-align: center;">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" style="color:blue; text-align: center;">Contact</a>
-          </li>
-        </ul>
+        
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Smart employee search</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/KeyWordSearch.html">Summary</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/ExtractText.html">Extract</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
-		<hr>
-		<div class="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-4">
-				<h2 class="display-4 text-center">Upload a file</h2>
-				<br>
-				<form method="post" enctype="multipart/form-data" class="text-center">
-					<div class="form-group">
-						<input type="file" name="myFile" class="form-control-file upload-box rounded" >
-						<small id="fileHelp" class="form-text text-muted">some description here maybe?</small>
-						<span id="errorText"></span>
-					</div>
-					
-					<button type="button" id="buttonSubmit" class="btn btn-primary pointer">Submit</button>
-			
-				</form>
-				<div class="container">
-  <h2 id="filesUploadedStatus">No Files Uploaded</h2>
-   <div class="list-group">
-    <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
-    <a href="#" class="list-group-item" customId="list_2">Second item</a>
-    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
-    <form action="result" method="post" enctype="multipart/form-data" class="text-center">
-     <!-- <p id="titleText" style="text-align: center;"><b>Search keywords</b></p>
-    <input type="text" id="keywords" name="keywords"/> -->
-        <button class="btn btn-primary pointer" type="button" id="buttonSummarize">
-        Summarize
-        </button>
-        </form>
-  </div>
-</div>
 
-<div class="loading">Loading&#8230;</div>
+        <div id="selectFileContainer">
+             <p id="titleText"><b>Select the CV(s) you want to upload</b></p>
+             <div id="selectFileDiv">
+                   <input id="UploadCV" type="file" name="myFile" class="form-control-file upload-box rounded" >
+                   <label id="UploadCVLabel" for="UploadCV"><p><b>Select CV(s)</b></p></label>
+             </div>
+             <br> 
+             <div id="ButtonsContianer">
+                 <form method="post" enctype="multipart/form-data" class="text-center" style="float: left; padding: 5px;">
+                     <button class="btn btn-primary" type="button" id="buttonSubmit">
+                     list CV(s) selected
+                     </button>
+				 </form>
+                 <form action="result" method="post" enctype="multipart/form-data" class="text-center" style="float: left; padding: 5px;">
+                     <button class="btn btn-primary" type="button" id="buttonSummarize">
+                     Summarise
+                     </button>
+                 </form>
+             </div>     
+             <br><br>
+             <div id=FilesUploadedDiv>
+                   <p id="filesUploadedStatus"><b>No Files Uploaded</b></p>
+                   <div class="loading">Loading&#8230;</div>
+                   <div class="list-group">
+                    <!-- <a href="#" class="list-group-item" customId="list_1">First item</a>
+                    <a href="#" class="list-group-item" customId="list_2">Second item</a>
+                    <a href="#" class="list-group-item" customId="list_3">Third item</a> -->
+                  </div>
+             </div>
+         </div> 
 
-			</div>
-			<div class="col-md-4"></div>
-			<img id="Logo" src="/static/images/logo.jpg" alt="Logo"/>
-		</div>
+        <img id="Logo" src="/static/images/logo.png" alt="Logo"/>
+
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
