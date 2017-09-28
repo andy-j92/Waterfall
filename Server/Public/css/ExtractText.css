@@ -44,18 +44,18 @@ body{
 
 #SummaryContainer{
     position: absolute;
-    top: 40%;
+    top: 35%;
     left: 2%;
     width: 96%;
 }
 
-#SummaryText{
-    position: relative;
-    top: 0%;
-    text-align: center;
-    color: aliceblue;
-    font-family: Verdana;
-    font-size: 3vw;
+.list-group-item {
+    background:rgba(47,33,33,0.7);
+    color: orangered;
+}
+
+.list-group a{
+    color: white;
 }
 
 @media only screen and (max-width: 450px) {

@@ -13,7 +13,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
 else{
 for(i=0;i<sessionStorage.length;i++){
 	if(sessionStorage.key(i).indexOf('_smry')<0){
-	$('.list-group').append('<a href="#" class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + sessionStorage.getItem(sessionStorage.key(i) + "_smry") + '</a>');
+	$('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + sessionStorage.getItem(sessionStorage.key(i) + "_smry") + '</p>');
 }
 }
 }

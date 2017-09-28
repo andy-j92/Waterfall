@@ -7,7 +7,7 @@ sessionStorage.removeItem('extractVarObj');
 		}
 		for(i=0;i<sessionStorage.length;i++){
 			if(sessionStorage.key(i).indexOf('_smry')<0){
-			$('.list-group').append('<a class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+			$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 			}
 		} 
 		
@@ -78,7 +78,7 @@ sessionStorage.removeItem('extractVarObj');
 							if($('#filesUploadedStatus').text()=='No Files Uploaded'){
 								$('#filesUploadedStatus').text('Files Uploaded');
 							}
-							$('.list-group').append('<a href="#" class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+							$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  (sessionStorage.length) + '>' + fileName + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 							setActiveFile();
 						    }
 					}
@@ -156,11 +156,11 @@ sessionStorage.removeItem('extractVarObj');
 	});
 
 	$(document).on("click", '.close', function(event) {  //delete file
-		var fileToRemove=$(this).parents('a').text();
+		var fileToRemove=$(this).parents('p').text();
 		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
 		sessionStorage.removeItem(fileToRemove);
 		sessionStorage.removeItem(fileToRemove + "_smry");
-		$(this).parents('a').remove();
+		$(this).parents('p').remove();
 		if(!$('.list-group-item').length)
 			$('#filesUploadedStatus').text('No Files Uploaded');
 			
