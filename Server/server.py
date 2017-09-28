@@ -108,75 +108,33 @@ class APIController(object): \
         print(myFile.filename)
         upload_file = './temp_files/' + myFile.filename
 
+        if not os.path.isdir('./temp_files'):
+            os.mkdir('./temp_files')
+
+        with open(upload_file, 'wb') as out:
+            while True:
+                data = myFile.file.read(8192)
+                if not data:
+                    break
+                out.write(data)
+
+
         if os.path.splitext(myFile.filename)[1] == '.pdf':
-            size = 0
-            with open(upload_file, 'wb') as out:
-                while True:
-                    data = myFile.file.read(8192)
-                    if not data:
-                        break
-                    out.write(data)
-
-            data = convertPdf('./temp_files/' + myFile.filename)
+            data = convertPdf(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
-            target = './temp_files'
-
-            size = 0
-            if not os.path.isdir(target):
-                os.mkdir(target)
-
-            with open(target + myFile.filename, 'wb') as out:
-                while True:
-                    data = myFile.file.read(8192)
-                    if not data:
-                        break
-                    out.write(data)
-
-            data = convertPptx(target + myFile.filename)
+            data = convertPptx(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.docx':
-            target = './temp_files'
-            size = 0
-            if not os.path.isdir(target):
-                os.mkdir(target)
-
-            with open(target + myFile.filename, 'wb') as out:
-                while True:
-                    data = myFile.file.read(8192)
-                    if not data:
-                        break
-                    out.write(data)
-
-            data = convertDocx(target + myFile.filename)
+            data = convertDocx(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.doc':
-            target = './temp_files'
-            size = 0
-            if not os.path.isdir(target):
-                os.mkdir(target)
-
-            with open(myFile.filename, 'wb') as out:
-                while True:
-                    data = myFile.file.read(8192)
-                    if not data:
-                        break
-                    out.write(data)
-                    
-            data = convertDocxx(myFile.filename)
+            data = convertDocxx(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.ppt':
-            target = './temp_files'
-            size = 0
-            if not os.path.isdir(target):
-                os.mkdir(target)
-
-            with open(myFile.filename, 'wb') as out:
-                while True:
-                    data = myFile.file.read(8192)
-                    if not data:
-                        break
-                    out.write(data)
-
-            data = convertPptxx(myFile.filename)
+            data = convertPptxx(upload_file)
         else:
             data = "Invalid file type!"
+
+        # Remove this line if you do not want to remove files from temp_files
+        os.remove('./temp_files/' + myFile.filename)
+
         return data
 
     def fetchFilteredSummaries(self, data, keywords):
@@ -267,7 +225,7 @@ def convertPdf(path):
     device.close()
     retstr.close()
     text = unidecode(unicode(text, encoding = "utf-8"))
-    print(text)
+    # print(text)
     return text
 
 
