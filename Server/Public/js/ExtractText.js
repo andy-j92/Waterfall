@@ -46,7 +46,7 @@ $('#extractText').on('click',function(e){
 							var temp = '<a href="#" class="containedKeywords">' + keyWords[keyword] + ' </a>';
 							clickableKeywords += temp;
 						}
-						$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p><br><br>')
+						$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
 					}
 				}
 
