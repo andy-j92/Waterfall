@@ -4346,7 +4346,7 @@
   padding: 1em;
   border-radius: 5px;
   cursor: pointer;
-  background: #86bc25;
+  
   text-decoration: none;
   /* Prevent highlight colour when element is tapped */
   -webkit-tap-highlight-color: rgba(0,0,0,0);
