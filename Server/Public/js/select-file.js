@@ -1,4 +1,5 @@
 $('.loading').hide();
+checkFileCount();
 sessionStorage.removeItem('extractVar');
 sessionStorage.removeItem('extractVarObj');
 if (sessionStorage.length) {
@@ -81,6 +82,7 @@ $('#buttonSubmit').on('click', function(e) {
 				};
 				//Send the file
 				ourRequest.send(data);
+				checkFileCount();
 			}
 			},15);
 		} else {
@@ -179,7 +181,17 @@ $(document).on("click", '.close', function(event) {  //delete file
 		sessionStorage.removeItem(fileToRemove);
 		sessionStorage.removeItem(fileToRemove + "_smry");
 		$(this).parents('p').remove();
+		checkFileCount();
 		if(!$('.list-group-item').length)
 			$('#filesUploadedStatus').text('No Files Uploaded');
 
 	});
+
+function checkFileCount() {
+	if(sessionStorage.length == 0) {
+		$('#buttonSummarize').hide()
+	}
+	else {
+		$('#buttonSummarize').show()
+	}
+}
