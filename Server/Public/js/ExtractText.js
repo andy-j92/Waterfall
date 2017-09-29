@@ -43,7 +43,11 @@ $('#extractText').on('click',function(e){
 
 						var clickableKeywords = "";
 						for(var keyword in keyWords) {
-							var temp = '<a href="#" class="containedKeywords">' + keyWords[keyword] + ' </a>';
+							if ((keyword % 5) == 4){
+								var temp = '<a href="#" class="containedKeywords">' + keyWords[keyword] + '<br/></a>';
+							} else {
+								var temp = '<a href="#" class="containedKeywords">' + keyWords[keyword] + '     </a>';
+							}
 							clickableKeywords += temp;
 						}
 						$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
