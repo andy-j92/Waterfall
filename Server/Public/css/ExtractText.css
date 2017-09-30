@@ -52,11 +52,18 @@ body{
 .list-group-item {
     background:rgba(47,33,33,0.7);
     color: orangered;
-    padding-right: 30px;
+    
 }
 
 .list-group a{
     color: white;
+
+}
+
+.list-group a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: none;  
 }
 
 
