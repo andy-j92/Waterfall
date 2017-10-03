@@ -66,6 +66,7 @@ body{
     text-decoration: none;  
 }
 
+/*.list-group .list-group-item a::after{content: ".";}*/
 
 @media only screen and (max-width: 450px) {
     .navbar-brand{
