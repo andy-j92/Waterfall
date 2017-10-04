@@ -3,7 +3,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
 	if(null!=extractObj && undefined!=extractObj){
 		var counter=0;
 		for (var key in extractObj) {
-			$('.list-group').append('<p href="#" class="list-group-item" customId=' + "summary_" +  counter + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + extractObj[key] + '</p>');
+			$('.list-group').append('<p href="#" class="list-group-item" customId=' + "summary_" +  counter + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + splitParaIntoSentences(extractObj[key]) + '</p>');
 			if($('.list-group-item[customId=' + "summary_" + counter + ']').text()=='Summary of ' + key.substring(0,key.lastIndexOf("_smry")))
 				$('.list-group-item[customId=' + "summary_" + counter + ']').remove();
 			counter++;
@@ -13,7 +13,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
 else{
 for(i=0;i<sessionStorage.length;i++){
 	if(sessionStorage.key(i).indexOf('_smry')<0){
-	$('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + sessionStorage.getItem(sessionStorage.key(i) + "_smry") + '</p>');
+	$('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + splitParaIntoSentences(sessionStorage.getItem(sessionStorage.key(i) + "_smry")) + '</p>');
 }
 }
 }
@@ -45,3 +45,16 @@ document.getElementById("SearchBox")
         document.getElementById("searchSummaries").click();
     }
 });
+
+
+function splitParaIntoSentences(paragraph)
+{
+    //sessionStorage.getItem(sessionStorage.key(i)+ "_smry")
+    var sentences = paragraph.match( /[^\.!\?]+[\.!\?]+/g );
+    var newSumPara = "";
+    for(i = 0; i < sentences.length; i++)
+    {
+        newSumPara += "- " + sentences[i] + "<br/>";
+    }
+    return newSumPara;
+}
