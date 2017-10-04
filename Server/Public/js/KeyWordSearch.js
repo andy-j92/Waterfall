@@ -52,9 +52,9 @@ function splitParaIntoSentences(paragraph)
     //sessionStorage.getItem(sessionStorage.key(i)+ "_smry")
     var sentences = paragraph.match( /[^\.!\?]+[\.!\?]+/g );
     var newSumPara = "";
-    for(i = 0; i < sentences.length; i++)
+    for(j = 0; j < sentences.length; j++)
     {
-        newSumPara += "- " + sentences[i] + "<br/>";
+        newSumPara += "- " + sentences[j] + "<br/>";
     }
     return newSumPara;
 }
