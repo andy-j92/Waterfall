@@ -44,9 +44,9 @@ $('#extractText').on('click',function(e){
 						var clickableKeywords = "";
 						for(var keyword in keyWords) {
 							if ((keyword % 5) == 4){
-								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + '. ' + ' </a><br/>';
+								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
 							} else {
-								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + '. ' + ' </a>';
+								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a>';
 							}
 							clickableKeywords += temp;
 						}
