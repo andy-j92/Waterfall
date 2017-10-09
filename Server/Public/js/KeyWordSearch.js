@@ -12,7 +12,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
             var EditedSummary="";
 
             for(j=0; j < (SummarySplit.length -1); j++) {
-                EditedSummary += ' - ' + SummarySplit[j]+ '.'+ '<br/>';
+                EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
             
             
@@ -37,7 +37,7 @@ else{
             var EditedSummary="";
 
             for(j=0; j < (SummarySplit.length -1); j++) {
-                EditedSummary += ' - ' + SummarySplit[j]+ '.'+ '<br/>';
+                EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
 
         $('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + EditedSummary + '</p>');
