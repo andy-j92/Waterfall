@@ -58,6 +58,8 @@ body{
     width: 96%;
 }
 
+.highlight { background-color: yellow }
+
 #SummaryText{
     position: relative;
     top: 0%;

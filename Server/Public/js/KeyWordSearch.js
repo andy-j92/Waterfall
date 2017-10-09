@@ -40,15 +40,19 @@ else{
 
 $('#searchSummaries').click(function(e){
 	var obj = null;
+	var keyword = null;
+
 	if(!$.trim($("#SearchBox").val())){
 		obj=searchWithKeywords('');
+		keyword = null;
 	}
 	else{
 		obj=searchWithKeywords($("#SearchBox").val());
+		keyword = $("#SearchBox").val();
 	}
-
 	$('.list-group').empty();
 	var i=0;
+	
 	for (var key in obj) {
         
         var FullSummary = obj[key];
@@ -66,6 +70,9 @@ $('#searchSummaries').click(function(e){
 		i++;
 	}
 
+	var myHilitor = new Hilitor("content");
+  	myHilitor.apply(keyword); //can call remove aswell
+
 });
 
 document.getElementById("SearchBox")
@@ -75,3 +82,5 @@ document.getElementById("SearchBox")
         document.getElementById("searchSummaries").click();
     }
 });
+
+

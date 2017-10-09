@@ -66,7 +66,7 @@ $('#buttonSubmit').on('click', function(e) {
 				//Listener for request
 				ourRequest.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) { //Successful response
-						sessionStorage.setItem(fileName,ourRequest.responseText);
+						sessionStorage.setItem(fileName,ourRequest.responseText); //Stores the text into the  current session
 						count++;
 						if (count == input.files.length) {
 							$('.loading').hide();
@@ -136,7 +136,7 @@ function checkDuplicateFile(param, fileName) {
 		var listItem = $(this).text().substring(0, $(this).text().length - 1);
 		if (listItem == fileName) {
 			param = true;
-			return false;
+			return false; //returns from JQuery function
 		}
 	});
 
