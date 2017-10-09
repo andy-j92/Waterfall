@@ -105,7 +105,7 @@ class APIController(object): \
             <div style="border:1px solid #8a8a8a;border-radius: 5px;padding: 10px; max-width:600px; margin:0 auto;">%s</div>
         </body>
         </html>"""
-        print(myFile.filename)
+        
         upload_file = myFile.filename
 
 
@@ -117,8 +117,6 @@ class APIController(object): \
                     break
                 out.write(data)
 
-
-        print("HERE IT IS = " + upload_file)
         if os.path.splitext(myFile.filename)[1] == '.pdf':
             data = convertPdf(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
@@ -182,7 +180,7 @@ def convertPptx(path):
                     text_runs.append(unidecode(unicode(run.text)))
 
     full_string = ''.join(text_runs)
-    print(full_string)
+    # print(full_string)
     return full_string
 def convertPptxx(path):
     for filename in  os.listdir(os.getcwd()):
