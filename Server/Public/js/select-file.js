@@ -68,21 +68,19 @@ $('#buttonSubmit').on('click', function(e) {
 					if (this.readyState == 4 && this.status == 200) { //Successful response
 						sessionStorage.setItem(fileName,ourRequest.responseText); //Stores the text into the  current session
 						count++;
-						if (count == input.files.length) {
-							$('.loading').hide();
-						}
 						checkDuplicateAndAddFile(fileName);
 					} else { //Unsuccessful response
 						sessionStorage.setItem(fileName, 'Empty File');
 						count++;
-						if (count == input.files.length) {
-							$('.loading').hide();
-						}
 					}
 				};
 				//Send the file
 				ourRequest.send(data);
 				checkFileCount();
+			}
+
+			if (count == input.files.length) {
+				$('.loading').hide();
 			}
 			},15);
 		} else {
