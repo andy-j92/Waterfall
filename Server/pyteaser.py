@@ -271,7 +271,7 @@ def sentence_position(i, size):
         return 0
 
 def extract_keywords(text):
-    textrazor.api_key = "42bf05bc7e7ca4f934bc0cff25d7564371730333854db6abe107b578"
+    textrazor.api_key = "de61d4f5c0a86fedbb4929de35c05dab6313b6ad371d5ced1e1612a2"
 
     client = textrazor.TextRazor(extractors=["entities", "topics"])
     response = client.analyze(text)
