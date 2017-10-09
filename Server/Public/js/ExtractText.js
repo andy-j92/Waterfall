@@ -41,17 +41,18 @@ $('#extractText').on('click',function(e){
 							var keyWordsList = categoryAndKeywords[1];
 
 							keyWords = keyWordsList.split(':');
-
-							var clickableKeywords = "";
-							for(var keyword in keyWords) {
-								if ((keyword % 5) == 4){
-									var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
-								} else {
-									var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a>';
+							if(keyWords.length != 1) {
+								var clickableKeywords = "";
+								for(var keyword in keyWords) {
+									if ((keyword % 5) == 4){
+										var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
+									} else {
+										var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a>';
+									}
+									clickableKeywords += temp;
 								}
-								clickableKeywords += temp;
+								$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
 							}
-							$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
 						}
 					}
 				}
