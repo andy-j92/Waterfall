@@ -10,7 +10,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
 		for (var key in extractObj) {
             
             var FullSummary = extractObj[key];
-            var SummarySplit = FullSummary.split('"@#$%^&*"');
+            var SummarySplit = FullSummary.split('@#$%^&*');
             var EditedSummary="";
 
             for(j=0; j < (SummarySplit.length -1); j++) {
@@ -34,7 +34,6 @@ else{
         if(sessionStorage.key(i).indexOf('_smry')<0){
 
             var FullSummary = sessionStorage.getItem(sessionStorage.key(i) + "_smry");
-            console.log(FullSummary);
             var SummarySplit = FullSummary.split('@#$%^&*');
             var EditedSummary="";
 
