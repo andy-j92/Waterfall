@@ -68,11 +68,11 @@ $('#searchSummaries').click(function(e){
 	for (var key in obj) {
         
         var FullSummary = obj[key];
-        var SummarySplit = FullSummary.split('.');
+        var SummarySplit = FullSummary.split('@#$%^&*');
         var EditedSummary="";
 
         for(j=0; j < (SummarySplit.length -1); j++) {
-            EditedSummary += ' - ' + SummarySplit[j]+ '.'+ '<br/>';
+            EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
         }
         
 		$('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + EditedSummary + '</p>');
