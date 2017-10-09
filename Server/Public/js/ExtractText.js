@@ -14,7 +14,7 @@ $('#extractText').on('click',function(e){
 
 					ourRequest.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
-							obj[sessionStorage.key(i) + "_kywrd"]=ourRequest.responseText;
+							obj[sessionStorage.key(i)]=ourRequest.responseText;
 						}
 					};
 					ourRequest.send(data);
@@ -27,6 +27,7 @@ $('#extractText').on('click',function(e){
 
 			var mainString = [];
 			for (var key in obj) {
+				$('.list-group').append('<br><h2 id="titleText">' + key + '</h2><br>')
 				mainString = obj[key];
 				var subString = mainString.split('@#$%^&');
 				for(var line in subString) {
@@ -52,7 +53,6 @@ $('#extractText').on('click',function(e){
 							}
 							$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
 						}
-
 					}
 				}
 
