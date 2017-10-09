@@ -68,8 +68,10 @@ $('#extractText').on('click',function(e){
 
 $(document).on("click", '.containedKeywords', function(event) {
 	var globalExtractObj=searchWithKeywords($(this).text().replace(/^\s+|\s+$/g, ""));
+	var kword = $(this).text();
 
 	sessionStorage.setItem('extractVar','true');
+	sessionStorage.setItem('keyword', kword);
 	sessionStorage.setItem('extractVarObj',JSON.stringify(globalExtractObj));
 	window.location.href='/keywordsearch';
 });

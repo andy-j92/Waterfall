@@ -1,6 +1,7 @@
 if(sessionStorage.getItem('extractVar')=='true'){
 	var extractObj=JSON.parse(sessionStorage.getItem('extractVarObj'));
 	var keyword = sessionStorage.getItem('keyword');
+	sessionStorage.removeItem('keyword');
 
 	if(null!=extractObj && undefined!=extractObj){
 		var counter=0;
