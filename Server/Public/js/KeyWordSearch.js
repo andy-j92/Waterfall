@@ -1,5 +1,7 @@
 if(sessionStorage.getItem('extractVar')=='true'){
 	var extractObj=JSON.parse(sessionStorage.getItem('extractVarObj'));
+	var keyword = sessionStorage.getItem('keyword');
+
 	if(null!=extractObj && undefined!=extractObj){
 		var counter=0;
 		for (var key in extractObj) {
@@ -20,6 +22,9 @@ if(sessionStorage.getItem('extractVar')=='true'){
 			counter++;
 		}
 	}
+
+	var myHilitor = new Hilitor("content");
+  	myHilitor.apply(keyword);
 }
 else{
     for(i=0;i<sessionStorage.length;i++){
