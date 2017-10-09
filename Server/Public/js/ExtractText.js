@@ -28,29 +28,31 @@ $('#extractText').on('click',function(e){
 			var mainString = [];
 			for (var key in obj) {
 				mainString = obj[key];
-				console.log(mainString);
 				var subString = mainString.split('@#$%^&');
 				for(var line in subString) {
 					var keyWords;
 					if(subString[line]!=''){
 						var categoryAndKeywords = subString[line].split('&');
-						console.log(categoryAndKeywords[0]);
-						console.log(categoryAndKeywords[1]);
-						var cat = categoryAndKeywords[0];
-						var keyWordsList = categoryAndKeywords[1];
+						var categories = categoryAndKeywords[0];
+						cat = categories.split('/')[1]; //higest category level
+						if(!(cat == "book" || cat == "people")) {
+							cat  = categories.split('/')[2]; //lower category level
+							var keyWordsList = categoryAndKeywords[1];
 
-						keyWords = keyWordsList.split(':');
+							keyWords = keyWordsList.split(':');
 
-						var clickableKeywords = "";
-						for(var keyword in keyWords) {
-							if ((keyword % 5) == 4){
-								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
-							} else {
-								var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a>';
+							var clickableKeywords = "";
+							for(var keyword in keyWords) {
+								if ((keyword % 5) == 4){
+									var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
+								} else {
+									var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a>';
+								}
+								clickableKeywords += temp;
 							}
-							clickableKeywords += temp;
+							$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
 						}
-						$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
+
 					}
 				}
 
