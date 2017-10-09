@@ -2,6 +2,8 @@ if(sessionStorage.getItem('extractVar')=='true'){
 	var extractObj=JSON.parse(sessionStorage.getItem('extractVarObj'));
 	var keyword = sessionStorage.getItem('keyword');
 	sessionStorage.removeItem('keyword');
+	sessionStorage.removeItem('extractVarObj');
+	sessionStorage.removeItem('extractVar');
 
 	if(null!=extractObj && undefined!=extractObj){
 		var counter=0;
@@ -42,6 +44,9 @@ else{
         $('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + EditedSummary + '</p>');
         }
     }
+
+	sessionStorage.removeItem('extractVarObj');
+	sessionStorage.removeItem('extractVar');
 }
 
 $('#searchSummaries').click(function(e){
