@@ -106,7 +106,7 @@ def Summarize(text, keyword = None):
         for keyword in keys:
             if keyword in sentence.lower():
                 if not sentenceAdded:
-                    summaries.append(sentence)
+                    summaries.append(sentence+"@#$%^&*")
                     sentenceAdded = True
     return summaries
 
