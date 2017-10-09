@@ -75,6 +75,12 @@ body{
 .list-group-item {
     background:rgba(47,33,33,0.7);
     color: white;
+    font-size: 2vw;
+}
+
+.list-group-item p {
+  vertical-align: middle;
+  line-height: normal;
 }
 
 @media only screen and (max-width: 450px) {
@@ -97,4 +103,13 @@ body{
     #filesUploadedStatus{
         font-size: 100%;
     }
+    
+    #FilesUploadedDiv{
+       width: 85%;
+    }
+    
+    .list-group-item {
+       font-size: 5vw;
+    }
+
 }

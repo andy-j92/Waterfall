@@ -36,9 +36,9 @@ body{
 
 .btn{
   position: relative;
-  width:10%;
+  width:15%;
   text-align: center;    
-  font-size: 135%;
+  font-size: 1.5vw;
   vertical-align: middle;
 }
 
@@ -68,7 +68,7 @@ body{
 
 /*.list-group .list-group-item a::after{content: ".";}*/
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 650px) {
     .navbar-brand{
       font-size: 90%;
     }

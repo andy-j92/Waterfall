@@ -81,6 +81,7 @@ $('#searchSummaries').click(function(e){
 
 });
 
+//checking to see if
 document.getElementById("SearchBox")
     .addEventListener("keyup", function(event) {
     event.preventDefault();

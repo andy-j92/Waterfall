@@ -38,6 +38,7 @@ body{
 
 #SearchBox{
     height: 35px;
+    height: 50px;
     width: 20%;
     vertical-align: middle;
     text-align: center;
@@ -45,9 +46,10 @@ body{
 
 .btn{
   position: relative;
-  height: 40%;
+  height: 50px;
+  width: 15%;    
   text-align: center;    
-  font-size: 1vw;
+  font-size: 1.5vw;
   vertical-align: middle;
 }
 
@@ -74,7 +76,7 @@ body{
     color: white;
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 650px) {
     .navbar-brand{
       font-size: 90%;
     }
@@ -85,13 +87,13 @@ body{
     
     #SearchBox{
       width: 50%;
-          
+      height: 35px;         
     }
     
     .btn{
       width: 30%;
       height: 35px;
-      font-size: 50%;
+      font-size: 2.75vw;
     }
     
     #SummaryText{
