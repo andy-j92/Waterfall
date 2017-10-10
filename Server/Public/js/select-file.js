@@ -179,6 +179,7 @@ $(document).on("click", '.close', function(event) {  //delete file
 		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
 		sessionStorage.removeItem(fileToRemove);
 		sessionStorage.removeItem(fileToRemove + "_smry");
+		sessionStorage.removeItem(fileToRemove + "_keyword");
 		$(this).parents('p').remove();
 		checkFileCount();
 		if(!$('.list-group-item').length){
