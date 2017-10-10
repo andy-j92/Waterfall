@@ -1,10 +1,9 @@
 $('.loading').hide();
-$('#extractText').on('click',function(e){
 	try{
 		$('.loading').show();
 		setTimeout(function(){
 			var obj={};
-			for(i=0;i<sessionStorage.length;i++){
+			for(i = 0; i < sessionStorage.length; i++){
 				if(sessionStorage.key(i).indexOf('_smry')<0){
 					var data = new FormData();
 					data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
@@ -32,7 +31,7 @@ $('#extractText').on('click',function(e){
 				var subString = mainString.split('@#$%^&');
 				for(var line in subString) {
 					var keyWords;
-					if(subString[line]!=''){
+					if(subString[line] != ''){
 						var categoryAndKeywords = subString[line].split('&');
 						var categories = categoryAndKeywords[0];
 						cat = categories.split('/')[1]; //higest category level
@@ -67,8 +66,6 @@ $('#extractText').on('click',function(e){
 		console.log('An error occured ' + err);
 	}
 
-});
-
 $(document).on("click", '.containedKeywords', function(event) {
 	var globalExtractObj=searchWithKeywords($(this).text().replace(/^\s+|\s+$/g, ""));
 	var kword = $(this).text();
@@ -81,26 +78,23 @@ $(document).on("click", '.containedKeywords', function(event) {
 
 function searchWithKeywords(keywords){
 	var obj={};
-	for(i=0;i<sessionStorage.length;i++){
+	for(i = 0; i < sessionStorage.length; i++){
 		if(sessionStorage.key(i).indexOf('_smry')<0 && sessionStorage.key(i).indexOf('extractVar')<0){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', keywords);
-
-
 
 			var ourRequest = new XMLHttpRequest();
 			ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
 			ourRequest.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-					if(ourRequest.responseText!='Empty File')
+					if(ourRequest.responseText != 'Empty File') {
 						obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
-
+					}
 				}else{
 
 				}
-
 			};
 			ourRequest.send(data);
 		}

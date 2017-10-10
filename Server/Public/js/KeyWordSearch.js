@@ -13,7 +13,7 @@ if(sessionStorage.getItem('extractVar')=='true'){
             var SummarySplit = FullSummary.split('@#$%^&*');
             var EditedSummary="";
 
-            for(j=0; j < (SummarySplit.length -1); j++) {
+            for(j = 0; j < (SummarySplit.length - 1); j++) {
                 EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
             
@@ -28,16 +28,15 @@ if(sessionStorage.getItem('extractVar')=='true'){
 
 	var myHilitor = new Hilitor("content");
   	myHilitor.apply(keyword);
-}
-else{
-    for(i=0;i<sessionStorage.length;i++){
+} else {
+    for(i = 0; i < sessionStorage.length; i++){
         if(sessionStorage.key(i).indexOf('_smry')<0){
 
             var FullSummary = sessionStorage.getItem(sessionStorage.key(i) + "_smry");
             var SummarySplit = FullSummary.split('@#$%^&*');
             var EditedSummary="";
 
-            for(j=0; j < (SummarySplit.length -1); j++) {
+            for(j = 0; j < (SummarySplit.length - 1); j++) {
                 EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
 
@@ -94,5 +93,3 @@ document.getElementById("SearchBox")
         document.getElementById("searchSummaries").click();
     }
 });
-
-

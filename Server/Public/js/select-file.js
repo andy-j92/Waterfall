@@ -7,7 +7,7 @@ if (sessionStorage.length) {
 		$('#filesUploadedStatus').text('Files Uploaded');
 	}
 
-	for(i=0;i<sessionStorage.length;i++){
+	for(i = 0; i < sessionStorage.length; i++){
 		if(sessionStorage.key(i).indexOf('_smry')<0){
 		$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 		}
@@ -111,12 +111,13 @@ function checkDuplicateAndAddFile(fileName){
 }
 
 function isCorrectType(fileExt) {
-  if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt) {
-    return true;
-  } else {
-    return false;
+	if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt) {
+		return true;
+	} else {
+		return false;
 	}
 }
+
 function setActiveFile() {
 
 	$('.list-group-item').on('mouseover',function() {
@@ -141,23 +142,23 @@ function checkDuplicateFile(param, fileName) {
 	return param;
 }
 $('#buttonSummarize').on('click',function(e){
+	
 	var obj={};
 	var iterationLength=sessionStorage.length;
-		if(iterationLength == 0){
-			snackbar("No files uploaded...");
-			return;
-		}
+	if(iterationLength == 0){
+		snackbar("No files uploaded...");
+		return;
+	}
 
-	for(i=0;i<iterationLength;i++){
-			if(sessionStorage.key(i).indexOf('_smry')<0){
+	for(i = 0; i < iterationLength; i++){
+		if(sessionStorage.key(i).indexOf('_smry')<0){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', '');
-
-      var ourRequest = new XMLHttpRequest();
+			var ourRequest = new XMLHttpRequest();
 			ourRequest.open('POST', "/fetchFilteredSummaries", false);
 
-      ourRequest.onreadystatechange = function() {
+			ourRequest.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
 				}else{
@@ -165,12 +166,12 @@ $('#buttonSummarize').on('click',function(e){
 				}
 			};
 			ourRequest.send(data);
-			}
 		}
-		for (var key in obj) {
-			sessionStorage.setItem(key, obj[key]);
-			}
-		window.location.href='/keywordsearch';
+	}
+	for (var key in obj) {
+		sessionStorage.setItem(key, obj[key]);
+	}
+	window.location.href='/keywordsearch';
 });
 
 $(document).on("click", '.close', function(event) {  //delete file
@@ -180,16 +181,15 @@ $(document).on("click", '.close', function(event) {  //delete file
 		sessionStorage.removeItem(fileToRemove + "_smry");
 		$(this).parents('p').remove();
 		checkFileCount();
-		if(!$('.list-group-item').length)
+		if(!$('.list-group-item').length){
 			$('#filesUploadedStatus').text('No Files Uploaded');
-
+		}
 	});
 
 function checkFileCount() {
 	if(sessionStorage.length == 0) {
 		$('#buttonSummarize').hide()
-	}
-	else {
+	} else {
 		$('#buttonSummarize').show()
 	}
 }
