@@ -87,7 +87,7 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
                 EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
 
-        $('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + EditedSummary + '</p>');
+            $('.list-group').append('<p class="list-group-item" customId=' + "summary_" +  i + '><strong>Summary of ' +  sessionStorage.key(i) + '</strong><br>' + EditedSummary + '</p>');
         }
     }
 }

@@ -8,7 +8,7 @@ if (sessionStorage.length) {
 	}
 
 	for(i = 0; i < sessionStorage.length; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 		$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 		}
 	}
@@ -151,7 +151,7 @@ $('#buttonSummarize').on('click',function(e){
 	}
 
 	for(i = 0; i < iterationLength; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword')){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', '');
