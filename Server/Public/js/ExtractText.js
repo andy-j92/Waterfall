@@ -14,6 +14,9 @@ $('.loading').hide();
 					ourRequest.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
 							obj[sessionStorage.key(i)]=ourRequest.responseText;
+							
+							
+							
 						}
 					};
 					ourRequest.send(data);
@@ -23,7 +26,7 @@ $('.loading').hide();
 			$('.loading').hide();
 
 			$('.list-group').empty();
-
+			var i = 0;
 			var mainString = [];
 			for (var key in obj) {
 				$('.list-group').append('<br><h2 id="titleText">' + key + '</h2><br>')
@@ -51,14 +54,17 @@ $('.loading').hide();
 									clickableKeywords += temp;
 								}
 								$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
+								i++;
 							}
 						}
 					}
 				}
-
+				
 				/*$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</p>')*/
 			}
-
+			//for (var key in obj) {
+			//	sessionStorage.setItem(key+"_keyword", obj[key]);
+			//}
 		},15);
 
 
