@@ -140,7 +140,7 @@ document.getElementById("SearchBox")
 function searchWithKeywords(keywords){
 	var obj={};
 	for(i = 0; i < sessionStorage.length; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0 && sessionStorage.key(i).indexOf('extractVar')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('extractVar') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', keywords);
