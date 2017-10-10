@@ -62,9 +62,9 @@ $('.loading').hide();
 				
 				/*$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</p>')*/
 			}
-			//for (var key in obj) {
-			//	sessionStorage.setItem(key+"_keyword", obj[key]);
-			//}
+			for (var key in obj) {
+				sessionStorage.setItem(key+"_keyword", obj[key]);
+			}
 		},15);
 
 

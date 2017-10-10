@@ -39,7 +39,7 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 	var isFileChanged = false;
 	//Determine if there has been change in files uploaded.
 	for(i = 0; i < sessionStorage.length; i++){
-        if(sessionStorage.key(i).indexOf('_smry')<0){
+        if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
         	var FullSummary = sessionStorage.getItem(sessionStorage.key(i) + "_smry");
         	if(FullSummary == null){
         		isFileChanged = true;
@@ -53,7 +53,7 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 		var iterationLength=sessionStorage.length;
 
     	for(i = 0; i < iterationLength; i++){
-    		if(sessionStorage.key(i).indexOf('_smry')<0){
+    		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
     			var data = new FormData();
     			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
     			data.append('keywords', '');
@@ -77,7 +77,7 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 	
 	//Display the summaries
     for(i = 0; i < sessionStorage.length; i++){
-        if(sessionStorage.key(i).indexOf('_smry')<0){
+        if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 
             var FullSummary = sessionStorage.getItem(sessionStorage.key(i) + "_smry");
             var SummarySplit = FullSummary.split('@#$%^&*');
