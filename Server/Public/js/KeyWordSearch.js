@@ -9,7 +9,6 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 	if(null!=extractObj && undefined!=extractObj){
 		var counter=0;
 		for (var key in extractObj) {
-            
             var FullSummary = extractObj[key];
             var SummarySplit = FullSummary.split('@#$%^&*');
             var EditedSummary="";
@@ -137,3 +136,29 @@ document.getElementById("SearchBox")
         document.getElementById("searchSummaries").click();
     }
 });
+
+function searchWithKeywords(keywords){
+	var obj={};
+	for(i = 0; i < sessionStorage.length; i++){
+		if(sessionStorage.key(i).indexOf('_smry')<0 && sessionStorage.key(i).indexOf('extractVar')<0){
+			var data = new FormData();
+			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
+			data.append('keywords', keywords);
+
+			var ourRequest = new XMLHttpRequest();
+			ourRequest.open('POST', "/fetchFilteredSummaries", false);
+
+			ourRequest.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					if(ourRequest.responseText != 'Empty File') {
+						obj[sessionStorage.key(i) + "_smry"]=ourRequest.responseText;
+					}
+				}else{
+
+				}
+			};
+			ourRequest.send(data);
+		}
+	}
+	return obj;
+}
