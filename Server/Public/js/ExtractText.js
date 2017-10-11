@@ -82,7 +82,6 @@ if(isExtracted){ //Not extracted, extract
 		console.log('An error occured ' + err);
 	}
 }else{ //Just display
-	console.log("Just display");
 	for(i = 0; i < sessionStorage.length; i++){
 		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0) {
 			var clickableKeyword = sessionStorage.getItem(sessionStorage.key(i) + "_keyword");
@@ -108,7 +107,7 @@ $(document).on("click", '.containedKeywords', function(event) {
 function searchWithKeywords(keywords){
 	var obj={};
 	for(i = 0; i < sessionStorage.length; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0 && sessionStorage.key(i).indexOf('extractVar')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('extractVar') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', keywords);
