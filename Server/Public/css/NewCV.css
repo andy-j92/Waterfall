@@ -7,8 +7,8 @@ body{
 }
 
 #mainNav{
-    background: gray;
-    opacity: 0.9;
+    background: rgb(51,51,51);
+    z-index: 10;
 }
 
 .navbar-brand{
@@ -25,6 +25,7 @@ body{
 #titleText{
     position: relative;
     color: white;
+    font-family: 'Titillium Web', sans-serif;
     font-size: 2.5vw;
 }
 
@@ -55,8 +56,9 @@ body{
   position: relative;
   vertical-align: middle;
   width:100%;
-  text-align: center;  
-  font-size: 135%;
+  text-align: center;
+  cursor:pointer;    
+  font-size: 1.5vw;
 }
 
 #FilesUploadedDiv{
@@ -64,6 +66,7 @@ body{
     width: 50%;
     text-align: center;
     margin: auto;
+    margin-bottom: 5%;
 }
 
 #filesUploadedStatus{

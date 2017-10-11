@@ -7,8 +7,8 @@ body{
 }
 
 #mainNav{
-    background: gray;
-    opacity: 0.9;
+    background: rgb(51,51,51);
+    z-index: 10;
 }
 
 .navbar-brand{
@@ -33,7 +33,6 @@ body{
    margin: auto;
 }
 
-
 .btn{
   position: relative;
   width:15%;
@@ -44,9 +43,10 @@ body{
 
 #SummaryContainer{
     position: absolute;
-    top: 35%;
+    top: 15%;
     left: 2%;
     width: 96%;
+    margin-bottom: 5%;
 }
 
 #SummaryText{
@@ -54,19 +54,17 @@ body{
     top: 0%;
     text-align: center;
     color: white;
-    font-family: Verdana;
+    font-family: 'Titillium Web', sans-serif;
     font-size: 4vw;
 }
 
 .list-group-item {
     background:rgba(47,33,33,0.7);
-    color: orangered;
-    
+    color: orangered;    
 }
 
 .list-group a{
     color: white;
-
 }
 
 .list-group a:hover {
