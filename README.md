@@ -4,17 +4,21 @@ PyTeaser
 PyTeaser takes any news article and extract a brief summary from it. It's based on the original [Scala](https://github.com/MojoJolo/textteaser) project.
 
 
-CVAnalyzer
+CV Analyzer
 ==========
 
 Summarizes CVs into a short paragraph.
 
-# Environment
+See [**Home**](https://github.com/andy-j92/Waterfall/wiki) for more details about the CV Analyser software
+
+# Environment & Installation
 
 ## Web Server
 ```
 Web Server Side: Linux/Ubuntu
+
 ```
+
 ```
 Client Side: Any platform that supports a Browser and has WiFi connection
 ```
@@ -23,25 +27,28 @@ Client Side: Any platform that supports a Browser and has WiFi connection
 ```
 Local Server Side: Linux/Ubuntu
 ```
+
 ```
 Client Side: Linux/Ubuntu
 ```
 
-# Installation:
-Requires Python 2.7.
+## Installation
+```
+Requires Python 2.7
+```
+
 ```
 sudo pip install requirements.txt
 ```
+See [**Environment & Installation**](https://github.com/andy-j92/Waterfall/wiki/Environment-&-Installation) for more details
 
 # How to run the server and use the service:
-*python2.7 is required for this project
 
 1. Open terminal on Linux/Ubuntu machine
 2. Navigate to Server directory
 3. Type in "python server.py"
 4. Go to favourite browser and type in "localhost"
 5. The website should appear and you may start using it
-
 6. Click on "UPLOAD CV(S)"
 7. Click choose files and upload the files given in the TestFiles in Server directory on github. File type supported are .pdf .doc .docx .ppt. pptx
 8. Click on summarize. This will generate a summary of the content in the files uploaded.
