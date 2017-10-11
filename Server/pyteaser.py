@@ -99,7 +99,7 @@ def Summarize(text, keyword = None):
         keys = keywords
 
     #score setences, and use the top 5 sentences
-    ranks = score(sentences, keys).most_common(10)
+    ranks = score(sentences, keys).most_common(3)
     for rank in ranks:
         sentence = re.sub(r'[^\x00-\x7f]',r'', rank[0])
         sentenceAdded = False
