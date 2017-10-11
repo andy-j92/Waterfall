@@ -1,22 +1,24 @@
+//Hide Spinner on loading the extract page
 $('.loading').hide();
 checkFileCount();
 sessionStorage.removeItem('extractVar');
 sessionStorage.removeItem('extractVarObj');
+//when there is a file uploaded update the UI to let the user know which files have been uploaded
 if (sessionStorage.length) {
 	if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
 		$('#filesUploadedStatus').text('Files Uploaded');
 	}
-
 	for(i = 0; i < sessionStorage.length; i++){
 		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 		$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 		}
 	}
 }
+
 setActiveFile();
 
 function snackbar(text) {
-
+    
 	var snackbar = document.getElementById("snackbar")
 
 	// Add the "show" class to DIV
@@ -43,11 +45,6 @@ $('#buttonSubmit').on('click', function(e) {
 		snackbar("No files uploaded...");
 		return;
 	}
-
-	//Check if the file type is correct.
-	// for (var x = 0; x < input.files.length; x++) {
-	// 	var fileName = input.files[x].name;
-	// 	var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
 		
 			// Initially clear previous errors if present
 			$('#errorText').text('');
@@ -120,6 +117,7 @@ function checkDuplicateAndAddFile(fileName){
 	setActiveFile();
 }
 
+//checks to see if the file uploaded by the user is compatable with our web app.
 function isCorrectType(fileExt) {
 	if('pdf'==fileExt || 'pptx'==fileExt || 'docx'==fileExt || 'ppt'==fileExt || 'doc'==fileExt || 'txt'==fileExt) {
 		return true;
@@ -129,7 +127,7 @@ function isCorrectType(fileExt) {
 }
 
 function setActiveFile() {
-
+//When the mouse moves over a uploaded file name, that file is set to the active file
 	$('.list-group-item').on('mouseover',function() {
 		$('.list-group-item').removeClass('active');
 		$('.list-group-item[customId='+ $(this).attr('customId') + ']').addClass('active');
@@ -140,6 +138,7 @@ function setActiveFile() {
 	});
 }
 
+//checks for duplicate file names and sets a flag if it finds a duplicate
 function checkDuplicateFile(param, fileName) {
 	$('.list-group').find('.list-group-item').each(function() {
 		var listItem = $(this).text().substring(0, $(this).text().length - 1);
@@ -151,8 +150,11 @@ function checkDuplicateFile(param, fileName) {
 
 	return param;
 }
+
+
 $('#buttonSummarize').on('click',function(e){
 	
+    //if there are no files uploaded a pop up in the UI will say ther are no files uploaded
 	var obj={};
 	var iterationLength=sessionStorage.length;
 	if(iterationLength == 0){
@@ -160,6 +162,7 @@ $('#buttonSummarize').on('click',function(e){
 		return;
 	}
 
+    //store the content of the files uploaded in the session storage and send them to pyteaser to be summarised
 	for(i = 0; i < iterationLength; i++){
 		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword')){
 			var data = new FormData();
@@ -178,12 +181,14 @@ $('#buttonSummarize').on('click',function(e){
 			ourRequest.send(data);
 		}
 	}
+    //once the files have been sent to pyteaser sucessfully automatically go to the summary page
 	for (var key in obj) {
 		sessionStorage.setItem(key, obj[key]);
 	}
 	window.location.href='/keywordsearch';
 });
 
+// when the 'X' button (close button) is clicked, remove the corresponding file form the session storage 
 $(document).on("click", '.close', function(event) {  //delete file
 		var fileToRemove=$(this).parents('p').text();
 		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
@@ -197,6 +202,7 @@ $(document).on("click", '.close', function(event) {  //delete file
 		}
 	});
 
+//If there are no files in the session storage, then don not display the summarize button
 function checkFileCount() {
 	if(sessionStorage.length == 0) {
 		$('#buttonSummarize').hide()
