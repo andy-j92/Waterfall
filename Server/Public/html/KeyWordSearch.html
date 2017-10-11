@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <title>Keyword Search</title>
+
+      <link rel="icon" href="http://static.net/stackoverflow/img/favicon.ico">
+
+      <!-- Latest compiled and minified bootstrap stylesheet -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+      <!-- bootstrap template -->
+      <link href="/static/css/creative.min.css" rel="stylesheet">
+      
+      <!-- fonts -->    
+      <link href="https://fonts.googleapis.com/css?family=Passion+One|Titillium+Web" rel="stylesheet">  
+
+      <link rel="stylesheet" href="/static/css/KeyWordSearch.css">
+    </head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger">Smart employee search</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/select-file.html">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/static/html/ExtractText.html">Extract</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="ButtonContainer">
+            <p id="titleText" style="text-align: center;"><b>Select an employee using keywords</b></p>
+        <div id="searchboxDiv">
+          <input id="SearchBox" type="text" name="Keyword" placeholder="Enter Keywords"/>
+            <button id="searchSummaries" class="btn btn-primary" type="submit">
+            Refine Search
+            </button>
+        </div>
+    </div>
+    
+    <div id="SummaryContainer">
+        <p id="SummaryText" >Summary:</p>
+        <div class="container">
+           <div class="list-group">
+
+          </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/js/highlight.js"></script>
+    <!-- <script type="text/javascript" src="/static/js/ExtractText.js"></script>-->
+    <script type="text/javascript" src="/static/js/KeyWordSearch.js"></script>
+    
+
+</body>
+</html>

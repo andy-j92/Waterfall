@@ -1,0 +1,7 @@
+textrazor
+routes
+python-docx
+python-pptx
+pdfminer
+unidecode
+libreoffice
