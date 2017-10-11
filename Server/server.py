@@ -4,6 +4,10 @@
 """
 CherryPy-based webservice daemon with background threads
 """
+
+"""
+List of libraries imported
+"""
 from cStringIO import StringIO
 import codecs
 import json
@@ -27,9 +31,6 @@ import os
 import re
 from unidecode import unidecode
 
-
-
-
 # import pyteaser
 def worker():
     """Background Timer that runs the hello() function every 5 seconds
@@ -44,13 +45,9 @@ def worker():
 
 
 def hello():
-    """Output 'hello' on the console"""
+    """Output 'Server running' on the console"""
 
     print ('Server running...')
-    # Summarize("hi my name is nipoon")
-    # x = pyteaser.Summarize("Video provides a powerful way to help you prove your point. When you click Online Video, you can paste in the embed code for the video you want to add. You can also type a keyword to search online for the video that best fits your document.")
-    # print(x)
-
 
 class MyBackgroundThread(plugins.SimplePlugin):
     """CherryPy plugin to create a background worker thread"""
@@ -71,33 +68,41 @@ class MyBackgroundThread(plugins.SimplePlugin):
     # yet but may in the future)
     start.priority = 85
 
-
+"""
+List of APIs, the server provice to client
+"""
 class APIController(object): \
         # pylint: disable=too-few-public-methods
 
     """Controller for fictional "nodes" webservice APIs"""
 
+    #First page rendered on the client side
     # #     @cherrypy.tools.json_out()
     def upload(self):
         # Regular request for '/nodes' URI
         return file('./Public/html/index.html')
 
+    #Test API for summary
     @cherrypy.expose
     def test(self):
         return file("./Public/html/summaries.html")
 
+    #Page for providing keyword extraction
     @cherrypy.expose
     def extractPage(self):
         return file("./Public/html/ExtractText.html")
 
+    #Page for providing uploading and summarising files
     @cherrypy.expose
     def newcv(self):
         return file("./Public/html/select-file.html")
 
+    #Page for providing keyword summarisation
     @cherrypy.expose
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
+    #API for extracting texts from files including doc, docx, ppt, pptx, pdf
     def result(self, myFile):
         out = """<html>
         <body>
@@ -107,9 +112,8 @@ class APIController(object): \
         </html>"""
         
         upload_file = myFile.filename
-
-
-
+        
+        #Get file instance
         with open(upload_file, 'wb') as out:
             while True:
                 data = myFile.file.read(8192)
@@ -117,6 +121,7 @@ class APIController(object): \
                     break
                 out.write(data)
 
+        #Extract texts
         if os.path.splitext(myFile.filename)[1] == '.pdf':
             data = convertPdf(upload_file)
         elif os.path.splitext(myFile.filename)[1] == '.pptx':
@@ -137,11 +142,12 @@ class APIController(object): \
 
         return data
 
+    #API to summarise based on the given keyword(s)
     def fetchFilteredSummaries(self, data, keywords):
         return pyteaser.Summarize(data, keywords)
     
+    #API to extract keywords
     def extractKeywords(self, data):
-
         return pyteaser.extract_keywords(data)
 
 
@@ -150,11 +156,9 @@ def convertDocx(path):
     docText = ''.join([
         (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
     ])
-    #print(docText)
     return docText
 
 def convertDocxx(path):
-	
     for filename in  os.listdir(os.getcwd()):
         if filename.endswith('.doc'):
             subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
@@ -162,15 +166,14 @@ def convertDocxx(path):
     docText = ''.join([
         (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
     ])
-    # print(docText)
     return docText
+
 def convertPptx(path):
     prs = Presentation(path)
     # text_runs will be populated with a list of strings,
     # one for each text run in presentation
     text_runs = []
     full_string = ""
-
     for slide in prs.slides:
         for shape in slide.shapes:
             if not shape.has_text_frame:
@@ -180,15 +183,13 @@ def convertPptx(path):
                     text_runs.append(unidecode(unicode(run.text)))
 
     full_string = ''.join(text_runs)
-    # print(full_string)
     return full_string
+
 def convertPptxx(path):
     for filename in  os.listdir(os.getcwd()):
         if filename.endswith('.ppt'):
             subprocess.call(['soffice', '--headless', '--convert-to', 'pptx', filename])
     prs = Presentation(path[:-4] + ".pptx")
-
-
     # text_runs will be populated with a list of strings,
     # one for each text run in presentation
     text_runs = []
@@ -203,9 +204,7 @@ def convertPptxx(path):
                     text_runs.append(unidecode(unicode(run.text)))
 
     full_string = ''.join(text_runs)
-    # print(full_string)
     return full_string
-
 
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
@@ -225,9 +224,7 @@ def convertPdf(path):
     device.close()
     retstr.close()
     text = unidecode(unicode(text, encoding = "utf-8"))
-    # print(text)
     return text
-
 
 def jsonify_error(status, message, traceback, version): \
         # pylint: disable=unused-argument

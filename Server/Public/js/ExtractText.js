@@ -1,7 +1,10 @@
+//Hide Spinner on loading the extract page.
 $('.loading').hide();
 
-//Check if there is keyword extracted before
+//Variable to store boolean for checking if the keyword extraction has been performed previously
 var isExtracted = false;
+
+//Check if there is keyword extracted before
 for(i = 0; i < sessionStorage.length; i++){
 	if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0) {
 		var fullKeywords = sessionStorage.getItem(sessionStorage.key(i) + "_keyword");
@@ -11,13 +14,17 @@ for(i = 0; i < sessionStorage.length; i++){
     	}
 	}
 }
-if(isExtracted){ //Not extracted, extract
+
+if(isExtracted){ //No keyword has been extracted, so extract.
 	
 	try{
+		
+		//Start the spinner
 		$('.loading').show();
-		setTimeout(function(){
+		
+		setTimeout(function(){ //Start a new thread for getting the keywords.
 			var obj={};
-			for(i = 0; i < sessionStorage.length; i++){
+			for(i = 0; i < sessionStorage.length; i++){ //Get keywords from the server
 				if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 					var data = new FormData();
 					data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
@@ -33,29 +40,29 @@ if(isExtracted){ //Not extracted, extract
 					ourRequest.send(data);
 				}
 			}
-			$('.loading').hide();
+			$('.loading').hide(); //Hide the spinner
 
-			$('.list-group').empty();
+			$('.list-group').empty(); //Remove all the elements (keywords shown previously) in the UI
 			var i = 0;
 			var mainString = [];
 			for (var key in obj) {
 				$('.list-group').append('<br><h2 id="titleText">' + key + '</h2><br>')
 				mainString = obj[key];
-				var subString = mainString.split('@#$%^&');
-				for(var line in subString) {
+				var subString = mainString.split('@#$%^&'); //Split the set of keywords for each file
+				for(var line in subString) { //Loop through keywords for each file.
 					var keyWords;
-					if(subString[line] != ''){
-						var categoryAndKeywords = subString[line].split('&');
-						var categories = categoryAndKeywords[0];
+					if(subString[line] != ''){ //Make sure it's not empty
+						var categoryAndKeywords = subString[line].split('&'); //Split category and keywords
+						var categories = categoryAndKeywords[0]; 
 						cat = categories.split('/')[1]; //higest category level
 						if(!(cat == "book" || cat == "people")) {
 							cat  = categories.split('/')[2]; //lower category level
-							var keyWordsList = categoryAndKeywords[1];
+							var keyWordsList = categoryAndKeywords[1]; //Get the list of keywords
 
-							keyWords = keyWordsList.split(':');
-							if(keyWords.length != 1) {
+							keyWords = keyWordsList.split(':'); //List of keywords
+							if(keyWords.length != 1) { //Make sure there is at least one keyword to process
 								var clickableKeywords = "";
-								for(var keyword in keyWords) {
+								for(var keyword in keyWords) { //Loop through each keyword, assign bullet point, make it clickable
 									if ((keyword % 5) == 4){
 										var temp = '<a href="#" class="containedKeywords">'+ ' &#9702' + ' ' + keyWords[keyword].replace(/ *\([^)]*\) */g, '')  + ' </a><br/>';
 									} else {
@@ -63,7 +70,10 @@ if(isExtracted){ //Not extracted, extract
 									}
 									clickableKeywords += temp;
 								}
+								//Append it to the UI, below "Extracted Keywords:" section
 								$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>');
+								
+								//store into session storage for later use. This improves performance, as it is not required to re-extract the keywords if there is no additional files added.
 								if(sessionStorage.getItem(key+"_keyword") == null){
 									sessionStorage.setItem(key+"_keyword", '<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>');
 								}else{
@@ -81,7 +91,7 @@ if(isExtracted){ //Not extracted, extract
 	}catch(err){
 		console.log('An error occured ' + err);
 	}
-}else{ //Just display
+}else{ //The keywords are extracted, display them which are stored in the session storage
 	for(i = 0; i < sessionStorage.length; i++){
 		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0) {
 			var clickableKeyword = sessionStorage.getItem(sessionStorage.key(i) + "_keyword");
@@ -94,6 +104,9 @@ if(isExtracted){ //Not extracted, extract
 	}
 }
 
+/**
+ * Function to store the clicked keyword, and the page goes to keyword search page to summarise the uploaded files using the clicked keyword.
+ */
 $(document).on("click", '.containedKeywords', function(event) {
 	var globalExtractObj=searchWithKeywords($(this).text().replace(/^\s+|\s+$/g, ""));
 	var kword = $(this).text();
@@ -104,6 +117,11 @@ $(document).on("click", '.containedKeywords', function(event) {
 	window.location.href='/keywordsearch';
 });
 
+/**
+ * Function to call "keyword summarisation" to the server. It takes text and keyword(s)
+ * @param keywords
+ * @returns
+ */
 function searchWithKeywords(keywords){
 	var obj={};
 	for(i = 0; i < sessionStorage.length; i++){
