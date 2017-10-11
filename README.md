@@ -52,3 +52,6 @@ sudo pip install requirements.txt
 
 
 You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on AWS cloud.
+
+More information about how to run and improve the project is given in the wiki pages below.
+https://github.com/andy-j92/Waterfall/wiki
