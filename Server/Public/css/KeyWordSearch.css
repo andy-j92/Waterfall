@@ -7,8 +7,8 @@ body{
 }
 
 #mainNav{
-    background: gray;
-    opacity: 0.9;
+    background: rgb(51,51,51);
+    z-index: 10;
 }
 
 .navbar-brand{
@@ -19,13 +19,13 @@ body{
     position: absolute;
     top: 12%;
     width: 100%;
-    text-align: center;
-    
+    text-align: center;  
 }
 
 #titleText{
     position: relative;
     color: white;
+    font-family: 'Titillium Web', sans-serif;
     font-size: 2.5vw;
 }
 
@@ -38,7 +38,7 @@ body{
 
 #SearchBox{
     height: 35px;
-    height: 50px;
+    height: 40px;
     width: 20%;
     vertical-align: middle;
     text-align: center;
@@ -46,10 +46,11 @@ body{
 
 .btn{
   position: relative;
-  height: 50px;
+  height: 40px;
   width: 15%;    
   text-align: center;    
   font-size: 1.5vw;
+  cursor:pointer;    
   vertical-align: middle;
 }
 
@@ -58,6 +59,7 @@ body{
     top: 35%;
     left: 2%;
     width: 96%;
+    margin-bottom: 5%;
 }
 
 .highlight { background-color: yellow }
@@ -66,9 +68,10 @@ body{
     position: relative;
     top: 0%;
     text-align: center;
+    font-family: 'Passion One', cursive;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
-    font-family: Verdana;
-    font-size: 4vw;
+    font-size: 5vw;
 }
 
 .list-group-item{
