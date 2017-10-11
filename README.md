@@ -72,7 +72,7 @@ See [**Deploying server**](https://github.com/andy-j92/Waterfall/wiki/Deploying-
 6. Change view from responsive to any of the mobile phones. Navigate around and test the responsivness.
 
 # System Architecture
-CV Analyzer provides a set of [**APIs**](https://github.com/andy-j92/Waterfall/wiki/Project-APIs) to the client side.
+CV Analyzer provides a set of [**APIs**](https://github.com/andy-j92/Waterfall/wiki/Project-APIs) to the client side. <br/>
 See [**System Architecture**](https://github.com/andy-j92/Waterfall/wiki/System-Architecture) for more details.
 
 <br/>
