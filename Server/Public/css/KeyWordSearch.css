@@ -68,9 +68,9 @@ body{
     position: relative;
     top: 0%;
     text-align: center;
-    font-family: 'Passion One', cursive;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
     color: white;
+    font-weight:700;
     font-size: 5vw;
 }
 
@@ -90,12 +90,12 @@ body{
     
     #SearchBox{
       width: 50%;
-      height: 35px;         
+      height: 40px;         
     }
     
     .btn{
       width: 30%;
-      height: 35px;
+      height: 40px;
       font-size: 2.75vw;
     }
     

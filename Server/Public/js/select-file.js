@@ -102,10 +102,10 @@ function checkDuplicateAndAddFile(fileName){
 		if ($('#filesUploadedStatus').text() == 'No Files Uploaded') {
 			$('#filesUploadedStatus').text('Files Uploaded');
 		}
-		$('.list-group').append('<a href="#" class="list-group-item" customId='
+		$('.list-group').append('<p href="#" class="list-group-item" customId='
 							+ "list_" +  (sessionStorage.length) + '>'
 							+ fileName
-							+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></a>');
+							+ '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 	}
 	setActiveFile();
 }
