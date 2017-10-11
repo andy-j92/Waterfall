@@ -1,13 +1,20 @@
-
-if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when a keyword is clicked
+/**
+ * Operations to perform when keywordSearch.html is rendered
+ */
+if(sessionStorage.getItem('extractVar')=='true'){ //Check if the page is being rendered due to clicking a keyword in the ExtractText.html page
+	
+	//Get information to display for keyword summary
 	var extractObj=JSON.parse(sessionStorage.getItem('extractVarObj'));
 	var keyword = sessionStorage.getItem('keyword');
 	sessionStorage.removeItem('keyword');
 	sessionStorage.removeItem('extractVarObj');
 	sessionStorage.removeItem('extractVar');
 
-	if(null!=extractObj && undefined!=extractObj){
+	if(null!=extractObj && undefined!=extractObj){ //Make sure there is information to display
+		
 		var counter=0;
+		
+		//Display the keyword summary on UI
 		for (var key in extractObj) {
             var FullSummary = extractObj[key];
             var SummarySplit = FullSummary.split('@#$%^&*');
@@ -17,7 +24,6 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
                 EditedSummary += ' - ' + SummarySplit[j] + '<br/>';
             }
             
-            
 			$('.list-group').append('<p href="#" class="list-group-item" customId=' + "summary_" +  counter + '><strong>Summary of ' +  key.substring(0,key.lastIndexOf("_smry")) + '</strong><br>' + EditedSummary + '</p>');
             
 			if($('.list-group-item[customId=' + "summary_" + counter + ']').text()=='Summary of ' + key.substring(0,key.lastIndexOf("_smry")))
@@ -26,6 +32,7 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 		}
 	}
 
+	//Highlight the keyword
 	var myHilitor = new Hilitor("content");
   	myHilitor.apply(keyword);
 } else {
@@ -33,7 +40,6 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
 	//Remove the keyword selected
 	sessionStorage.removeItem('extractVarObj');
 	sessionStorage.removeItem('extractVar');
-	
 	
 	var isFileChanged = false;
 	//Determine if there has been change in files uploaded.
@@ -91,10 +97,14 @@ if(sessionStorage.getItem('extractVar')=='true'){ // Keyword summarisation when 
     }
 }
 
+/**
+ * Click listener for keyword summary when user has typed in keywords
+ */
 $('#searchSummaries').click(function(e){
 	var obj = null;
 	var keyword = null;
 
+	//Get the keyword summary based on the user's input
 	if(!$.trim($("#SearchBox").val())){
 		obj=searchWithKeywords('');
 		keyword = null;
@@ -103,9 +113,13 @@ $('#searchSummaries').click(function(e){
 		obj=searchWithKeywords($("#SearchBox").val());
 		keyword = $("#SearchBox").val();
 	}
+	
+	//Remove elements in the UI
 	$('.list-group').empty();
+	
 	var i=0;
 	
+	//Display the keyword summaries on the UI
 	for (var key in obj) {
         
         var FullSummary = obj[key];
@@ -123,12 +137,16 @@ $('#searchSummaries').click(function(e){
 		i++;
 	}
 
+	//Highlight the keyword(s)
 	var myHilitor = new Hilitor("content");
-  	myHilitor.apply(keyword); //can call remove aswell
+  	myHilitor.apply(keyword); 
 
 });
 
-//checking to see if
+/**
+ * Event listener to listen to "Enter". On pressing "Enter", 
+ * a button with searchSummaries will be clicked to invoke keyword summarisation
+ */
 document.getElementById("SearchBox")
     .addEventListener("keyup", function(event) {
     event.preventDefault();
@@ -137,6 +155,11 @@ document.getElementById("SearchBox")
     }
 });
 
+/**
+ * Function to call "keyword summarisation" to the server. It takes text and keyword(s)
+ * @param keywords
+ * @returns
+ */
 function searchWithKeywords(keywords){
 	var obj={};
 	for(i = 0; i < sessionStorage.length; i++){
