@@ -33,12 +33,13 @@ Requires Python 2.7.
 sudo pip install requirements.txt
 ```
 
-# How to run the server:
-python2.7 server.py
-server.py is located in Server directory
+# How to run the server and use the service:
+*python2.7 is required for this project
 
-# How to use the service:
-Type ip_address in the address bar in your favourite web browser.
-For example, type "localhost" in the address bar in Chrome
+1. Open terminal on Linux/Ubuntu machine
+2. Navigate to Server directory
+3. Type in *python server.py
+4. Go to favourite browser and type in *localhost
+5. The website should appear and you may start using it
 
-You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on the cloud.
+You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on AWS cloud.
