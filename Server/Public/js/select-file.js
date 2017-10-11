@@ -45,10 +45,10 @@ $('#buttonSubmit').on('click', function(e) {
 	}
 
 	//Check if the file type is correct.
-	for (var x = 0; x < input.files.length; x++) {
-		var fileName = input.files[x].name;
-		var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
-		if('undefined'!=fileExt && ''!=fileExt && isCorrectType(fileExt)) {
+	// for (var x = 0; x < input.files.length; x++) {
+	// 	var fileName = input.files[x].name;
+	// 	var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
+		
 			// Initially clear previous errors if present
 			$('#errorText').text('');
 			$('.loading').show();
@@ -58,6 +58,9 @@ $('#buttonSubmit').on('click', function(e) {
 					var isDuplicateFile = false;
 					var fileName = input.files[x].name;
 					var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
+
+					if('undefined'!=fileExt && ''!=fileExt && isCorrectType(fileExt)){
+
 					var data = new FormData();
 					data.append('myFile', input.files[x]);
 					var ourRequest = new XMLHttpRequest();
@@ -75,19 +78,26 @@ $('#buttonSubmit').on('click', function(e) {
 						}
 					};
 					//Send the file
+					console.log(count);
 					ourRequest.send(data);
 					checkFileCount();
+
+					if (count == input.files.length) {
+						$('.loading').hide();
+					}
+
+
+
+				}else {
+					$('.loading').hide();
+					snackbar("Invalid file type..." + fileName);
+					continue;
 				}
 
-				if (count == input.files.length) {
-					$('.loading').hide();
-				}
+			}
 			},15);
-		} else {
-			snackbar("Invalid file type...")
-			return;
-		}
-	}
+		 
+	//}
 });
 
 /**
