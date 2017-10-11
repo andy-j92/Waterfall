@@ -44,6 +44,12 @@ sudo pip install requirements.txt
 ```
 See [**Environment & Installation**](https://github.com/andy-j92/Waterfall/wiki/Environment-&-Installation) for more details
 
+# Run test script
+```
+python tests.py
+```
+See [**Test Script**](https://github.com/andy-j92/Waterfall/wiki/Test-Script) for more details
+
 # How to run the server
 ### Local server
 1. Open terminal on Linux/Ubuntu machine
