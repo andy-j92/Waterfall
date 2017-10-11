@@ -43,7 +43,7 @@ sudo pip install requirements.txt
 5. The website should appear and you may start using it
 
 6. Click on "UPLOAD CV(S)"
-7. Click choose files and upload the files given in the Testfils directory on github. File type supported are .pdf .doc .docx .ppt. pptx
+7. Click choose files and upload the files given in the TestFiles in Server directory on github. File type supported are .pdf .doc .docx .ppt. pptx
 8. Click on summarize. This will generate a summary of the content in the files uploaded.
 9. You may enter any word in the text box to refine the search. Example, type in "mobile". The summary should change to give a blurb of text consiting the word "mobile".
 10. Click extract on the top right hand corner. Key words will be extracted and you may choose any of the keywords you want to create a summary of. An example is chosing the word "Technology".
