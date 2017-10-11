@@ -38,8 +38,14 @@ sudo pip install requirements.txt
 
 1. Open terminal on Linux/Ubuntu machine
 2. Navigate to Server directory
-3. Type in *python server.py
-4. Go to favourite browser and type in *localhost
+3. Type in "python server.py"
+4. Go to favourite browser and type in "localhost"
 5. The website should appear and you may start using it
+
+6. Click on "UPLOAD CV(S)"
+7. Click choose files and upload the files given in the Testfils directory on github. File type supported are .pdf .doc .docx .ppt. pptx
+8. Click on summarize. This will generate a summary of the content in the files uploaded.
+9. You may enter any word in the text box to refine the search. Example, type in "mobile". The summary should change to give a blurb of text consiting the word "mobile".
+10. Click extract on the top right hand corner. Key words will be extracted and you may choose any of the keywords you want to create a summary of. An example is chosing the word "Technology".
 
 You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on AWS cloud.
