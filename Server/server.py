@@ -2,7 +2,11 @@
 # pylint: disable=invalid-name
 
 """
-CherryPy-based webservice daemon with background threads
+CherryPy-based webservice is used for providing services to finding the best candidate.
+The server provides a set of APIs to the application side to consume the services online and locally.
+Summarisation feature from Pyteaser to reduce the amount of unnecessary readings for employers, 
+Keyword extraction feature from textrazor to provide a set of keywords with the corresponding category,
+and combination of summarisation and keyword extraction to provide a summary that is based on the given keyword(s).
 """
 
 """
@@ -69,40 +73,44 @@ class MyBackgroundThread(plugins.SimplePlugin):
     start.priority = 85
 
 """
-List of APIs, the server provice to client
+List of APIs exposed to client side.
 """
 class APIController(object): \
         # pylint: disable=too-few-public-methods
 
     """Controller for fictional "nodes" webservice APIs"""
 
-    #First page rendered on the client side
+    """First page rendered on the client side"""
     # #     @cherrypy.tools.json_out()
     def upload(self):
         # Regular request for '/nodes' URI
         return file('./Public/html/index.html')
 
-    #Test API for summary
+    """Test API for summary"""
     @cherrypy.expose
     def test(self):
         return file("./Public/html/summaries.html")
 
-    #Page for providing keyword extraction
+    """Page for displaying keywords for the files uploaded. Each keyword shown on the UI can be clicked.
+    Clicking the keyword transits to KeyWordSearch page to show the summaries based on the clicked keyword"""
     @cherrypy.expose
     def extractPage(self):
         return file("./Public/html/ExtractText.html")
 
-    #Page for providing uploading and summarising files
+    """Page for providing features such as uploading files and summarising texts. 
+    Upload button allows users to upload multiple files at once to retrieve texts in the files.
+    Summarise button summarises into 3 sentences using the texts retrieved from the files"""
     @cherrypy.expose
     def newcv(self):
         return file("./Public/html/select-file.html")
 
-    #Page for providing keyword summarisation
+    """Page for displaying keyword and normal summaries.
+    The page provides a text box for users to type in their own keywords to summarise based on the keywords"""
     @cherrypy.expose
     def keywordsearch(self):
         return file("./Public/html/KeyWordSearch.html")
 
-    #API for extracting texts from files including doc, docx, ppt, pptx, pdf
+    """API for extracting texts from files including doc, docx, ppt, pptx, pdf"""
     def result(self, myFile):
         out = """<html>
         <body>
@@ -142,32 +150,32 @@ class APIController(object): \
 
         return data
 
-    #API to summarise based on the given keyword(s)
+    """API to summarise text based on default keywords or based on the given keyword(s) (given from the user)"""
     def fetchFilteredSummaries(self, data, keywords):
         return pyteaser.Summarize(data, keywords)
     
-    #API to extract keywords
+    """API to extract keywords"""
     def extractKeywords(self, data):
         return pyteaser.extract_keywords(data)
 
-
+"""Function to extract texts from docx file"""
 def convertDocx(path):
     document = docx.Document(path)
     docText = ''.join([
-        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
-    ])
+        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs])
     return docText
 
+"""Function to extract texts from doc file"""
 def convertDocxx(path):
     for filename in  os.listdir(os.getcwd()):
         if filename.endswith('.doc'):
             subprocess.call(['soffice', '--headless', '--convert-to', 'docx', filename])
     document = docx.Document(path[:-4] + ".docx")
     docText = ''.join([
-        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs
-    ])
+        (unidecode(unicode(paragraph.text))) for paragraph in document.paragraphs])
     return docText
 
+"""Function to extract texts from pptx file"""
 def convertPptx(path):
     prs = Presentation(path)
     # text_runs will be populated with a list of strings,
@@ -185,6 +193,7 @@ def convertPptx(path):
     full_string = ''.join(text_runs)
     return full_string
 
+"""Function to extract texts from ppt file"""
 def convertPptxx(path):
     for filename in  os.listdir(os.getcwd()):
         if filename.endswith('.ppt'):
@@ -206,6 +215,7 @@ def convertPptxx(path):
     full_string = ''.join(text_runs)
     return full_string
 
+"""Function to extract texts from pdf file"""
 def convertPdf(path):
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
