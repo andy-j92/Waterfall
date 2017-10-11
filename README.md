@@ -47,5 +47,8 @@ sudo pip install requirements.txt
 8. Click on summarize. This will generate a summary of the content in the files uploaded.
 9. You may enter any word in the text box to refine the search. Example, type in "mobile". The summary should change to give a blurb of text consiting the word "mobile".
 10. Click extract on the top right hand corner. Key words will be extracted and you may choose any of the keywords you want to create a summary of. An example is chosing the word "Technology".
+11. To view this webpage on mobile view right click on the webpage and click inspect. Alternatively press ctrl+shift+i if on windows using chrome.
+12. Change view from responsive to any of the mobile phones. Navigate around and test the responsivness.
+
 
 You may also test our system by typing in "18.220.214.223" in the address bar in Chrome. This will access the server currently running on AWS cloud.
