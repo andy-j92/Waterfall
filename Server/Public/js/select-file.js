@@ -8,7 +8,7 @@ if (sessionStorage.length) {
 	}
 
 	for(i = 0; i < sessionStorage.length; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 		$('.list-group').append('<p class="list-group-item" customId=' + "list_" +  i + '>' + sessionStorage.key(i) + '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></p>');
 		}
 	}
@@ -53,35 +53,35 @@ $('#buttonSubmit').on('click', function(e) {
 			$('#errorText').text('');
 			$('.loading').show();
 			setTimeout(function(){
-			var count = 0;
-			for (var x = 0; x < input.files.length; x++) {
-				var isDuplicateFile = false;
-				var fileName = input.files[x].name;
-				var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
-				var data = new FormData();
-				data.append('myFile', input.files[x]);
-				var ourRequest = new XMLHttpRequest();
-				ourRequest.open('POST', "/result", false);
+				var count = 0;
+				for (var x = 0; x < input.files.length; x++) {
+					var isDuplicateFile = false;
+					var fileName = input.files[x].name;
+					var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
+					var data = new FormData();
+					data.append('myFile', input.files[x]);
+					var ourRequest = new XMLHttpRequest();
+					ourRequest.open('POST', "/result", false);
 
-				//Listener for request
-				ourRequest.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) { //Successful response
-						sessionStorage.setItem(fileName,ourRequest.responseText); //Stores the text into the  current session
-						count++;
-						checkDuplicateAndAddFile(fileName);
-					} else { //Unsuccessful response
-						sessionStorage.setItem(fileName, 'Empty File');
-						count++;
-					}
-				};
-				//Send the file
-				ourRequest.send(data);
-				checkFileCount();
-			}
+					//Listener for request
+					ourRequest.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) { //Successful response
+							sessionStorage.setItem(fileName,ourRequest.responseText); //Stores the text into the  current session
+							count++;
+							checkDuplicateAndAddFile(fileName);
+						} else { //Unsuccessful response
+							sessionStorage.setItem(fileName, 'Empty File');
+							count++;
+						}
+					};
+					//Send the file
+					ourRequest.send(data);
+					checkFileCount();
+				}
 
-			if (count == input.files.length) {
-				$('.loading').hide();
-			}
+				if (count == input.files.length) {
+					$('.loading').hide();
+				}
 			},15);
 		} else {
 			snackbar("Invalid file type...")
@@ -151,7 +151,7 @@ $('#buttonSummarize').on('click',function(e){
 	}
 
 	for(i = 0; i < iterationLength; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword')){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', '');
@@ -179,6 +179,7 @@ $(document).on("click", '.close', function(event) {  //delete file
 		fileToRemove=fileToRemove.substring(0,fileToRemove.length-1); //x button text also appears
 		sessionStorage.removeItem(fileToRemove);
 		sessionStorage.removeItem(fileToRemove + "_smry");
+		sessionStorage.removeItem(fileToRemove + "_keyword");
 		$(this).parents('p').remove();
 		checkFileCount();
 		if(!$('.list-group-item').length){

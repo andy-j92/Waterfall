@@ -1,10 +1,24 @@
 $('.loading').hide();
+
+//Check if there is keyword extracted before
+var isExtracted = false;
+for(i = 0; i < sessionStorage.length; i++){
+	if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0) {
+		var fullKeywords = sessionStorage.getItem(sessionStorage.key(i) + "_keyword");
+    	if(fullKeywords == null){
+    		isExtracted = true;
+    		break;
+    	}
+	}
+}
+if(isExtracted){ //Not extracted, extract
+	
 	try{
 		$('.loading').show();
 		setTimeout(function(){
 			var obj={};
 			for(i = 0; i < sessionStorage.length; i++){
-				if(sessionStorage.key(i).indexOf('_smry')<0){
+				if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 					var data = new FormData();
 					data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 
@@ -18,12 +32,11 @@ $('.loading').hide();
 					};
 					ourRequest.send(data);
 				}
-
 			}
 			$('.loading').hide();
 
 			$('.list-group').empty();
-
+			var i = 0;
 			var mainString = [];
 			for (var key in obj) {
 				$('.list-group').append('<br><h2 id="titleText">' + key + '</h2><br>')
@@ -50,21 +63,36 @@ $('.loading').hide();
 									}
 									clickableKeywords += temp;
 								}
-								$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>')
+								$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>');
+								if(sessionStorage.getItem(key+"_keyword") == null){
+									sessionStorage.setItem(key+"_keyword", '<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>');
+								}else{
+									sessionStorage.setItem(key+"_keyword", sessionStorage.getItem(key+"_keyword") + "@#$%^&" + '<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + cat + '</strong><br>' + clickableKeywords + '</p>');
+								}
+								i++;
 							}
 						}
 					}
 				}
-
+				
 				/*$('.list-group').append('<p class="list-group-item" customId=' + "keyword_" +  i + '><strong>' + key.substring(0,key.lastIndexOf("_kywrd")) + '</strong><br>' + obj[key] + '</p>')*/
 			}
-
 		},15);
-
-
 	}catch(err){
 		console.log('An error occured ' + err);
 	}
+}else{ //Just display
+	for(i = 0; i < sessionStorage.length; i++){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0) {
+			var clickableKeyword = sessionStorage.getItem(sessionStorage.key(i) + "_keyword");
+			$('.list-group').append('<br><h2 id="titleText">' + sessionStorage.key(i) + '</h2><br>');
+			var clickableKeywords = clickableKeyword.split("@#$%^&");
+			for(j = 0; j < clickableKeywords.length; j++){
+				$('.list-group').append(clickableKeywords[j]);
+			}
+		}
+	}
+}
 
 $(document).on("click", '.containedKeywords', function(event) {
 	var globalExtractObj=searchWithKeywords($(this).text().replace(/^\s+|\s+$/g, ""));
@@ -79,7 +107,7 @@ $(document).on("click", '.containedKeywords', function(event) {
 function searchWithKeywords(keywords){
 	var obj={};
 	for(i = 0; i < sessionStorage.length; i++){
-		if(sessionStorage.key(i).indexOf('_smry')<0 && sessionStorage.key(i).indexOf('extractVar')<0){
+		if(sessionStorage.key(i).indexOf('_smry') < 0 && sessionStorage.key(i).indexOf('extractVar') < 0 && sessionStorage.key(i).indexOf('_keyword') < 0){
 			var data = new FormData();
 			data.append('data', sessionStorage.getItem(sessionStorage.key(i)));
 			data.append('keywords', keywords);
